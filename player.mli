@@ -1,10 +1,10 @@
 open billiard
 (*the type player has the following fields:
-  [legal_pot]:
-  [is_playing]:
-  [score]:
-  [cue]:
-  [money]:
+  [legal_pot]: a list of the billiard that can be legally hit
+  [is_playing]: whether this player is playing at this turn
+  [score]: the player's score
+  [cue]: the amount of power on the tip of the cue for this player
+  [money]: the player's money
 *)
 type player = {
   legal_pot: billiard list;

@@ -1,9 +1,9 @@
 (*the billiard contains the following fields:
-  [speed]
-  [position]:
+  [speed] : the speed of the billiard
+  [position] : the position of the billiard 
   [suit] :
-  [direction]:
-  [velocity]:
+  [direction] :
+  [velocity] :
 *)
 type billiard = {
   speed: int;
