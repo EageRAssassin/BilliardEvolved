@@ -27,12 +27,31 @@ type state = {
 
 (* foul: see foul .mli *)
 
+(* HELPER FUNCTION GOES BELOW *)
+
+let radius = 1
+
+(* [collide b1 b2]Collides two balls and changes their velocities accordingly 
+   requires : b1 and b2 are valid billiard records 
+   returns  : the tuple of the 2 billards with speed changes *)
+let collide (b1 : billiard) (b2 : billiard) : (billiard * billiard)= 
+  let x1 = fst (b1.position) + radius in 
+  let x2 = fst (b2.position) + radius in 
+  let y1 = snd (b1.position) + radius in 
+  let y2 = snd (b2.position) + radius in    
+  let dxR = x2 - x1 in 
+  let dyR = y2 - y1 in 
+  (* gets the ACTUAL distance between the two balls *)
+  let distance = Math.sqrt(DxR * DxR + DyR * DyR); 
+
+
+
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
    requires:
    [st] is a game state
  *)
-val change_state : state -> state
+let change_state st = st
 
 
 (* [kinetic_transfer (dx,dy) st] takes a velocity tuple (dx,dy) which is
@@ -51,7 +70,7 @@ val change_state : state -> state
    [(int*int)] is a tuple of int
    [st] is current game state
  *)
-val kinetic_transfer : ( int * int ) -> state -> state
+let kinetic_transfer x y st = st
 
 
 (* [next_turn st] will trigger the next turn where the user is given
@@ -60,7 +79,7 @@ val kinetic_transfer : ( int * int ) -> state -> state
    [st] is current game state
  *
  *)
-val next_turn : state -> state
+let next_turn st = st
 
 (* [ai_evaluate_next_move st] will use our AI to analyze the current
  * state to produce the optimal velocity (direction + speed) of the
@@ -75,4 +94,4 @@ val next_turn : state -> state
    3. line of travel is not obstructed (no ball between ball and pocket.
 
   *)
-val ai_evaluate_next_move : state -> ( int * int )
+let ai_evaluate_next_move st = (1,2)
