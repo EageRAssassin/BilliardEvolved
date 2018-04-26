@@ -7,10 +7,19 @@ open Billiard
   [cue]: the amount of power on the tip of the cue for this player
   [money]: the player's money
 *)
-type player = {
-  legal_pot: billiard list;
-  is_playing : bool;
-  score : int;
-  cue : int;
-  money: int;
+
+let player1 = {
+  legal_pot = [];
+  is_playing = true;
+  score = 0;
+  cue = 0;
+  money = 0;
+}
+
+let player2 = {
+  legal_pot = [];
+  is_playing = false;
+  score = 0;
+  cue = 0;
+  money = 0;
 }
