@@ -7,8 +7,8 @@
   the |x,y| or magnitude is its speed and the ratio is its direction
 *)
 type billiard = {
-  position: float*float;
+  mutable position: float*float;
   suit : int ;
-  velocity: float*float;
+  mutable velocity: float*float;
   mass : float ;
 }
