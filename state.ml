@@ -32,9 +32,8 @@ type state = {
 let radius = 1
 
 (* [collide b1 b2]Collides two balls and changes their velocities accordingly
-   requires : b1 and b2 are valid billiard records
-   returns  : the tuple of the 2 billards with speed changes *)
-let collide (b1 : billiard) (b2 : billiard) : (billiard * billiard)=
+   requires : b1 and b2 are valid billiard records *)
+let collide (b1 : billiard) (b2 : billiard) =
 (* distances to bewteen centers and collision *)
   let x1 = fst (b1.position) + radius ref in
   let x2 = fst (b2.position) + radius ref in
