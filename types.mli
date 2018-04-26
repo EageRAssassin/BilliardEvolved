@@ -1,6 +1,6 @@
 (*consider putting billiards, foul, state TYPE DEFINITION
   here. State.ml should contain functions and not type
-definitions *)
+  definitions *)
 
 type id = int
 
