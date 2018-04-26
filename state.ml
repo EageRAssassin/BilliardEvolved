@@ -35,16 +35,19 @@ let radius = 1
    requires : b1 and b2 are valid billiard records
    returns  : the tuple of the 2 billards with speed changes *)
 let collide (b1 : billiard) (b2 : billiard) : (billiard * billiard)=
+(* distances to bewteen centers and collision *)
   let x1 = fst (b1.position) + radius ref in
   let x2 = fst (b2.position) + radius ref in
   let y1 = snd (b1.position) + radius ref in
   let y2 = snd (b2.position) + radius ref in
+  (* real distances (collision overlap) *)
   let dxR = x2 - x1 in
   let dyR = y2 - y1 in
   (* gets the ACTUAL distance between the two balls *)
   let distance = Math.sqrt(DxR * DxR + DyR * DyR) in
 
   (* RadSum adds radii, this gives the ideal distance *)
+  (* imaginary distances (no overlap) *)
   let dx = 2 *. dxR /. distance in
   let dy = 2 *. dyR /. distance in
 
@@ -55,8 +58,8 @@ a slow big one we want it to be the small ball that will have its position adjus
   if b1.mass < b2.mass then
     x1 := ( !x1 - (dx - dxR));
     y1 := ( !x1 - (dy - dyR));
-    fst b1.position <- !x1 - radius;
-    snd b1.position <- !y1 - radius;
+
+   b1.position <- (!x1 - radius, !y1 - radius);
     else
     x2 := (!x2 + (dx - dxR));
     y2 := (!y2 + (dy - dyR));
@@ -64,6 +67,8 @@ a slow big one we want it to be the small ball that will have its position adjus
     snd b2.position <- !y2 - radius;
 
 (* Find the x and y distances from the centers of each ball to the collision point *)
+
+(* Distances to the collision point *)
     let dx1 = (1/2 ) * (!x2 - !x1) in
     let dx2 = (1/2 ) * (!x2 - !x1) in
 
@@ -71,6 +76,7 @@ a slow big one we want it to be the small ball that will have its position adjus
     let dy2 = (1/2 ) * (!y2 - !y1) in
 
   (* calculate the components of velocity of each ball headed towards the collision point and perpendicular to it *)
+(* normal and perpendicular velocities to collision *)
    let vs1 = straight_Velocity(fst b1.velocity, snd b1.velocity, dx1, dy1, radius);
    let vp1 = perpendicular_Velocity(fst b1.velocity, snd b1.velocity, dx1, dy1, radius);
 
@@ -78,6 +84,7 @@ a slow big one we want it to be the small ball that will have its position adjus
    let vp2 = perpendicular_Velocity(fst b2.velocity, snd b2.velocity, dx2, dy2, radius) in
 
   (* use the formulas in the method to find new straight velocities for each ball *)
+  (* for storing new straigth velocites during calculations *)
    let newVs1 = collision_Velocity(vs1, vs2, b1.mass, b2.mass) in
    let newVs2 = collision_Velocity(vs2, vs1, b2.mass, b1.mass) in
 
