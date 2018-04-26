@@ -58,8 +58,7 @@ a slow big one we want it to be the small ball that will have its position adjus
   if b1.mass < b2.mass then
     x1 := ( !x1 - (dx - dxR));
     y1 := ( !x1 - (dy - dyR));
-
-   b1.position <- (!x1 - radius, !y1 - radius);
+    b1.position <- (!x1 - radius, !y1 - radius);
     else
     x2 := (!x2 + (dx - dxR));
     y2 := (!y2 + (dy - dyR));
@@ -109,7 +108,6 @@ let y_Velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r
  (* [collision_Velocity v1 v2 m1 m2]returns velocity of a ball after collision *)
 let collision_Velocity v1 v2 m1 m2 =
   v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2 *. m2) /. (m1 +. m2)
-
 
 
 (* [change_state st] will change the attributes of fields in [st] and
