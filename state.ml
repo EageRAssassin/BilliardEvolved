@@ -98,6 +98,19 @@ a slow big one we want it to be the small ball that will have its position adjus
    let vyy_new = y_Velocity(newVs2, vp2, dx2, dy2, radius) in
    b2.velocity <- (vxx_new,vxy_new)
 
+(* [straight_Velocity vx vy dx dy r] returns velocity directed towards collision *)
+let straight_Velocity vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r
+(* [perpendicular_Velocity vx vy dx dy r] returns velocity perpendicular to collision *)
+let perpendicular_Velocity  vx vy dx dy r =  vy *. dx /. r -. vx *. dy /. r
+(* [x_Velocity vs vp dx dy r] returns x velocity from S and P *)
+let x_Velocity vs vp dx dy r =  vs *. dx /. r -. vp *. dy /. r
+(* [y_Velocity vs vp dx dy r] returns y velocity from S and P   *)
+let y_Velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r
+ (* [collision_Velocity v1 v2 m1 m2]returns velocity of a ball after collision *)
+let collision_Velocity v1 v2 m1 m2 =
+  v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2 *. m2) /. (m1 +. m2)
+
+
 
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
