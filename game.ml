@@ -1,6 +1,4 @@
 open Types
-open Command
-open Sprites
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -20,16 +18,16 @@ let initial_state = {
 (* mutable ref to store the current game state *)
 let state = ref (initial_state)
 
-let keydown event =
+(* let keydown event =
   let () = match event##keyCode with
 
-    (* | 87 -> player_command.w <- true; state := State.do' !state
+    | 87 -> player_command.w <- true; state := State.do' !state
     | 65 -> player_command.a <- true; state := State.do' !state
     | 83 -> player_command.s <- true; state := State.do' !state
     | 68 -> player_command.d <- true; state := State.do' !state
     | 74 -> player_command.j <- true; state := State.do' !state
     | 75 -> player_command.k <- true; state := State.do' !state
-    | 76 -> player_command.l <- true; state := State.do' !state *)
+    | 76 -> player_command.l <- true; state := State.do' !state
 
     | _ -> () (* other *)
   in Js._true
@@ -37,16 +35,16 @@ let keydown event =
 let keyup event =
   let () = match event##keyCode with
 
-    (* | 87 -> player_command.w <- false; state := State.do' !state
+    | 87 -> player_command.w <- false; state := State.do' !state
     | 65 -> player_command.a <- false; state := State.do' !state
     | 83 -> player_command.s <- false; state := State.do' !state
     | 68 -> player_command.d <- false; state := State.do' !state
     | 74 -> player_command.j <- false; state := State.do' !state
     | 75 -> player_command.k <- false; state := State.do' !state
-    | 76 -> player_command.l <- false; state := State.do' !state *)
+    | 76 -> player_command.l <- false; state := State.do' !state
 
     | _ -> () (* other *)
-  in Js._true
+  in Js._true *)
 
 (* the main game loop *)
 let game_loop context has_won =
