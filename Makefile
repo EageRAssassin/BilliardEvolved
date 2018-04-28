@@ -1,5 +1,5 @@
 build:
-	ocamlbuild -use-ocamlfind types.cmo state.cmo ai.cmo gui.cmo -r
+	ocamlbuild -use-ocamlfind types.cmo ai.cmo billiards.cmo -r
 
 clean:
 	ocamlbuild -clean
