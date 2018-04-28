@@ -1,6 +1,7 @@
-open billiard
-open player
-open foul
+(* open Billiards
+open Player
+open Foul *)
+open Types
 
 (*The type state contains the following fields:
   [on_board] : a billiard list of billiard balls that is on the board
@@ -15,7 +16,7 @@ open foul
 type state = {
   on_board : billiard list;
   player : player list;
-  is_pot : billard list;
+  is_pot : billiard list;
   foul : foul;
   is_playing : player;
   ball_moving : bool;
