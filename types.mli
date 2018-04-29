@@ -36,8 +36,6 @@ type image_dim =
    offset: int* int;
   }
 
-type score = int
-
 (*the billiard contains the following fields:
   [position] : tuple (x,y) is the position of the billiard
   [suit] : is the colour and number of the billiard according
