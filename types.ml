@@ -27,8 +27,8 @@ type billiard =
     suit: int;
     name: string;
     size: (int * int);
-    velocity: float*float;
-    position: float*float;
+    mutable velocity: float*float;
+    mutable position: float*float;
     score: int;
     legal_player: player option; (* the player who can first_hit it without penalty*)
     legal_pot: player option; (* the player who can pot it without penalty*)

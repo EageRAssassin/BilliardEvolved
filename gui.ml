@@ -4,10 +4,6 @@ open Main
    open Billiard  *)
 open Types
 
-module Html = Dom_html
-let js = Js.string
-let document = Html.document
-
 let surface_width = 600.
 let surface_height = 1200. (* within range of international
                               convention of playing surface *)
@@ -51,7 +47,6 @@ let render_pool_cue c1 c2 =
     c1 and c2 are user mouse coordinates *)
   Graphics.lineto c1 c2 (* for now, the cue is just a line *)
 
-let get_coord obj = obj.position
 
 let get = failwith ""
 
