@@ -1,4 +1,4 @@
-open Billiard
+open Types
 (*the type player has the following fields:
   [legal_pot]: a list of the billiard that can be legally pocketed by the
   player (e.g. stripes, solids, black )
@@ -7,10 +7,6 @@ open Billiard
   [cue]: the amount of power on the tip of the cue for this player
   [money]: the player's money
 *)
-type player = {
-  legal_pot: billiard list;
-  is_playing : bool;
-  score : int;
-  cue : int;
-  money: int;
-}
+
+val player1 : player
+val player2 : player

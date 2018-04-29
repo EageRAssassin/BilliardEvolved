@@ -20,8 +20,6 @@ type image_dim =
    offset: int* int;
   }
 
-type score = int
-
 type billiard =
   {
     suit: int;
