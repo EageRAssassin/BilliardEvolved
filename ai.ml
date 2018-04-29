@@ -14,12 +14,12 @@ let distance_between (position1 : (float*float)) (position2 : (float*float)) : f
    billiard [position] to pocket *)
 let min_distance_to_pocket (position : (float*float)) : float =
   (*TODO location of pockets? *)
-  let distance1 = distance_between position (0.0,0.0) in
-  let distance2 = distance_between position (0.0,500.0) in
-  let distance3 = distance_between position (0.0,1000.0) in
-  let distance4 = distance_between position (500.0,0.0) in
-  let distance5 = distance_between position (500.0,500.0) in
-  let distance6 = distance_between position (500.0,1000.0) in
+  let distance1 = distance_between position (0.,0.) in
+  let distance2 = distance_between position (0.,620.) in
+  let distance3 = distance_between position (620.,0.) in
+  let distance4 = distance_between position (620.,620.) in
+  let distance5 = distance_between position (1240.,0.) in
+  let distance6 = distance_between position (1240.,620.) in
   let find_min (acc : float) (b : float) : float = if acc > b then acc else b in
   List.fold_left find_min 0.0 [distance1;distance2;distance3;distance4;distance5;distance6]
 
