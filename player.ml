@@ -1,4 +1,4 @@
-open Billiard
+open Types
 (*the type player has the following fields:
   [legal_pot]: a list of the billiard that can be legally pocketed by the
   player (e.g. stripes, solids, black )
@@ -9,7 +9,7 @@ open Billiard
 *)
 
 let player1 = {
-  legal_pot = [];
+  (* legal_pot = []; *)
   is_playing = true;
   score = 0;
   cue = 0;
@@ -17,7 +17,7 @@ let player1 = {
 }
 
 let player2 = {
-  legal_pot = [];
+  (* legal_pot = []; *)
   is_playing = false;
   score = 0;
   cue = 0;
