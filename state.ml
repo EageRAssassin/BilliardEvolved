@@ -115,20 +115,22 @@ let check_wall_touching ball =
   (* to get the bottom and right y and x coords. *)
   let x_right = fst ball.position + 2*.radius in
 
-    if (x_left < )
+    if (x_left < 0 )
     then
-      ball.position <- (... ,snd ball.position)
+      ball.position <- (0,snd ball.position);
+      ball.velocity <- ((-)fst ball.velocity, snd ball.velocity)
+    if  (y_top < 0)
+    then
+     ball.position <- ( fst ball.position, 0);
+     ball.velocity <- (fst ball.velocity, (-)snd ball.velocity)
+    if (x_right > 1241)
+    then
+      ball.position <- (  1241- 2 , snd ball.position);
       ball.velocity <- ((-fst ball.velocity), snd ball.velocity)
-    if  (y_top < )
+    if (y_bottom > 621)
     then
-     ball.position <- ( fst ball.position, )
-     ball.velocity <- ((-fst ball.velocity), snd ball.velocity)
-    if (x_right > )
-    then
-      ball.position <- (  - 2 , snd ball.position)
-      ball.velocity <- ((-fst ball.velocity), snd ball.velocity)
-    if (y_bottom > )
-    then
+     ball.position <- (  fst ball.position , 621 - 2 );
+     ball.velocity <- (fst ball.velocity, (-)snd ball.velocity)
 
 
 
