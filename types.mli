@@ -12,7 +12,7 @@ type id = int
   No_hit_side: a billiard is hit but no pocket made and side is contacted
   No_hit_ball: the cue ball failed to touch any other billiard
 *)
-type foul = Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball
+type foul = Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_Foul
 
 (*the type player has the following fields:
   [legal_pot]: a list of the billiard that can be legally pocketed by the
