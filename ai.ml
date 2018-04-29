@@ -33,12 +33,6 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
   | x :: xs -> true && billiard_between position1 position2 xs
   | [] -> true
 
-(* [angle_between position1 position2] will return the hitting coordinate from
-   position 1 to position 2
-*)
-let rec billiard_between (position1 : (float*float)) (position2 : (float*float)) : (float * float) =
-  (0.0, 0.0)
-
 (* [find_distances_from white_position billiard_list] will return a list with
    1. The distances of all the balls to the nearest pocket,
    if there is no ball between the ball and the white ball
@@ -47,8 +41,8 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
 let rec find_pocket_distances_from (white_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
   match billiard_list with
   | x :: xs -> if billiard_between white_position x.position all_billiards
-    then -1.0 :: find_distances_from white_position xs all_billiards
-    else (min_distance_to_pocket x.position) :: find_distances_from white_position xs all_billiards
+    then -1.0 :: find_pocket_distances_from white_position xs all_billiards
+    else (min_distance_to_pocket x.position) :: find_pocket_distances_from white_position xs all_billiards
   | [] -> []
 
 (* [find_billiard_position st suit] will return the coordinate of the billiard
@@ -58,7 +52,7 @@ let rec find_pocket_distances_from (white_position : (float*float)) (billiard_li
 let rec find_billiard_position (billiard_list : billiard list) (suit : int) : (float * float) =
   match billiard_list with
   | x :: xs -> if x.suit = suit then x.position
-    else find_billiard_position xs
+    else find_billiard_position xs suit
   | [] -> (-1.0, -1.0)
 
 let rec findnth_billiard (distance_list : float list) (distance : float) (index : int): int =

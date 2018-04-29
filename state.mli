@@ -1,6 +1,3 @@
-(* open Billiards
-open Player
-open Foul *)
 open Types
 
 (*The type state contains the following fields:
