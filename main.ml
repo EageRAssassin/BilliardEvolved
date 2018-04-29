@@ -30,6 +30,7 @@ let main () =
   audio##play (); *)
   append_text h1 "Billiards Evolved";
   gui##style##cssText <- js "font-family:Triforce font-size:10px";
+
   Dom.appendChild gui h1;
   Dom.appendChild gui p;
   let canvas = Html.createCanvas document in

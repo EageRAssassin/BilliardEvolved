@@ -1,4 +1,5 @@
 open Types
+open Billiards
 
 (* canvas width and height *)
 let canvas_width = 1041.
@@ -11,22 +12,22 @@ let document = Html.document
 
 let get_ball_img suit billiard = let img = "billiards.png" in
     match suit with
-    | 0 -> {billiard with dim = {img; size = (25.,25.); offset = (0.,75.);}}
-    | 1 -> {billiard with dim = {img; size = (25.,25.); offset = (50.,75.);}}
-    | 2 -> {billiard with dim = {img; size = (25.,25.); offset = (100.,75.);}}
-    | 3 -> {billiard with dim = {img; size = (25.,25.); offset = (150.,75.);}}
-    | 4 -> {billiard with dim = {img; size = (25.,25.); offset = (200.,75.);}}
-    | 5 -> {billiard with dim = {img; size = (25.,25.); offset = (250.,75.);}}
-    | 6 -> {billiard with dim = {img; size = (25.,25.); offset = (300.,75.);}}
-    | 7 -> {billiard with dim = {img; size = (25.,25.); offset = (350.,75.);}}
-    | 8 -> {billiard with dim = {img; size = (25.,25.); offset = (400.,75.);}}
-    | 9 -> {billiard with dim = {img; size = (25.,25.); offset = (450.,75.);}}
-    | 10 -> {billiard with dim = {img; size = (25.,25.); offset = (500.,75.);}}
-    | 11 -> {billiard with dim = {img; size = (25.,25.); offset = (550.,75.);}}
-    | 12 -> {billiard with dim = {img; size = (25.,25.); offset = (600.,75.);}}
-    | 13 -> {billiard with dim = {img; size = (25.,25.); offset = (650.,75.);}}
-    | 14 -> {billiard with dim = {img; size = (25.,25.); offset = (700.,75.);}}
-    | 15 -> {billiard with dim = {img; size = (25.,25.); offset = (750.,75.);}}
+    | 0 -> {billiard with dim = {img; size = (25.,25.); offset = (0.,0.);}}
+    | 1 -> {billiard with dim = {img; size = (25.,25.); offset = (50.,0.);}}
+    | 2 -> {billiard with dim = {img; size = (25.,25.); offset = (100.,0.);}}
+    | 3 -> {billiard with dim = {img; size = (25.,25.); offset = (150.,0.);}}
+    | 4 -> {billiard with dim = {img; size = (25.,25.); offset = (200.,0.);}}
+    | 5 -> {billiard with dim = {img; size = (25.,25.); offset = (250.,0.);}}
+    | 6 -> {billiard with dim = {img; size = (25.,25.); offset = (300.,0.);}}
+    | 7 -> {billiard with dim = {img; size = (25.,25.); offset = (350.,0.);}}
+    | 8 -> {billiard with dim = {img; size = (25.,25.); offset = (400.,0.);}}
+    | 9 -> {billiard with dim = {img; size = (25.,25.); offset = (450.,0.);}}
+    | 10 -> {billiard with dim = {img; size = (25.,25.); offset = (500.,0.);}}
+    | 11 -> {billiard with dim = {img; size = (25.,25.); offset = (550.,0.);}}
+    | 12 -> {billiard with dim = {img; size = (25.,25.); offset = (600.,0.);}}
+    | 13 -> {billiard with dim = {img; size = (25.,25.); offset = (650.,0.);}}
+    | 14 -> {billiard with dim = {img; size = (25.,25.); offset = (700.,0.);}}
+    | 15 -> {billiard with dim = {img; size = (25.,25.); offset = (750.,0.);}}
     | _ -> failwith ""
 
 (*
@@ -40,9 +41,6 @@ let render_pool_cue c1 c2 = failwith
 
 let get = failwith "" *)
 
-(* [sprites_in_room sprites_list room_id] returns a list of all sprites in
-   that room given the room_id. *)
-
 (***************************** DRAWING *****************************)
 
 (* [draw_image_on_context context img_src x y] draws the given [img_src]
@@ -52,19 +50,34 @@ let draw_image_on_context context img_src coord =
   img##src <- img_src;
   context##drawImage ((img), (fst coord), (snd coord))
 
-(* [fill_rect context (x,y) (w,h)] fills the given [x,y] with width [w]
-   and height [h] with [color]. *)
-let fill_rect context color (x,y) (w, h) =
-  context##fillStyle <- (js color);
-  context##fillRect (x, y, w, h)
+let draw_help context (b: billiard) =
+  let img = Html.createImg document in
+  let (sx, sy) = b.dim.offset in
+  let (sw, sh) = b.dim.size in
+  let (x, y) = b.position in
+  img##src <- js b.dim.img;
+  context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
 
-(* [draw_billiard context billiard_on_board] draws all billiards on board*)
+(* [draw_billiard context b] draws the billiard on the given context. *)
+let draw_billiard (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
+  let suit = b.suit in
+  let choose_b = get_ball_img suit b in
+  draw_help context choose_b
 
+let draw_billiards (context: Html.canvasRenderingContext2D Js.t) b_list =
+  List.map (fun b -> draw_billiard context b) b_list |> ignore
 
 let draw_table (context: Html.canvasRenderingContext2D Js.t)
 = draw_image_on_context context
   (js "pool_table_sm.png")
-        (0.,0.)
+  (0.,0.)
+
+  (*single ball test *)
+let draw_b (context: Html.canvasRenderingContext2D Js.t)
+  = draw_image_on_context context
+    (js "8.png")
+    (500.,250.);
+    draw_billiard context cue_ball
 
 (* [draw_room context room objects_list] draws the background
    and layout of the room. *)
@@ -82,4 +95,7 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
-  draw_table context
+  draw_table context;
+  draw_billiards context [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
+                          six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
+                          thirteen_ball; fourteen_ball; fifteen_ball]
