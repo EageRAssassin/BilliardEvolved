@@ -1,4 +1,4 @@
-open Types
+open Types 
 
 let cue_ball = {
   suit = 0;

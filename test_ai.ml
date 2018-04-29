@@ -58,7 +58,8 @@ let state_test0 = {
   on_board = [cue_ball; one_ball];
   player = [player1; player2];
   is_pot = [];
-  foul = No_Foul;
+  foul = No_foul;
+  current_table_id = "default";
   is_playing = player2;
   ball_moving = false;
 }
