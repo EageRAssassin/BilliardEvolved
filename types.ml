@@ -34,6 +34,7 @@ type billiard =
     legal_pot: player option; (* the player who can pot it without penalty*)
     dim: image_dim;
     image: string;
+    mass: float;
   }
 
 type state = {
