@@ -16,6 +16,7 @@ let cue_ball = {
     offset = (0, 75); (*chooses which on the image provided to take from*)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let one_ball = {
@@ -34,6 +35,7 @@ let one_ball = {
     offset = (50, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let two_ball = {
@@ -52,6 +54,7 @@ let two_ball = {
     offset = (100, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let three_ball = {
@@ -70,6 +73,7 @@ let three_ball = {
     offset = (150, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let four_ball = {
@@ -88,6 +92,7 @@ let four_ball = {
     offset = (200, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let five_ball = {
@@ -106,6 +111,7 @@ let five_ball = {
     offset = (250, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let six_ball = {
@@ -124,6 +130,7 @@ let six_ball = {
     offset = (300, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let seven_ball = {
@@ -142,6 +149,7 @@ let seven_ball = {
     offset = (350, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let eight_ball = {
@@ -160,6 +168,7 @@ let eight_ball = {
     offset = (400, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let nine_ball = {
@@ -178,6 +187,7 @@ let nine_ball = {
     offset = (450, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let ten_ball = {
@@ -196,6 +206,7 @@ let ten_ball = {
     offset = (500, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let eleven_ball = {
@@ -214,6 +225,7 @@ let eleven_ball = {
     offset = (550, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let twelve_ball = {
@@ -232,6 +244,7 @@ let twelve_ball = {
     offset = (600, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let thirteen_ball = {
@@ -250,6 +263,7 @@ let thirteen_ball = {
     offset = (650, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let fourteen_ball = {
@@ -268,6 +282,7 @@ let fourteen_ball = {
     offset = (700, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 let fifteen_ball = {
@@ -286,6 +301,7 @@ let fifteen_ball = {
     offset = (750, 75); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
+  mass = 10.;
 }
 
 
