@@ -139,10 +139,11 @@ let check_wall_touching ball =
 (* [move_ball_position time ball] moves the [ball] for [time] second, change the position
    requires: [ball] is a valid billiard,
              [time] is a valid int*)
-let move_ball_position time ball=
-  let tempx = (fst ball.position) +. (fst ball.velocity *. time) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. time) in
-  ball.position <- (tempx,tempy)
+let move_ball_position  ball=
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.30.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.30.)) in
+  ball.position <- (tempx,tempy);
+  ball
 
 (* [move_ball_velocity time ball] moves the [ball] for [time] second, change the velocity
    requires: [ball] is a valid billiard*)
@@ -225,7 +226,8 @@ let foul_handler (st : state) : state =
    [st] is a game state
 *)
 let change_state st =
-  let new_on_board = change_billiards_p_v st.on_board in
+  let position_on_board = List.map move_ball_position st.on_board in
+  let new_on_board = change_billiards_p_v position_on_board in
   let billiards_to_be_removed = List.filter remove_on_board st.on_board in
   let check_foul = check_foul billiards_to_be_removed st.is_playing in
   if not check_foul then
