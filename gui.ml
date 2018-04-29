@@ -4,9 +4,30 @@ open Main
    open Billiard  *)
 open Types
 
-let surface_width = 600.
-let surface_height = 1200. (* within range of international
+(*pool table (with side panels)*)
+
+let table_width = 1391.
+let table_height = 771.
+
+(*playing area*)
+
+let surface_width = 1241.
+let surface_height = 621. (* within range of international
                               convention of playing surface *)
+
+(*other dimensions
+
+  billiard ball: circle with diametre = 39
+  side holes: d = 60
+  corner holes d = 80
+
+  you dont have to worry about htese yet
+  pool edge: 50
+  pool bumpers: 25
+
+*)
+
+
 
 let draw_init = failwith ""
   (*get the table.png and draw this at the start.
