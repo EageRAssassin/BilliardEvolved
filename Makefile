@@ -10,5 +10,5 @@ clean:
 
 test:
 	ocamlbuild -use-ocamlfind types.cmo state.cmo command.cmo gui.cmo -r
-	ocamlbuild -use-ocamlfind -pkg oUnit test_state.cmo test_command.cmo -r
-	ocamlbuild -use-ocamlfind test_state.byte && ./test_state.byte
+	ocamlbuild -use-ocamlfind -pkg oUnit test_ai.cmo -r
+	ocamlbuild -use-ocamlfind test_ai.byte && ./test_ai.byte
