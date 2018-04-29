@@ -208,7 +208,10 @@ let foul_handler (st : state) : state =
    requires:
    [st] is a game state
 *)
-let change_state st =
+let change_state (st: state) : state =
+  (* if player still aiming, then return current state *)
+  if st.player_aiming then st else
+    (* else make the balls move *)
   let position_on_board = List.map move_ball_position st.on_board in
   let new_on_board = change_billiards_p_v position_on_board in
   let billiards_to_be_removed = List.filter remove_on_board st.on_board in
@@ -222,7 +225,27 @@ let change_state st =
   else
     foul_handler st
 
+(* [change_force st] will change the attributes of hit_force in [st] according
+   to the attribute [direction]
+   direction: 1 -> up; 2 -> left; 3 -> down; 4 -> right;
+   requires:
+   [st] is a game state
+   [direciton] is a integer value from 1 and 4
+*)
+let change_force (st : state) (direction : int) : state =
+  let original_hit_force = st.hit_force in
+  let result_h_f =
+    if direction = 1 then (fst original_hit_force , (snd original_hit_force) +. 1.)
+    else if direction = 2 then ((fst original_hit_force) -. 1. , snd original_hit_force)
+    else if direction = 3 then (fst original_hit_force , (snd original_hit_force) -. 1.)
+    else if direction = 4 then ((fst original_hit_force) +. 1. , snd original_hit_force)
+    else failwith "direction attribute error" in
+  {st with hit_force = result_h_f;}
 
+(* [change_state_player_aiming st] will change the attribute of player_aiming
+   state [st] to opposite, making the game for user to aim or see balls moving *)
+let change_state_player_aiming (st: state) : state =
+  {st with player_aiming = not (st.player_aiming);}
 
 (* [next_turn st] will trigger the next turn where the user is given
    control after all balls cease movement

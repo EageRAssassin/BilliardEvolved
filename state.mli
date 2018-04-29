@@ -14,7 +14,19 @@ open Types
     requires:
     [st] is a game state
   *)
- val change_state : state -> state
+val change_state : state -> state
+
+(* [change_force st] will change the attributes of hit_force in [st] according
+   to the attribute [direction]
+   direction: 1 -> up; 2 -> left; 3 -> down; 4 -> right;
+   requires:
+   [st] is a game state
+   [direciton] is a integer value from 1 and 4
+*)
+val change_force : state -> int -> state
+
+
+val change_state_player_aiming : state -> state 
 
  (* [next_turn st] will trigger the next turn where the user is given
     control after all balls cease movement
@@ -22,4 +34,4 @@ open Types
     [st] is current game state
   *
   *)
- val next_turn : state -> state
+val next_turn : state -> state

@@ -5,5 +5,5 @@ let player_command = {
   a = false;
   s = false;
   d = false;
-
+  j = false;
 }
