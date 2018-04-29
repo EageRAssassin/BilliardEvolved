@@ -106,6 +106,33 @@ let y_Velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r
 let collision_Velocity v1 v2 m1 m2 =
   v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2 *. m2) /. (m1 +. m2)
 
+let check_wall_touching ball =
+  let radius = 1 in
+  let x_left = fst ball.position in
+  let y_top = snd ball.position in
+  (* Py measures the top left coord of ball, so we add two radii *)
+  let y_bottom = snd ball.position + 2*.radius in
+  (* to get the bottom and right y and x coords. *)
+  let x_right = fst ball.position + 2*.radius in
+
+    if (x_left < 0 )
+    then
+      ball.position <- (0,snd ball.position);
+      ball.velocity <- ((-)fst ball.velocity, snd ball.velocity)
+    if  (y_top < 0)
+    then
+     ball.position <- ( fst ball.position, 0);
+     ball.velocity <- (fst ball.velocity, (-)snd ball.velocity)
+    if (x_right > 1241)
+    then
+      ball.position <- (  1241- 2 , snd ball.position);
+      ball.velocity <- ((-fst ball.velocity), snd ball.velocity)
+    if (y_bottom > 621)
+    then
+     ball.position <- (  fst ball.position , 621 - 2 );
+     ball.velocity <- (fst ball.velocity, (-)snd ball.velocity)
+
+
 
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
