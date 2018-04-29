@@ -26,4 +26,4 @@ val thirteen_ball: billiard
 val fourteen_ball: billiard
 val fifteen_ball: billiard
 
-    (*billiards.ml billiard.mli *)
+(*billiards.ml billiard.mli *)

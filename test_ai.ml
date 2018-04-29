@@ -5,17 +5,17 @@ open Ai
 let cue_ball = {
   suit = 0;
   name = "Cue Ball" ;
-  size = (25,25);
+  size = (25.,25.);
   velocity = (0.,0.);
   position = (500.,500.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = -100; (*should never be potted*)
-  legal_player = None;
-  legal_pot = None;
+  (* legal_player = None;
+     legal_pot = None; *)
   dim = {
     img = "billiards.png";
-    size = (25, 25); (*size of billiard ball on THE IMAGE*)
-    offset = (0, 75); (*chooses which on the image provided to take from*)
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
   };
   image = "billiards.png";
   mass = 10.;
@@ -24,17 +24,17 @@ let cue_ball = {
 let one_ball = {
   suit = 1;
   name = "One Ball" ;
-  size = (25,25);
+  size = (25.,25.);
   velocity = (0.,0.);
-  position = (500.,600.); (*see arrangement.png for init. for now all are
+  position = (500.,500.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
-  legal_player = None; (* whoever pots a solid first *)
-  legal_pot = None;
+  (* legal_player = None; (* whoever pots a solid first *)
+     legal_pot = None; *)
   dim = {
     img = "billiards.png";
-    size = (25, 25); (*size of billiard ball on THE IMAGE*)
-    offset = (50, 75); (*each billiard separated by exactly 25 pixels *)
+    size = (25.,25.); (*size of billiard ball on THE IMAGE*)
+    offset = (50., 75.); (*each billiard separated by exactly 25 pixels *)
   };
   image = "billiards.png";
   mass = 10.;

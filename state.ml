@@ -1,23 +1,6 @@
 open Types
+open Command
 
-(*The type state contains the following fields:
-  [on_board] : a billiard list of billiard balls that is on the board
-  [player] : the player list of players in the game
-  [is_pot] : the billiard list of billard that has been pot in the pocket
-             (i.e. not on the playing table)
-  [foul] : type of foul that the current player triggered
-  [is_playing] : the player that is playing the game in the state
-  [ball_moving] : true if one of the ball is moving, false if all not moving
-                  used as a cue to change state (see below)
-*)
-type state = {
-  on_board : billiard list;
-  player : player list;
-  is_pot : billiard list;
-  foul : foul;
-  is_playing : player;
-  ball_moving : bool;
-}
 
 (* type billiards: see billiard.mli *)
 

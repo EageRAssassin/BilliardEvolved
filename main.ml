@@ -22,20 +22,19 @@ let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 (* [main ()] is the main method of the entire game. *)
 let main () =
   let gui = get_element_by_id "gui" in
-  (* gui##style##cssText <- js "font-family:Triforce"; *)
+  gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
   let p = Html.createP document in
-  (* let audio = Html.createAudio document in *)
-  (* audio##src <- js "zolda.mp3"; *)
-  (* audio##play (); *)
-  append_text h1 "The Legend of Zolda";
-  (* gui##style##cssText <- js "font-family:Triforce font-size:10px"; *)
-  append_text p "You are Lonk. Save Zolda!";
+  (* let audio = Html.createAudio document in
+  audio##src <- js "zolda.mp3";
+  audio##play (); *)
+  append_text h1 "Billiards Evolved";
+  gui##style##cssText <- js "font-family:Triforce font-size:10px";
   Dom.appendChild gui h1;
   Dom.appendChild gui p;
   let canvas = Html.createCanvas document in
-  (* canvas##width <- int_of_float Gui.canvas_width;
-  canvas##height <- int_of_float Gui.canvas_height; *)
+  canvas##width <- int_of_float Gui.canvas_width;
+  canvas##height <- int_of_float Gui.canvas_height;
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
   (* add event listeners *)

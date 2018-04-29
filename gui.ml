@@ -1,40 +1,15 @@
-(* open State
-open Player
-open Main
-   open Billiard  *)
 open Types
 
-(*pool table (with side panels)*)
+(* canvas width and height *)
+let canvas_width = 1041.
+let canvas_height = 581.
 
-let table_width = 1391.
-let table_height = 771.
+(* js_of_ocaml helper declarations *)
+module Html = Dom_html
+let js = Js.string
+let document = Html.document
 
-(*playing area*)
-
-let surface_width = 1241.
-let surface_height = 621. (* within range of international
-                              convention of playing surface *)
-
-(*other dimensions
-
-  billiard ball: circle with diametre = 39
-  side holes: d = 60
-  corner holes d = 80
-
-  you dont have to worry about htese yet
-  pool edge: 50
-  pool bumpers: 25
-
-*)
-
-
-
-let draw_init = failwith ""
-  (*get the table.png and draw this at the start.
-    then assign all billiards to their init position within the triangular formation
-    do this once; only have the billairds move; the table stays constant *)
-
-let get_ball_img suit bill = let img = "billiards.png" in (
+let get_ball_img suit billiard = let img = "billiards.png" in
     match suit with
     | 0 -> {billiard with dim = {img; size = (25.,25.); offset = (0.,75.);}}
     | 1 -> {billiard with dim = {img; size = (25.,25.); offset = (50.,75.);}}
@@ -53,71 +28,58 @@ let get_ball_img suit bill = let img = "billiards.png" in (
     | 14 -> {billiard with dim = {img; size = (25.,25.); offset = (700.,75.);}}
     | 15 -> {billiard with dim = {img; size = (25.,25.); offset = (750.,75.);}}
     | _ -> failwith ""
-  )
 
+(*
 (*if we have time we can implement multiple cues skins
   (i.e. 1 cue for each player)*)
 let get_cue_img skin cue = failwith ""
 (* let img = "cues.png" in (
   ) *)
 
-let render_pool_cue c1 c2 =
-  (*since the pool cue placement is determined by mouse clicks, it would
-    make sense to use a function to draw the cue on the spot according to
-    user input mouse input
-    c1 and c2 are user mouse coordinates *)
-  Graphics.lineto c1 c2 (* for now, the cue is just a line *)
+let render_pool_cue c1 c2 = failwith
+
+let get = failwith "" *)
+
+(* [sprites_in_room sprites_list room_id] returns a list of all sprites in
+   that room given the room_id. *)
+
+(***************************** DRAWING *****************************)
+
+(* [draw_image_on_context context img_src x y] draws the given [img_src]
+   string at the x,y [coord] on the canvas' [context]. *)
+let draw_image_on_context context img_src coord =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage ((img), (fst coord), (snd coord))
+
+(* [fill_rect context (x,y) (w,h)] fills the given [x,y] with width [w]
+   and height [h] with [color]. *)
+let fill_rect context color (x,y) (w, h) =
+  context##fillStyle <- (js color);
+  context##fillRect (x, y, w, h)
+
+(* [draw_billiard context billiard_on_board] draws all billiards on board*)
 
 
-let get = failwith ""
+let draw_table (context: Html.canvasRenderingContext2D Js.t)
+= draw_image_on_context context
+  (js "pool_table_sm.png")
+        (0.,0.)
 
-(* mouse and keyboard controls as seen in graphics module of OCaml *)
+(* [draw_room context room objects_list] draws the background
+   and layout of the room. *)
+let draw_room (context: Html.canvasRenderingContext2D Js.t) room =
+  context##fillStyle <- js "black";
+  context##fillRect (0., 0., canvas_width, canvas_height);
+  draw_table context
 
-(*type status = {
-  mouse_x : int;	(*
-  X coordinate of the mouse
+(***************************** ANIMATING *****************************)
 
- *)
-  mouse_y : int;	(*
-  Y coordinate of the mouse
+(* [clear canvas] clears the canvas of all drawing. *)
+let clear (context: Html.canvasRenderingContext2D Js.t) =
+  context##clearRect (0., 0., canvas_width, canvas_height)
 
- *)
-  button : bool;	(*
-  true if a mouse button is pressed
 
- *)
-  keypressed : bool;	(*
-  true if a key has been pressed
-
- *)
-  key : char;	(*
-  the character for the key pressed
-
- *)
-  }
-  To report events.
-
-  type event =
-  |	Button_down	(*
-  A mouse button is pressed
-
- *)
-  |	Button_up	(*
-  A mouse button is released
-
- *)
-  |	Key_pressed	(*
-  A key is pressed
-
- *)
-  |	Mouse_motion	(*
-  The mouse is moved
-
- *)
-  |	Poll	(*
-  Don't wait; return immediately
-
- *)
-  To specify events to wait for.
-
-*)
+let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
+  clear context;
+  draw_table context
