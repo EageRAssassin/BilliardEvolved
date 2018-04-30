@@ -123,6 +123,7 @@ let check_wall_touching ball =
    requires: [ball] is a valid billiard,
              [time] is a valid int*)
 let move_ball_position  ball=
+  (*TODO: add coolide functions *)
   let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.30.)) in
   let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.30.)) in
   ball.position <- (tempx,tempy);
@@ -131,6 +132,7 @@ let move_ball_position  ball=
 (* [move_ball_velocity time ball] moves the [ball] for [time] second, change the velocity
    requires: [ball] is a valid billiard*)
 let move_ball_velocity ball =
+  (*TODO: add coolide functions *)
   let tempx = ref ( (fst ball.velocity) *. 0.9 )  in
   let tempy = ref ( (snd ball.velocity) *. 0.9 )  in
   if !tempx < 1. then tempx := 0.;
@@ -192,8 +194,10 @@ let rec check_in_pot (billiards : billiard list) : billiard list =
 
 (* [change_billiards_p_v billiards] update the billiard *)
 let change_billiards_p_v (billiards : billiard list) : billiard list =
+  (*TODO: use the for to minick things in java  *)
   let temp = List.filter check_ball_moving billiards in
   List.map move_ball_velocity temp
+  (* List.map move_ball_position temp *)
 
 (* [check_foul billiards p] will decide if the user [player] have commited a foul *)
 let check_foul (billiards : billiard list) (p : player) : bool =
