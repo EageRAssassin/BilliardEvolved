@@ -71,20 +71,13 @@ let draw_table (context: Html.canvasRenderingContext2D Js.t)
 = draw_image_on_context context
   (js "pool_table_sm.png")
   (0.,0.)
-
+(*
   (*single ball test *)
 let draw_b (context: Html.canvasRenderingContext2D Js.t)
   = draw_image_on_context context
     (js "8.png")
     (500.,250.);
-    draw_billiard context cue_ball
-
-(* [draw_room context room objects_list] draws the background
-   and layout of the room. *)
-let draw_room (context: Html.canvasRenderingContext2D Js.t) room =
-  context##fillStyle <- js "black";
-  context##fillRect (0., 0., canvas_width, canvas_height);
-  draw_table context
+    draw_billiard context cue_ball *)
 
 (***************************** ANIMATING *****************************)
 
