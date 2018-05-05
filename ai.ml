@@ -20,18 +20,33 @@ let min_distance_to_pocket (position : (float*float)) : float =
   let distance4 = distance_between position (620.,620.) in
   let distance5 = distance_between position (1240.,0.) in
   let distance6 = distance_between position (1240.,620.) in
-  let find_min (acc : float) (b : float) : float = if acc > b then acc else b in
-  List.fold_left find_min 0.0 [distance1;distance2;distance3;distance4;distance5;distance6]
+  let find_min (acc : float) (b : float) : float = if acc > b then b else acc in
+  List.fold_left find_min 1387. [distance1;distance2;distance3;distance4;distance5;distance6]
 
 (* [billiard_between position1 position2] will return true if there are
    billiards between two balls of position1 and position2
    requires: billiards is a list with valid billiards
 *)
 let rec billiard_between (position1 : (float*float)) (position2 : (float*float)) (billiards : billiard list) : bool =
-  match billiards with
-    (*TODO how to detect billiard in the way? *)
-  | x :: xs -> true && billiard_between position1 position2 xs
-  | [] -> false
+  (* y = mx + b *)
+  let x1 = fst position1 in
+  let y1 = snd position1 in
+  let x2 = fst position2 in
+  let y2 = snd position2 in
+  let m = (y2 -. y1) /. (x2 -. x1) in
+  let b = y1 -. m *. x1 in
+    let rec billiard_between_helper function_m function_b (billiard_list : billiard list) =
+      match billiard_list with
+      | x :: xs ->
+        let b_x = fst x.position in
+        let b_y = snd x.position in
+        let distance_to_line = abs_float (m *. b_x +. (-1.0) *. b_y +. b) /. sqrt(m *. m +. 1.) in
+        (* TODO billiard's radius to be 30? *)
+        (distance_to_line < 30. && b_x > (min x1 x2) && b_x < (max x1 x2)
+         && b_y > (min y1 y2) && b_y < (max y1 y2))
+        || billiard_between_helper function_m function_b xs
+      | [] -> false in
+  billiard_between_helper m b billiards
 
 (* [find_distances_from white_position billiard_list] will return a list with
    1. The distances of all the balls to the nearest pocket,
@@ -67,15 +82,16 @@ let rec findnth_billiard (distance_list : float list) (distance : float) (index 
    It returns -1 if the strategy is impossible
    returns: the suit of the ball if the strategy is possible, -1 if impossible
    requires: [st] is a valid state *)
-        (*TODO white ball in distance list ???*)
 let search1_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
   let billiards_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
-  let distance_list : float list = find_pocket_distances_from white_position billiards_on_board billiards_on_board in
-  (* check if any ball is hittable in distance list *)
-  let nearest = List.fold_left (fun acc e -> if e > 0.0 && e < acc then e else acc) 2000.0 distance_list in
-  if nearest > 0.0 then findnth_billiard distance_list nearest 0
-  else -1
+  if List.length billiards_on_board > 0 then
+    let distance_list : float list = find_pocket_distances_from white_position billiards_on_board billiards_on_board in
+    (* check if any ball is hittable in distance list *)
+    let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 2000. distance_list in
+    if nearest < 2000. then findnth_billiard distance_list nearest 0
+    else -1
+  else failwith "No billiards on board"
 
 (* [search2_possible st] will evaluate the whether the strategy in search2
    is possible, and return the suit of the ball if the strategy is possible.

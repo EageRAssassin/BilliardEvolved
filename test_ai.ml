@@ -80,6 +80,8 @@ let ball_300_10 = {
 
 let billiard_between_list1 = [ball_15_15]
 let billiard_between_list2 = [ball_300_10]
+let billiard_between_list3 = [ball_150_150]
+let billiard_between_list4 = [ball_15_15;ball_300_10;ball_150_150]
 
 let player1 = {
   is_playing = false;
@@ -141,6 +143,8 @@ let tests =
     (* "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2)); *)
     "test_billiard_between0" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list1));
     "test_billiard_between1" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list2));
+    "test_billiard_between2" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list3));
+    "test_billiard_between3" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list4));
 
   ]
 
