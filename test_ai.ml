@@ -133,18 +133,31 @@ let state_test2 = {
   player_aiming = false;
 }
 
+let state_test3 = {
+  on_board = [cue_ball; ball_150_150; ball_15_15];
+  player = [player1; player2];
+  is_pot = [];
+  foul = No_foul;
+  current_table_id = "default";
+  is_playing = player2;
+  ball_moving = false;
+  hit_force = (0.0, 0.0);
+  player_aiming = false;
+}
 
 let tests =
   [
-    (* Only 2 balls present *)
-    (* "test0" >:: (fun _ -> assert_equal (0., 0.) (ai_evaluate_next_move state_test0)); *)
-    "test0" >:: (fun _ -> assert_equal 1 (try search1_possible state_test_no_billiard with _ -> 1));
-    "test1" >:: (fun _ -> assert_equal 0 (search1_possible state_test1));
-    (* "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2)); *)
+
     "test_billiard_between0" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list1));
     "test_billiard_between1" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list2));
     "test_billiard_between2" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list3));
     "test_billiard_between3" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list4));
+    (* Only 2 balls present *)
+    (* "test0" >:: (fun _ -> assert_equal (0., 0.) (ai_evaluate_next_move state_test0)); *)
+    "test0" >:: (fun _ -> assert_equal 1 (try search1_possible state_test_no_billiard with _ -> 1));
+    "test1" >:: (fun _ -> assert_equal 0 (search1_possible state_test1));
+    "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2));
+    (* "test3" >:: (fun _ -> assert_equal 1 (search2_possible state_test2)); *)
 
   ]
 
