@@ -10,12 +10,14 @@ let cue_ball = {
   score = -100; (*should never be potted*)
   (* legal_player = None;
      legal_pot = None; *)
+  (*it seems like these do not matter *)
   dim = {
-    img = "billiards.png";
-    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
-    offset = (0., 75.); (*chooses which on the image provided to take from*)
+    img = "";
+    size = (0., 0.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 0.); (*chooses which on the image provided to take from*)
   };
-  image = "billiards.png";
+  (*also not needed*)
+  image = "";
   mass = 10.;
 }
 
@@ -29,11 +31,11 @@ let one_ball = {
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
-  dim = {
-    img = "billiards.png";
-    size = (25.,25.); (*size of billiard ball on THE IMAGE*)
-    offset = (50., 75.); (*each billiard separated by exactly 25 pixels *)
-  };
+   dim = {
+     img = "";
+     size = (0., 0.); (*size of billiard ball on THE IMAGE*)
+     offset = (0., 0.); (*chooses which on the image provided to take from*)
+   };
   image = "billiards.png";
   mass = 10.;
 }

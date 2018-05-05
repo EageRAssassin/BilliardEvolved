@@ -16,6 +16,7 @@ let initial_state = {
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
+  (* if we use multiple skins *)
   current_table_id = "default";
   foul = No_foul;
   is_playing = player1;
@@ -30,6 +31,16 @@ let state = ref (initial_state)
 (*controls*)
 
 (* the main game loop *)
+let game_loop context has_won =
+  let rec game_loop_helper () =
+    state := State.change_state !state;
+    Gui.draw_state context !state;
+    Html.window##requestAnimationFrame(
+      Js.wrap_callback (fun (t:float) -> game_loop_helper ())
+    ) |> ignore
+  in game_loop_helper ()
+(*
+(* the main game loop *)
 let rec game_loop_helper context has_won =
     state := State.change_state !state;
     Gui.draw_state context !state;
@@ -38,4 +49,4 @@ let rec game_loop_helper context has_won =
     ) |> ignore
 
 (*shoddy implementation, may not work*)
-let game_loop context has_won = game_loop_helper context has_won
+let game_loop context has_won = game_loop_helper context has_won *)

@@ -1,11 +1,18 @@
 open Types
 open Billiards
 
+(*acknolwedgement: uses oxcigen's js_of_ocaml module under the public domain
+ https://github.com/ocsigen/js_of_ocaml *)
+
 (* canvas width and height *)
 let canvas_width = 1041.
 let canvas_height = 581.
 
 (* js_of_ocaml helper declarations *)
+(* see http://ocsigen.org/js_of_ocaml/3.1.0/api/Dom_html for specifications
+   and ttps://github.com/ocsigen/js_of_ocaml for an example of their usage
+   in /examples/minesweeper.ml *)
+
 module Html = Dom_html
 let js = Js.string
 let document = Html.document
@@ -58,6 +65,8 @@ let draw_help context (b: billiard) =
   img##src <- js b.dim.img;
   context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
 
+(**)
+
 (* [draw_billiard context b] draws the billiard on the given context. *)
 let draw_billiard (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
   let suit = b.suit in
@@ -78,6 +87,10 @@ let draw_b (context: Html.canvasRenderingContext2D Js.t)
     (js "8.png")
     (500.,250.);
     draw_billiard context cue_ball *)
+(*
+(* consider deletion *)
+let b_on_table b_lst table_id =
+  List.filter (fun (b: billiard) -> b.location.room = room_id) b_lst *)
 
 (***************************** ANIMATING *****************************)
 
@@ -89,6 +102,7 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
   draw_table context;
-  draw_billiards context [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
+  (* draw_billiards context [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
                           six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-                          thirteen_ball; fourteen_ball; fifteen_ball]
+                          thirteen_ball; fourteen_ball; fifteen_ball] *)
+  draw_billiards context state.on_board

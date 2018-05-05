@@ -1,4 +1,8 @@
 open Types
+(* acknolwedgement: uses oxcigen's js_of_ocaml module found here
+   https://github.com/ocsigen/js_of_ocaml
+*)
+
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -13,6 +17,13 @@ let fail = fun _ -> assert false
 
 
 (************************ START GAME ************************)
+(* acknolwedgement: usage of Dom.appendChild references
+   Oxcigen's minesweeper.ml game inside /examples/minesweeper inside
+   https://github.com/ocsigen/js_of_ocaml
+
+   Note: Oxcigen declared his minesweeper.ml and main.ml to be
+   open source and public domain
+*)
 
 (* [main ()] is the main method of the entire game. *)
 let main () =
