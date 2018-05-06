@@ -14,8 +14,6 @@ let document = Html.document
 (* [fail] is a failure/exception handler *)
 let fail = fun _ -> assert false
 
-
-
 (************************ START GAME ************************)
 (* acknolwedgement: usage of Dom.appendChild references
    Oxcigen's minesweeper.ml game inside /examples/minesweeper inside
@@ -36,9 +34,9 @@ let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
+  append_text h1 "Billiards Evolved";
   let p = Html.createP document in
   (*audio*)
-  append_text h1 "Billiards Evolved";
   (*font*)
   Dom.appendChild gui h1;
   Dom.appendChild gui p;
