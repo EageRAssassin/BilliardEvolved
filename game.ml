@@ -13,8 +13,8 @@ let initial_state = {
   on_board = [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
                  six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
               thirteen_ball; fourteen_ball; fifteen_ball];
-  cue_bearing = 0.;
-  cue_pos = (820., 284.);
+  cue_bearing = 20.;
+  cue_pos = (805., 290.);
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
@@ -23,7 +23,7 @@ let initial_state = {
   foul = No_foul;
   is_playing = player1;
   hit_force = (0., 0.);
-  player_aiming = true;
+  player_aiming = false;
   (* all_tables = [Tables.default] *)
 }
 
