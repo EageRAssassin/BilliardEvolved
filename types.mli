@@ -8,7 +8,8 @@ type foul = Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No
 
 type player =
   {
-  (* legal_pot: billiard list; *)
+    (* legal_pot: billiard list; *)
+    name: string;
     is_playing : bool;
     score : int;
     cue : int;
@@ -49,6 +50,8 @@ type table =
 type state =
   {
     on_board : billiard list;
+    cue_bearing: float;
+    cue_pos: float*float;
     player : player list;
     is_pot : billiard list;
     ball_moving : bool;

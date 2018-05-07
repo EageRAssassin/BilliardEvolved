@@ -9,6 +9,7 @@
 
 open Types
 
+
 val cue_ball: billiard
 val one_ball: billiard
 val two_ball: billiard
