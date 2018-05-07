@@ -2,25 +2,6 @@ open OUnit2
 open Types
 open State
 
-let cue_ball = {
-  suit = 0;
-  name = "Cue Ball" ;
-  size = (25.,25.);
-  velocity = (30.,30.);
-  position = (50.,50.); (*see arrangement.png for init. for now all are
-                            the same place *)
-  score = -100; (*should never be potted*)
-  (* legal_player = None;
-     legal_pot = None; *)
-  dim = {
-    img = "billiards.png";
-    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
-    offset = (0., 75.); (*chooses which on the image provided to take from*)
-  };
-  image = "billiards.png";
-  mass = 10.;
-}
-
 let player1 = {
   is_playing = false;
   score = 0;
@@ -33,6 +14,25 @@ let player2 = {
   score = 0;
   cue = 0;
   money = 0;
+}
+
+let cue_ball = {
+  suit = 0;
+  name = "Cue Ball" ;
+  size = (25.,25.);
+  velocity = (-500.,-500.);
+  position = (50.,50.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "billiards.png";
+  mass = 10.;
 }
 
 let state_cue_moving = {
@@ -51,7 +51,7 @@ let tests =
   [
 
     (* "test_billiard_between0" >:: (fun _ -> assert_equal true ( (0. , 0.) (100., 100.) billiard_between_list1)); *)
-
+    (* change_state state_cue_moving *)
   ]
 
 let suite =
