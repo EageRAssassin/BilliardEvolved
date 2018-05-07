@@ -98,25 +98,25 @@ let check_wall_touching ball =
     then
       begin
         ball.position <- (0., snd ball.position);
-      ball.velocity <- (-.fst ball.velocity, snd ball.velocity)
+      ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
       end;
     if (y_top < 0.)
     then
       begin
       ball.position <- (fst ball.position, 0.);
-      ball.velocity <- (fst ball.velocity, -.snd ball.velocity)
+      ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
       end;
     if (x_right > 1240.)
     then
       begin
       ball.position <- (1240. -. 2., snd ball.position);
-      ball.velocity <- (-.fst ball.velocity, snd ball.velocity)
+      ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
       end;
     if (y_bottom > 620.)
     then
       begin
       ball.position <- (fst ball.position, 620. -. 2.);
-      ball.velocity <- (fst ball.velocity, -.snd ball.velocity)
+      ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
     end;
     ball
 
@@ -135,8 +135,8 @@ let move_ball_velocity ball =
   (*TODO: add coolide functions *)
   let tempx = ref ( (fst ball.velocity) *. 0.9 )  in
   let tempy = ref ( (snd ball.velocity) *. 0.9 )  in
-  if !tempx < 1. then tempx := 0.;
-  if !tempy < 1. then tempy := 0.;
+  if abs_float(!tempx) < 1. then tempx := 0.;
+  if abs_float(!tempy) < 1. then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
   ball
 
@@ -194,9 +194,7 @@ let rec check_in_pot (billiards : billiard list) : billiard list =
 
 (* [change_billiards_p_v billiards] update the billiard *)
 let change_billiards_velocity (billiards : billiard list) : billiard list =
-  (*TODO: use the for to minick things in java  *)
-  let temp = List.filter check_ball_moving billiards in
-  List.map move_ball_velocity temp
+  List.map move_ball_velocity billiards
   (* List.map move_ball_position temp *)
 
 (* [check_foul billiards p] will decide if the user [player] have commited a foul *)
