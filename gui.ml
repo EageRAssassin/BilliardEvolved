@@ -9,6 +9,8 @@ open Player
 let canvas_width = 1401.
 let canvas_height = 800.
 
+let rad d = d *. 3.1415926 /. 180.
+
 (* js_of_ocaml helper declarations *)
 (* see http://ocsigen.org/js_of_ocaml/3.1.0/api/Dom_html for specifications
    and ttps://github.com/ocsigen/js_of_ocaml for an example of their usage
@@ -55,6 +57,9 @@ let get = failwith "" *)
 
 (***************************** DRAWING *****************************)
 
+(*https://developer.mozilla.org/en-US/docs/Web/API
+  /CanvasRenderingContext2D/drawImage*)
+
 (* [draw_image_on_context context img_src x y] draws the given [img_src]
    string at the x,y [coord] on the canvas' [context]. *)
 let draw_image_on_context context img_src coord =
@@ -69,6 +74,11 @@ let draw_help context (b: billiard) (x, y)=
   img##src <- js b.dim.img;
   context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
 
+let draw_angle context bearing img_src coord =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##rotate((bearing *. 3.14) /. 180.);
+  context##drawImage ((img), (fst coord), (snd coord))
 (**)
 
 (* [draw_billiard context b] draws the billiard on the given context. *)
@@ -83,8 +93,8 @@ let draw_billiards (context: Html.canvasRenderingContext2D Js.t) b_list =
 let draw_table (context: Html.canvasRenderingContext2D Js.t)
   = draw_image_on_context context (js "pool_table_sm.png") (0.,0.)
 
-let draw_cue (context: Html.canvasRenderingContext2D Js.t) c
-  = draw_image_on_context context (js "pool_cue.png") c
+let draw_cue (context: Html.canvasRenderingContext2D Js.t) b coord
+  = draw_angle context b (js "pool_cue.png") coord
 
 let stat_helper (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
   let s = b.suit in
@@ -144,6 +154,33 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
 
 
+let offset a1 a2 d g1 g2 =
+  let a = sqrt (a1 ** 2. +. a2 ** 2.) in
+  let g = sqrt (g1 ** 2. +. g2 ** 2.) in
+  let t = rad (d /. 2.) in
+  let ratio = g /. a in
+  let b = 2. *. a *. Pervasives.sin t in
+  let x = 2. *. a *. ((Pervasives.sin t) ** 2.) in
+  let y = 2. *. a *. ((Pervasives.cos t) ** 2.) in
+  (x +. x *. ratio, y +. y *. ratio)
+
+let draw_rotated context degrees img a1 a2 g1 g2 =
+  (* clear context; *)
+  (* let crd = ((canvas_width /. 2.) -. w , (canvas_height /. 2.) -. h) in *)
+  context##save();
+  context##rotate(degrees *. 3.14 /. 180.);
+  (* context##translate (fst coord, snd coord); *)
+  let xy_offset = offset a1 a2 degrees g1 g2 in
+  draw_image_on_context context (js img) (a1,a2);
+
+  (* context##translate(canvas_width /. 2., canvas_height /. 2.); *)
+  (* context##rotate(degrees *. 3.14 /. 180.); *)
+  (* context##translate ((fst coord) -. (fst crd), (snd coord) -. (snd crd)); *)
+  (* context##translate(canvas_width /. -2., canvas_height /. -2.); *)
+  context##restore()
+
+(* trig offset helpers *)
+
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
   draw_control context;
@@ -153,9 +190,14 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_score_p2 context player2.score;
   draw_turn context (state.is_playing = player1);
   draw_table context;
-  draw_cue context state.cue_pos;
-  (* draw_billiards context [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
-                          six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-                          thirteen_ball; fourteen_ball; fifteen_ball] *)
+  let g1 = fst (state.cue_pos) -. fst cue_ball.position in
+  let g2 = snd (state.cue_pos) -. snd cue_ball.position in
+  let a1 = fst state.cue_pos in let a2 = snd state.cue_pos in
+  draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2 ;
+  (* draw_cue context state.cue_bearing state.cue_pos; *)
+  (* draw_billiards context [cue_ball; one_ball; two_ball; three_ball;
+     four_ball; five_ball; six_ball; seven_ball; eight_ball; nine_ball;
+     ten_ball; eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
+     fifteen_ball] *)
   draw_billiards context state.on_board;
   draw_stat context state.on_board

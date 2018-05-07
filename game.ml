@@ -14,7 +14,7 @@ let initial_state = {
                  six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
               thirteen_ball; fourteen_ball; fifteen_ball];
   cue_bearing = 0.;
-  cue_pos = (820., 289.);
+  cue_pos = (820., 284.);
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
@@ -41,7 +41,17 @@ let game_loop context has_won =
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
   in game_loop_helper ()
-
+    (*
+(* the main game loop *)
+let game_loop context has_won =
+  let rec game_loop_helper () =
+    state := State.do' !state;
+    Gui.draw_state context !state;
+    Html.window##requestAnimationFrame(
+      Js.wrap_callback (fun (t:float) -> game_loop_helper ())
+    ) |> ignore
+  in game_loop_helper ()
+    *)
 
 (*
 (* the main game loop *)

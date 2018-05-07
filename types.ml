@@ -4,7 +4,8 @@
 
 type id = int
 
-type foul = Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
+type foul =
+    Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
 
 type player =
   {
@@ -33,8 +34,10 @@ type billiard =
     mutable velocity: float*float;
     mutable position: float*float;
     score: int;
-    (* legal_player: player option; (* the player who can first_hit it without penalty*)
-       legal_pot: player option; (* the player who can pot it without penalty*) *)
+    (* legal_player: player option; (* the player who can
+       first_hit it without penalty*)
+       legal_pot: player option; (* the player who can pot
+       it without penalty*) *)
     mutable dim: image_dim;
     image: string;
     mass: float;
