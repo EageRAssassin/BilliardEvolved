@@ -84,7 +84,7 @@ a slow big one we want it to be the small ball that will have its position adjus
    let vyy_new = y_Velocity newVs2 vp2 dx2 dy2 radius  in
    b2.velocity <- (vyx_new, vyy_new)
 
-
+(* deal with any balls that are hitting the sides *)
 let check_wall_touching ball =
   let radius = 20. in
   let x_left = fst ball.position in
@@ -117,13 +117,13 @@ let check_wall_touching ball =
       begin
       ball.position <- (fst ball.position, 620. -. 2.);
       ball.velocity <- (fst ball.velocity, -.snd ball.velocity)
-      end
+    end;
+    ball
 
 (* [move_ball_position time ball] moves the [ball] for [time] second, change the position
    requires: [ball] is a valid billiard,
              [time] is a valid int*)
 let move_ball_position  ball=
-  (*TODO: add coolide functions *)
   let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.30.)) in
   let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.30.)) in
   ball.position <- (tempx,tempy);
@@ -193,7 +193,7 @@ let rec check_in_pot (billiards : billiard list) : billiard list =
     List.filter remain_on_board billiards
 
 (* [change_billiards_p_v billiards] update the billiard *)
-let change_billiards_p_v (billiards : billiard list) : billiard list =
+let change_billiards_velocity (billiards : billiard list) : billiard list =
   (*TODO: use the for to minick things in java  *)
   let temp = List.filter check_ball_moving billiards in
   List.map move_ball_velocity temp
@@ -215,17 +215,19 @@ let foul_handler (st : state) : state =
 let change_state (st: state) : state =
   (* if player still aiming, then return current state *)
   if st.player_aiming then st else
-    (* else make the balls move *)
+  (* else make the balls move for .03 second *)
   let position_on_board = List.map move_ball_position st.on_board in
-  let new_on_board = change_billiards_p_v position_on_board in
-  let billiards_to_be_removed = List.filter remove_on_board st.on_board in
+  (*check wall bounce*)
+  let position_on_board = List.map check_wall_touching position_on_board in
+  let position_on_board = change_billiards_velocity position_on_board in
+  let billiards_to_be_removed = List.filter remove_on_board position_on_board in
   let check_foul = check_foul billiards_to_be_removed st.is_playing in
   if not check_foul then
-    let new_on_board2 = check_in_pot new_on_board in {st with
+    let new_on_board2 = check_in_pot position_on_board in
+    {st with
       on_board = new_on_board2 ;
       ball_moving = check_billiards_moving new_on_board2 ;
       is_playing = st.is_playing; }
-    (* TODO: colliison not handled  *)
   else
     foul_handler st
 
@@ -251,10 +253,25 @@ let change_force (st : state) (direction : int) : state =
 let change_state_player_aiming (st: state) : state =
   {st with player_aiming = not (st.player_aiming);}
 
+(* [find_next_player players is_playing] will find the next player aside from
+   [is_playing] player.
+   raises: "player not found" if next player does not exist in the list *)
+let rec find_next_player (players : player list) (is_playing : player) =
+  match players with
+  | [] -> failwith "player not found"
+  | h :: t -> if h = is_playing then find_next_player t is_playing else h
+
 (* [next_turn st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires:
    [st] is current game state
  *
  *)
-let next_turn st = st
+let next_turn st =
+  let players = st.player in
+  let current_player = st.is_playing in
+  let next_player = find_next_player players current_player in
+  let current_player_changed = {current_player with is_playing = false;} in
+  let next_player_changed = {next_player with is_playing = true;} in
+  {st with is_playing = next_player_changed;
+           player = [current_player_changed ; next_player_changed]}
