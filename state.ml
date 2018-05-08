@@ -43,10 +43,10 @@ a slow big one we want it to be the small ball that will have its position adjus
   (* Find the x and y distances from the centers of each ball to the collision point *)
 
   (* Distances to the collision point *)
-    let dx1 = (!x2 -. !x1) /. 2. in
-    let dx2 = (!x2 -. !x1) /. 2. in
-    let dy1 = (!y2 -. !y1) /. 2. in
-    let dy2 = (!y2 -. !y1) /. 2. in
+    let dx1 = (!x2 -. !x1) /. 30. in
+    let dx2 = (!x2 -. !x1) /. 30. in
+    let dy1 = (!y2 -. !y1) /. 30. in
+    let dy2 = (!y2 -. !y1) /. 30. in
 
   (* [straight_Velocity vx vy dx dy r] returns velocity directed towards collision *)
   let straight_Velocity vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r in
@@ -58,7 +58,7 @@ a slow big one we want it to be the small ball that will have its position adjus
   let y_Velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r in
   (* [collision_Velocity v1 v2 m1 m2]returns velocity of a ball after collision *)
   let collision_Velocity v1 v2 m1 m2 =
-    v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2. *. m2) /. (m1 +. m2) in
+    v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (30. *. m2) /. (m1 +. m2) in
 
 
   (* calculate the components of velocity of each ball headed towards the collision point and perpendicular to it *)
@@ -86,7 +86,7 @@ a slow big one we want it to be the small ball that will have its position adjus
 
 (* deal with any balls that are hitting the sides *)
 let check_wall_touching ball =
-  let radius = 20. in
+  let radius = 15. in
   let x_left = fst ball.position in
   let y_top = snd ball.position in
   (* Py measures the top left coord of ball, so we add two radii *)
@@ -160,7 +160,7 @@ let check_within_radius (a : (float * float)) (b : (float * float)) : bool =
   let ay = snd a in
   let bx = fst b in
   let by = snd b in
-  abs_float (ax *. ax -. bx *. bx) +. abs_float (ay *. ay -. by *. by) < 100.
+  abs_float ((ax -. bx) *. (ax -. bx))+. abs_float ((ay -. by) *. (ay -. by)) < 450.
 
 (* [remain_on_board b] return true if the billiard should remain on board *)
 let remain_on_board (b : billiard) : bool =
@@ -195,7 +195,26 @@ let rec check_in_pot (billiards : billiard list) : billiard list =
 (* [change_billiards_p_v billiards] update the billiard *)
 let change_billiards_velocity (billiards : billiard list) : billiard list =
   List.map move_ball_velocity billiards
-  (* List.map move_ball_position temp *)
+
+(* [remove_billiard_in_list b billiards] will remove [b] in [billiards] *)
+let rec remove_billiard_in_list (b : billiard) (billiards : billiard list) : billiard list =
+  match billiards with
+  | [] -> []
+  | h :: t -> if h = b then t else h :: remove_billiard_in_list b t
+
+(* [check_billiard_collision billiards] update the billiard velocity if
+   collisions happen *)
+let check_billiard_collision (billiards : billiard list) : billiard list =
+  let check_collision_helper (b : billiard) : billiard =
+    let billiards_besides_checked = remove_billiard_in_list b billiards in
+    List.fold_left
+      (fun (acc_b:billiard) (rec_b:billiard) ->
+         if (check_within_radius acc_b.position rec_b.position) then
+           collide acc_b rec_b;
+         acc_b)
+      b billiards_besides_checked
+    in
+  List.map check_collision_helper billiards
 
 (* [check_foul billiards p] will decide if the user [player] have commited a foul *)
 let check_foul (billiards : billiard list) (p : player) : bool =
@@ -215,8 +234,10 @@ let change_state (st: state) : state =
   if st.player_aiming then st else
   (* else make the balls move for .03 second *)
   let position_on_board = List.map move_ball_position st.on_board in
-  (*check wall bounce*)
+  (* check wall bounce *)
   let position_on_board = List.map check_wall_touching position_on_board in
+  (* check billiard collision *)
+  let position_on_board = check_billiard_collision position_on_board in
   let position_on_board = change_billiards_velocity position_on_board in
   let billiards_to_be_removed = List.filter remove_on_board position_on_board in
   let check_foul = check_foul billiards_to_be_removed st.is_playing in
