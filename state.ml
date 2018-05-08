@@ -10,7 +10,7 @@ open Command
 
 (* HELPER FUNCTION GOES BELOW *)
 
-let radius = 20.
+let radius = 15.
 
 (* [collide b1 b2]Collides two balls and changes their velocities accordingly
    requires : b1 and b2 are valid billiard records *)
@@ -28,8 +28,8 @@ let collide (b1 : billiard) (b2 : billiard) =
 
   (* RadSum adds radii, this gives the ideal distance *)
   (* imaginary distances (no overlap) *)
-  let dx = 2. *. dxR /. distance in
-  let dy = 2. *. dyR /. distance in
+  let dx = 2.*.radius *. dxR /. distance in
+  let dy = 2.*.radius *. dyR /. distance in
 
   (*   so that things dont look screwy when we have a fast tiny ball collide with
 a slow big one we want it to be the small ball that will have its position adjusted *)
@@ -43,10 +43,10 @@ a slow big one we want it to be the small ball that will have its position adjus
   (* Find the x and y distances from the centers of each ball to the collision point *)
 
   (* Distances to the collision point *)
-    let dx1 = (!x2 -. !x1) /. 30. in
-    let dx2 = (!x2 -. !x1) /. 30. in
-    let dy1 = (!y2 -. !y1) /. 30. in
-    let dy2 = (!y2 -. !y1) /. 30. in
+    let dx1 = (!x2 -. !x1) /. 2. in
+    let dx2 = (!x2 -. !x1) /. 2. in
+    let dy1 = (!y2 -. !y1) /. 2. in
+    let dy2 = (!y2 -. !y1) /. 2. in
 
   (* [straight_Velocity vx vy dx dy r] returns velocity directed towards collision *)
   let straight_Velocity vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r in
@@ -58,7 +58,7 @@ a slow big one we want it to be the small ball that will have its position adjus
   let y_Velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r in
   (* [collision_Velocity v1 v2 m1 m2]returns velocity of a ball after collision *)
   let collision_Velocity v1 v2 m1 m2 =
-    v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (30. *. m2) /. (m1 +. m2) in
+    v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2. *. m2) /. (m1 +. m2) in
 
 
   (* calculate the components of velocity of each ball headed towards the collision point and perpendicular to it *)
@@ -94,28 +94,28 @@ let check_wall_touching ball =
   (* to get the bottom and right y and x coords. *)
   let x_right = fst ball.position +. 2. *. radius in
 
-    if (x_left < 0. )
+    if (x_left < 60. )
     then
       begin
-        ball.position <- (0., snd ball.position);
+        ball.position <- (60., snd ball.position);
       ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
       end;
-    if (y_top < 0.)
+    if (y_top < 60.)
     then
       begin
-      ball.position <- (fst ball.position, 0.);
+      ball.position <- (fst ball.position, 60.);
       ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
       end;
-    if (x_right > 1240.)
+    if (x_right > 980.)
     then
       begin
-      ball.position <- (1240. -. 2., snd ball.position);
+      ball.position <- (980. -. 2.*.radius, snd ball.position);
       ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
       end;
-    if (y_bottom > 620.)
+    if (y_bottom > 520.)
     then
       begin
-      ball.position <- (fst ball.position, 620. -. 2.);
+      ball.position <- (fst ball.position, 520. -. 2.*.radius);
       ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
     end;
     ball
@@ -166,12 +166,12 @@ let check_within_radius (a : (float * float)) (b : (float * float)) : bool =
 let remain_on_board (b : billiard) : bool =
   let b_pos = b.position in
   let in_pocket_status =
-    check_within_radius b_pos (0.,0.) ||
-    check_within_radius b_pos (0.,620.) ||
-    check_within_radius b_pos (620.,0.) ||
-    check_within_radius b_pos (620.,620.) ||
-    check_within_radius b_pos (1240.,0.) ||
-    check_within_radius b_pos (1240.,620.) in
+    check_within_radius b_pos (60.,60.) ||
+    check_within_radius b_pos (520.,60.) ||
+    check_within_radius b_pos (980.,60.) ||
+    check_within_radius b_pos (60.,520.) ||
+    check_within_radius b_pos (520.,520.) ||
+    check_within_radius b_pos (980.,520.) in
   not in_pocket_status
 
 
@@ -179,12 +179,12 @@ let remain_on_board (b : billiard) : bool =
 let remove_on_board (b : billiard) : bool =
   let b_pos = b.position in
   let in_pocket_status =
-    check_within_radius b_pos (0.,0.) ||
-    check_within_radius b_pos (0.,620.) ||
-    check_within_radius b_pos (620.,0.) ||
-    check_within_radius b_pos (620.,620.) ||
-    check_within_radius b_pos (1240.,0.) ||
-    check_within_radius b_pos (1240.,620.) in
+  check_within_radius b_pos (60.,60.) ||
+  check_within_radius b_pos (520.,60.) ||
+  check_within_radius b_pos (980.,60.) ||
+  check_within_radius b_pos (60.,520.) ||
+  check_within_radius b_pos (520.,520.) ||
+  check_within_radius b_pos (980.,520.) in
   in_pocket_status
 
 (* [check_in_pot billiards] will check if there are any billards fallen into
