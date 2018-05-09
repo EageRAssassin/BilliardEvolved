@@ -94,36 +94,36 @@ let check_wall_touching ball =
   (* to get the bottom and right y and x coords. *)
   let x_right = fst ball.position +. 2. *. radius in
 
-    if (x_left < 60. )
+    if (x_left < 80.)
     then
       begin
-        ball.position <- (60., snd ball.position);
-      ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
+      ball.position <- (80., snd ball.position);
+      ball.velocity <- ((0.-.fst ball.velocity)*.0.9, snd ball.velocity *.0.9)
       end;
-    if (y_top < 60.)
+    if (y_top < 80.)
     then
       begin
-      ball.position <- (fst ball.position, 60.);
-      ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
+      ball.position <- (fst ball.position, 80.);
+      ball.velocity <- (fst ball.velocity*.0.9, (0.-.snd ball.velocity)*.0.9)
       end;
     if (x_right > 980.)
     then
       begin
       ball.position <- (980. -. 2.*.radius, snd ball.position);
-      ball.velocity <- (0.-.fst ball.velocity, snd ball.velocity)
+      ball.velocity <- ((0.-.fst ball.velocity)*.0.9, snd ball.velocity*.0.9)
       end;
-    if (y_bottom > 520.)
+    if (y_bottom > 535.)
     then
       begin
-      ball.position <- (fst ball.position, 520. -. 2.*.radius);
-      ball.velocity <- (fst ball.velocity, 0.-.snd ball.velocity)
+      ball.position <- (fst ball.position, 535. -. 2.*.radius);
+      ball.velocity <- (fst ball.velocity*.0.9, (0.-.snd ball.velocity)*.0.9)
     end;
     ball
 
 (* [move_ball_position time ball] moves the [ball] for [time] second, change the position
    requires: [ball] is a valid billiard,
              [time] is a valid int*)
-let move_ball_position  ball=
+let move_ball_position ball =
   let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.30.)) in
   let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.30.)) in
   ball.position <- (tempx,tempy);
@@ -132,9 +132,8 @@ let move_ball_position  ball=
 (* [move_ball_velocity time ball] moves the [ball] for [time] second, change the velocity
    requires: [ball] is a valid billiard*)
 let move_ball_velocity ball =
-  (*TODO: add coolide functions *)
-  let tempx = ref ( (fst ball.velocity) *. 0.9 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.9 )  in
+  let tempx = ref ( (fst ball.velocity) *. 0.93 )  in
+  let tempy = ref ( (snd ball.velocity) *. 0.93 )  in
   if abs_float(!tempx) < 1. then tempx := 0.;
   if abs_float(!tempy) < 1. then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
@@ -166,12 +165,12 @@ let check_within_radius (a : (float * float)) (b : (float * float)) : bool =
 let remain_on_board (b : billiard) : bool =
   let b_pos = b.position in
   let in_pocket_status =
-    check_within_radius b_pos (60.,60.) ||
-    check_within_radius b_pos (520.,60.) ||
-    check_within_radius b_pos (980.,60.) ||
-    check_within_radius b_pos (60.,520.) ||
-    check_within_radius b_pos (520.,520.) ||
-    check_within_radius b_pos (980.,520.) in
+    check_within_radius b_pos (80.,80.) ||
+    check_within_radius b_pos (535.,80.) ||
+    check_within_radius b_pos (980.,80.) ||
+    check_within_radius b_pos (80.,535.) ||
+    check_within_radius b_pos (535.,535.) ||
+    check_within_radius b_pos (980.,535.) in
   not in_pocket_status
 
 
@@ -179,12 +178,12 @@ let remain_on_board (b : billiard) : bool =
 let remove_on_board (b : billiard) : bool =
   let b_pos = b.position in
   let in_pocket_status =
-  check_within_radius b_pos (60.,60.) ||
-  check_within_radius b_pos (520.,60.) ||
-  check_within_radius b_pos (980.,60.) ||
-  check_within_radius b_pos (60.,520.) ||
-  check_within_radius b_pos (520.,520.) ||
-  check_within_radius b_pos (980.,520.) in
+  check_within_radius b_pos (80.,80.) ||
+  check_within_radius b_pos (535.,80.) ||
+  check_within_radius b_pos (980.,80.) ||
+  check_within_radius b_pos (80.,535.) ||
+  check_within_radius b_pos (535.,535.) ||
+  check_within_radius b_pos (980.,535.) in
   in_pocket_status
 
 (* [check_in_pot billiards] will check if there are any billards fallen into
