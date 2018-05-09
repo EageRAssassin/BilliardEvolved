@@ -21,8 +21,8 @@ let collide (b1 : billiard) (b2 : billiard) =
   let y1 = ref (snd (b1.position) +. radius) in
   let y2 = ref (snd (b2.position) +. radius) in
   (* real distances (collision overlap) *)
-  let dxR = (!x2 -. !x1 )in
-  let dyR = (!y2 -. !y1) in
+  let dxR = !x2 -. !x1 in
+  let dyR = !y2 -. !y1 in
   (* gets the ACTUAL distance between the two balls *)
   let distance = sqrt(dxR *. dxR +. dyR *. dyR) in
 
@@ -35,23 +35,23 @@ let collide (b1 : billiard) (b2 : billiard) =
 a slow big one we want it to be the small ball that will have its position adjusted *)
 
 
-    x1 := ( !x1 -. (dx -. dxR));
-    y1 := ( !x1 -. (dy -. dyR));
+    x1 := !x1 -. (dx -. dxR);
+    y1 := !y1 -. (dy -. dyR);
     b1.position <- (!x1 -. radius, !y1 -. radius);
 
 
   (* Find the x and y distances from the centers of each ball to the collision point *)
 
   (* Distances to the collision point *)
-    let dx1 = (!x2 -. !x1) /. 2. in
-    let dx2 = (!x2 -. !x1) /. 2. in
-    let dy1 = (!y2 -. !y1) /. 2. in
-    let dy2 = (!y2 -. !y1) /. 2. in
+  let dx1 = (!x2 -. !x1) /. 2. in
+  let dx2 = (!x2 -. !x1) /. 2. in
+  let dy1 = (!y2 -. !y1) /. 2. in
+  let dy2 = (!y2 -. !y1) /. 2. in
 
   (* [straight_Velocity vx vy dx dy r] returns velocity directed towards collision *)
   let straight_Velocity vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r in
   (* [perpendicular_Velocity vx vy dx dy r] returns velocity perpendicular to collision *)
-  let perpendicular_Velocity  vx vy dx dy r =  vy *. dx /. r -. vx *. dy /. r in
+  let perpendicular_Velocity vx vy dx dy r =  vy *. dx /. r -. vx *. dy /. r in
   (* [x_Velocity vs vp dx dy r] returns x velocity from S and P *)
   let x_Velocity vs vp dx dy r =  vs *. dx /. r -. vp *. dy /. r in
   (* [y_Velocity vs vp dx dy r] returns y velocity from S and P   *)
@@ -63,26 +63,26 @@ a slow big one we want it to be the small ball that will have its position adjus
 
   (* calculate the components of velocity of each ball headed towards the collision point and perpendicular to it *)
 (* normal and perpendicular velocities to collision *)
-   let vs1 = straight_Velocity (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
-    let vp1 = perpendicular_Velocity (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
+  let vs1 = straight_Velocity (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
+  let vp1 = perpendicular_Velocity (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
 
-   let vs2 = straight_Velocity (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
-    let vp2 = perpendicular_Velocity (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
+  let vs2 = straight_Velocity (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
+  let vp2 = perpendicular_Velocity (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
 
   (* use the formulas in the method to find new straight velocities for each ball *)
   (* for storing new straigth velocites during calculations *)
-   let newVs1 = collision_Velocity vs1  vs2  b1.mass  b2.mass in
-   let newVs2 = collision_Velocity vs2 vs1 b2.mass b1.mass in
+  let newVs1 = collision_Velocity vs1 vs2 b1.mass b2.mass in
+  let newVs2 = collision_Velocity vs2 vs1 b2.mass b1.mass in
 
-  (* now we get new X and Y velocities for each, using the new straight velocity and the unaffected perpendicular velocity component
-  *)
-   let vxx_new = x_Velocity newVs1 vp1 dx1 dy1 radius in
-   let vxy_new = y_Velocity newVs1 vp1 dx1 dy1 radius in
-   b1.velocity <- (vxx_new, vxy_new);
+  (* now we get new X and Y velocities for each, using the new straight velocity
+     and the unaffected perpendicular velocity component *)
+  let vxx_new = x_Velocity newVs1 vp1 dx1 dy1 radius in
+  let vxy_new = y_Velocity newVs1 vp1 dx1 dy1 radius in
+  b1.velocity <- (vxx_new, vxy_new);
 
-   let vyx_new = x_Velocity newVs2 vp2 dx2 dy2 radius in
-   let vyy_new = y_Velocity newVs2 vp2 dx2 dy2 radius  in
-   b2.velocity <- (vyx_new, vyy_new)
+  let vyx_new = x_Velocity newVs2 vp2 dx2 dy2 radius in
+  let vyy_new = y_Velocity newVs2 vp2 dx2 dy2 radius  in
+  b2.velocity <- (vyx_new, vyy_new)
 
 (* deal with any balls that are hitting the sides *)
 let check_wall_touching ball =
@@ -124,16 +124,16 @@ let check_wall_touching ball =
    requires: [ball] is a valid billiard,
              [time] is a valid int*)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.30.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.30.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.50.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.50.)) in
   ball.position <- (tempx,tempy);
   ball
 
 (* [move_ball_velocity time ball] moves the [ball] for [time] second, change the velocity
    requires: [ball] is a valid billiard*)
 let move_ball_velocity ball =
-  let tempx = ref ( (fst ball.velocity) *. 0.93 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.93 )  in
+  let tempx = ref ( (fst ball.velocity) *. 0.95 )  in
+  let tempy = ref ( (snd ball.velocity) *. 0.95 )  in
   if abs_float(!tempx) < 1. then tempx := 0.;
   if abs_float(!tempy) < 1. then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
@@ -154,36 +154,37 @@ let rec check_billiards_moving (billiards : billiard list) : bool =
 
 (* [check_within_radius a b] will check if position a and position b is within
    10 units *)
-let check_within_radius (a : (float * float)) (b : (float * float)) : bool =
+let check_within_radius (a : (float * float)) (b : (float * float)) (distance : float) : bool =
   let ax = fst a in
   let ay = snd a in
   let bx = fst b in
   let by = snd b in
-  abs_float ((ax -. bx) *. (ax -. bx))+. abs_float ((ay -. by) *. (ay -. by)) < 450.
+  abs_float ((ax -. bx) *. (ax -. bx))+. abs_float ((ay -. by) *. (ay -. by)) < distance
 
 (* [remain_on_board b] return true if the billiard should remain on board *)
 let remain_on_board (b : billiard) : bool =
   let b_pos = b.position in
+  let distance = 1. in
   let in_pocket_status =
-    check_within_radius b_pos (80.,80.) ||
-    check_within_radius b_pos (535.,80.) ||
-    check_within_radius b_pos (980.,80.) ||
-    check_within_radius b_pos (80.,535.) ||
-    check_within_radius b_pos (535.,535.) ||
-    check_within_radius b_pos (980.,535.) in
+    check_within_radius b_pos (80.,80.) distance ||
+    check_within_radius b_pos (535.,80.) distance ||
+    check_within_radius b_pos (980.,80.) distance ||
+    check_within_radius b_pos (80.,535.) distance ||
+    check_within_radius b_pos (535.,535.) distance ||
+    check_within_radius b_pos (980.,535.) distance in
   not in_pocket_status
-
 
 (* [remove_on_board b] return true if the billiard should remove on board *)
 let remove_on_board (b : billiard) : bool =
   let b_pos = b.position in
+  let distance = 1. in
   let in_pocket_status =
-  check_within_radius b_pos (80.,80.) ||
-  check_within_radius b_pos (535.,80.) ||
-  check_within_radius b_pos (980.,80.) ||
-  check_within_radius b_pos (80.,535.) ||
-  check_within_radius b_pos (535.,535.) ||
-  check_within_radius b_pos (980.,535.) in
+  check_within_radius b_pos (80.,80.) distance ||
+  check_within_radius b_pos (535.,80.) distance ||
+  check_within_radius b_pos (980.,80.) distance ||
+  check_within_radius b_pos (80.,535.) distance ||
+  check_within_radius b_pos (535.,535.) distance ||
+  check_within_radius b_pos (980.,535.) distance in
   in_pocket_status
 
 (* [check_in_pot billiards] will check if there are any billards fallen into
@@ -204,16 +205,26 @@ let rec remove_billiard_in_list (b : billiard) (billiards : billiard list) : bil
 (* [check_billiard_collision billiards] update the billiard velocity if
    collisions happen *)
 let check_billiard_collision (billiards : billiard list) : billiard list =
-  let check_collision_helper (b : billiard) : billiard =
+  (* let check_collision_helper (b : billiard) : billiard =
     let billiards_besides_checked = remove_billiard_in_list b billiards in
     List.fold_left
       (fun (acc_b:billiard) (rec_b:billiard) ->
-         if (check_within_radius acc_b.position rec_b.position) then
+         if (check_within_radius acc_b.position rec_b.position 450.) then
            collide acc_b rec_b;
          acc_b)
       b billiards_besides_checked
     in
-  List.map check_collision_helper billiards
+     List.map check_collision_helper billiards *)
+    for i = 0 to (List.length billiards - 1) do
+      let billiard_temp = List.nth billiards i in
+      for j = i + 1 to (List.length billiards - 1) do
+        let billiard_temp2 = List.nth billiards j in
+        if (check_within_radius billiard_temp.position billiard_temp2.position 450.) then
+          collide billiard_temp billiard_temp2
+      done
+    done;
+    billiards
+
 
 (* [check_foul billiards p] will decide if the user [player] have commited a foul *)
 let check_foul (billiards : billiard list) (p : player) : bool =

@@ -5,7 +5,7 @@ let cue_ball = {
   suit = 0;
   name = "Cue Ball" ;
   size = (30.,30.);
-  velocity = (-1000.,0.);
+  velocity = (-2000.,0.);
   position = (780.,290.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = -100; (*should never be potted*)
@@ -26,7 +26,7 @@ let one_ball = {
   suit = 1;
   name = "One Ball" ;
   size = (30.,30.);
-velocity = (0.,0.);
+  velocity = (0.,0.);
   position = (312.,290.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
