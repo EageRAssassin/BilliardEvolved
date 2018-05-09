@@ -34,11 +34,9 @@ let collide (b1 : billiard) (b2 : billiard) =
   (*   so that things dont look screwy when we have a fast tiny ball collide with
 a slow big one we want it to be the small ball that will have its position adjusted *)
 
-
     x1 := !x1 -. (dx -. dxR);
     y1 := !y1 -. (dy -. dyR);
     b1.position <- (!x1 -. radius, !y1 -. radius);
-
 
   (* Find the x and y distances from the centers of each ball to the collision point *)
 
@@ -227,7 +225,7 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
 
 
 (* [check_foul billiards p] will decide if the user [player] have commited a foul *)
-let check_foul (billiards : billiard list) (p : player) : bool =
+let check_foul (billiards_to_be_removed : billiard list) (p : player) : bool =
   false (*TODO*)
 
 (* [foul_handler st] will handle the foul case in [st] and return a new state *)
@@ -243,12 +241,10 @@ let change_state (st: state) : state =
   (* if player still aiming, then return current state *)
   if st.player_aiming then st else
   (* else make the balls move for .03 second *)
-  let position_on_board = List.map move_ball_position st.on_board in
-  (* check wall bounce *)
-  let position_on_board = List.map check_wall_touching position_on_board in
-  (* check billiard collision *)
-  let position_on_board = check_billiard_collision position_on_board in
-  let position_on_board = change_billiards_velocity position_on_board in
+  let position_on_board = List.map move_ball_position st.on_board
+                          |> List.map check_wall_touching
+                          |> check_billiard_collision
+                          |> change_billiards_velocity in
   let billiards_to_be_removed = List.filter remove_on_board position_on_board in
   let check_foul = check_foul billiards_to_be_removed st.is_playing in
   if not check_foul then
@@ -277,10 +273,22 @@ let change_force (st : state) (direction : int) : state =
     else failwith "direction attribute error" in
   {st with hit_force = result_h_f;}
 
-(* [change_state_player_aiming st] will change the attribute of player_aiming
-   state [st] to opposite, making the game for user to aim or see balls moving *)
-let change_state_player_aiming (st: state) : state =
-  {st with player_aiming = not (st.player_aiming);}
+(* [get_cue_billiard billiard_list] will find the cue ball in the [billiard_list]
+   raises: "No cue billiard on board" if cue ball does not exist in [billiard_list] *)
+let rec get_cue_billiard (billiard_list : billiard list) : billiard =
+  match billiard_list with
+  | x :: xs -> if x.suit = 0 then x
+    else get_cue_billiard xs
+  | [] -> failwith "No cue billiard on board"
+
+(* [apply_force st] will apply the foce in [st]'s hit_force to the cue ball,
+   and start to make the billiards move *)
+let apply_force (st : state) : state =
+  let hit_force = st.hit_force in
+  let cue_ball = get_cue_billiard st.on_board in
+  cue_ball.velocity <- hit_force;
+  {st with hit_force = (0., 0.);
+           player_aiming = false;}
 
 (* [find_next_player players is_playing] will find the next player aside from
    [is_playing] player.
@@ -292,15 +300,15 @@ let rec find_next_player (players : player list) (is_playing : player) =
 
 (* [next_turn st] will trigger the next turn where the user is given
    control after all balls cease movement
-   requires:
-   [st] is current game state
- *
+   requires: [st] is current game state
  *)
 let next_turn st =
+  (* change the player *)
   let players = st.player in
   let current_player = st.is_playing in
   let next_player = find_next_player players current_player in
   let current_player_changed = {current_player with is_playing = false;} in
   let next_player_changed = {next_player with is_playing = true;} in
   {st with is_playing = next_player_changed;
-           player = [current_player_changed ; next_player_changed]}
+           player = [current_player_changed ; next_player_changed];
+           player_aiming = true;}

@@ -25,9 +25,6 @@ val change_state : state -> state
 *)
 val change_force : state -> int -> state
 
-
-val change_state_player_aiming : state -> state 
-
  (* [next_turn st] will trigger the next turn where the user is given
     control after all balls cease movement
     requires:
