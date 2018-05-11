@@ -18,3 +18,4 @@ val ai_evaluate_next_move : state -> ( float * float )
 val search1_possible : state -> int
 val search2_possible : state -> int
 val billiard_between : (float*float) -> (float*float) -> billiard list -> bool
+val closest_billiard : (float*float) -> billiard list -> (float*float) -> (float*float)

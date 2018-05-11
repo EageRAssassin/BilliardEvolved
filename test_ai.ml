@@ -1,8 +1,9 @@
 open OUnit2
 open Types
+open Billiards
 open Ai
 
-let cue_ball = {
+let cue_ball_temp = {
   suit = 0;
   name = "Cue Ball" ;
   size = (25.,25.);
@@ -84,6 +85,7 @@ let billiard_between_list3 = [ball_150_150]
 let billiard_between_list4 = [ball_15_15;ball_300_10;ball_150_150]
 
 let player1 = {
+  name = "player1";
   is_playing = false;
   score = 0;
   cue = 0;
@@ -91,6 +93,7 @@ let player1 = {
 }
 
 let player2 = {
+  name = "player2";
   is_playing = true;
   score = 0;
   cue = 0;
@@ -98,8 +101,10 @@ let player2 = {
 }
 
 let state_test_no_billiard = {
-  on_board = [cue_ball];
+  on_board = [cue_ball_temp];
   player = [player1; player2];
+  cue_bearing = 0. ;
+  cue_pos = (0. ,0. );
   is_pot = [];
   foul = No_foul;
   current_table_id = "default";
@@ -110,8 +115,10 @@ let state_test_no_billiard = {
 }
 
 let state_test1 = {
-  on_board = [cue_ball; ball_15_15];
+  on_board = [cue_ball_temp; ball_15_15];
   player = [player1; player2];
+  cue_bearing = 0. ;
+  cue_pos = (0. ,0. );
   is_pot = [];
   foul = No_foul;
   current_table_id = "default";
@@ -122,8 +129,10 @@ let state_test1 = {
 }
 
 let state_test2 = {
-  on_board = [cue_ball; ball_150_150; ball_15_15];
+  on_board = [cue_ball_temp; ball_150_150; ball_15_15];
   player = [player1; player2];
+  cue_bearing = 0. ;
+  cue_pos = (0. ,0. );
   is_pot = [];
   foul = No_foul;
   current_table_id = "default";
@@ -134,8 +143,10 @@ let state_test2 = {
 }
 
 let state_test3 = {
-  on_board = [cue_ball; ball_150_150; ball_15_15];
+  on_board = [cue_ball_temp; ball_150_150; ball_15_15];
   player = [player1; player2];
+  cue_bearing = 0. ;
+  cue_pos = (0. ,0. );
   is_pot = [];
   foul = No_foul;
   current_table_id = "default";
@@ -145,9 +156,40 @@ let state_test3 = {
   player_aiming = false;
 }
 
+let state_test_closest_billiard = {
+  on_board = [cue_ball; one_ball;];
+  cue_bearing = 20.;
+  cue_pos = (805., 290.);
+  is_pot = [];
+  player = [player1; player2];
+  ball_moving = false;
+  (* if we use multiple skins *)
+  current_table_id = "default";
+  foul = No_foul;
+  is_playing = player1;
+  hit_force = (0., 0.);
+  player_aiming = false;
+}
+
+let initial_state = {
+  on_board = [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
+              thirteen_ball; fourteen_ball; fifteen_ball;];
+  cue_bearing = 20.;
+  cue_pos = (805., 290.);
+  is_pot = [];
+  player = [player1; player2];
+  ball_moving = false;
+  current_table_id = "default";
+  foul = No_foul;
+  is_playing = player1;
+  hit_force = (0., 0.);
+  player_aiming = false;
+}
+
 let tests =
   [
-
+    (*-----------------FUNCTION TEST-----------------*)
     "test_billiard_between0" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list1));
     "test_billiard_between1" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list2));
     "test_billiard_between2" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list3));
@@ -158,6 +200,14 @@ let tests =
     "test1" >:: (fun _ -> assert_equal 0 (search1_possible state_test1));
     "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2));
     (* "test3" >:: (fun _ -> assert_equal 1 (search2_possible state_test2)); *)
+
+
+
+    (*-----------------GENERAL STATE TEST-----------------*)
+    (* initial state: all balls on board. Should hit directly with full force *)
+    "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state));
+
+    (* "test_initial_state" >:: (fun _ -> assert_equal 1 (search1_possible state_test2)); *)
 
   ]
 

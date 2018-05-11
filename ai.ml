@@ -10,18 +10,32 @@ let distance_between (position1 : (float*float)) (position2 : (float*float)) : f
   sqrt ((abs_float (x1 -. x2)) *. (abs_float (x1 -. x2))
         +. (abs_float (y1 -. y2)) *. (abs_float (y1 -. y2)))
 
+(* [nearst_billiard cue_position billiards] will return the vector needed to hit
+   from the cue_position to the closest billiard
+   required: [billiards] is not an empty list *)
+let rec closest_billiard (cue_position : (float*float)) (billiards : billiard list) (min_vector : (float * float)) : (float * float) =
+  match billiards with
+  | x :: xs ->
+    let distance = distance_between x.position cue_position in
+    let min_dist = sqrt((fst min_vector) *. (fst min_vector) +.
+                        (snd min_vector) *. (snd min_vector)) in
+    if distance < min_dist && x.suit <> 0
+    then closest_billiard cue_position xs (fst x.position -. fst cue_position,
+                                           snd x.position -. snd cue_position)
+    else closest_billiard cue_position xs min_vector
+  | [] -> min_vector
+
 (* [min_distance_to_pocket position1] will return the minimal distance from
    billiard [position] to pocket *)
-let min_distance_to_pocket (position : (float*float)) : float =
-  (*TODO location of pockets? *)
-  let distance1 = distance_between position (0.,0.) in
-  let distance2 = distance_between position (0.,620.) in
-  let distance3 = distance_between position (620.,0.) in
-  let distance4 = distance_between position (620.,620.) in
-  let distance5 = distance_between position (1240.,0.) in
-  let distance6 = distance_between position (1240.,620.) in
+let min_distance_to_pocket (position : (float*float)) (cue : (float*float)): float =
+  let distance1 = distance_between position (80.,80.) in
+  let distance2 = distance_between position (80.,535.) in
+  let distance3 = distance_between position (535.,80.) in
+  let distance4 = distance_between position (535.,535.) in
+  let distance5 = distance_between position (980.,80.) in
+  let distance6 = distance_between position (980.,535.) in
   let find_min (acc : float) (b : float) : float = if acc > b then b else acc in
-  List.fold_left find_min 1387. [distance1;distance2;distance3;distance4;distance5;distance6]
+  List.fold_left find_min 2000. [distance1;distance2;distance3;distance4;distance5;distance6]
 
 (* [billiard_between position1 position2] will return true if there are
    billiards between two balls of position1 and position2
@@ -53,11 +67,11 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
    if there is no ball between the ball and the white ball
    2. -1 if there is ball between the ball and the white ball
 *)
-let rec find_pocket_distances_from (white_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
+let rec find_pocket_distances_from (cue_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
   match billiard_list with
-  | x :: xs -> if billiard_between white_position x.position all_billiards
-    then -1.0 :: find_pocket_distances_from white_position xs all_billiards
-    else (min_distance_to_pocket x.position) :: find_pocket_distances_from white_position xs all_billiards
+  | x :: xs -> if billiard_between cue_position x.position all_billiards
+    then -1.0 :: find_pocket_distances_from cue_position xs all_billiards
+    else (min_distance_to_pocket x.position cue_position) :: find_pocket_distances_from cue_position xs all_billiards
   | [] -> []
 
 (* [find_pocket_distances_from_bouncing_wall white_position billiard_list]
@@ -66,18 +80,18 @@ let rec find_pocket_distances_from (white_position : (float*float)) (billiard_li
    if there is no ball between the ball and the white ball with one bounce
    2. -1 if there is ball between the ball and the white ball
 *)
-let rec find_pocket_distances_from_bouncing_wall (white_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
+let rec find_pocket_distances_from_bouncing_wall (cue_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
   match billiard_list with
   | x :: xs ->
     (* check bouncing with 4 walls *)
     (*TODO dimension of wall?*)
-    let hit_feasible_by_bouncing = billiard_between white_position (-.(fst x.position), snd x.position) all_billiards ||
-                                   billiard_between white_position (fst x.position, -.(snd x.position)) all_billiards ||
-                                   billiard_between white_position (920.*.2.-.(fst x.position), snd x.position) all_billiards ||
-                                   billiard_between white_position (fst x.position, 460.*.2.-.(snd x.position)) all_billiards in
+    let hit_feasible_by_bouncing = billiard_between cue_position (-.(fst x.position), snd x.position) all_billiards ||
+                                   billiard_between cue_position (fst x.position, -.(snd x.position)) all_billiards ||
+                                   billiard_between cue_position (920.*.2.-.(fst x.position), snd x.position) all_billiards ||
+                                   billiard_between cue_position (fst x.position, 460.*.2.-.(snd x.position)) all_billiards in
     if hit_feasible_by_bouncing
-    then -1.0 :: find_pocket_distances_from_bouncing_wall white_position xs all_billiards
-    else (min_distance_to_pocket x.position) :: find_pocket_distances_from_bouncing_wall white_position xs all_billiards
+    then -1.0 :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
+    else (min_distance_to_pocket x.position cue_position) :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
   | [] -> []
 
 (* [find_billiard_position st suit] will return the coordinate of the billiard
@@ -132,18 +146,22 @@ let search2_possible st : int =
 (* [search1_calculation white_position ball_position] will return the x and y
    angles that aI needs to hit [ball_position] from [white_position] directly *)
 (* TODO *)
-let search1_calculation (white_position : (float*float)) (ball_position : (float*float)) : (float*float) =
-  (fst ball_position -. fst white_position , snd ball_position -. snd white_position)
+let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
+  let vector_x = fst ball_position -. fst cue_position in
+  let vector_y = snd ball_position -. snd cue_position in
+  (vector_x, vector_y)
 
 (* [search2_calculation white_position ball_position] will return the x and y
    angles that AI needs to hit [ball_position] from [white_position] directly *)
 (* TODO *)
-let search2_calculation (white_position : (float*float)) (ball_position : (float*float)) : (float*float) =
-  (fst ball_position -. fst white_position , snd ball_position -. snd white_position)
+let search2_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
+  (fst ball_position -. fst cue_position , snd ball_position -. snd cue_position)
 
 (* AI strategy
+   0. If all balls are on board, hit the nearst billaird with full force
    1. Search for all balls that can be hit directly,
       Find the ball that is closest to its pocket, and hit it
+      PS: the ball is between the pocket and the cue ball
    2. Search for the balls that can be hit with one collision with the wall
       Find the ball that is closest to its pocket, and hit it
    3. Search for the AI's balls that is nearest to the white ball and hit it
@@ -153,23 +171,26 @@ let search2_calculation (white_position : (float*float)) (ball_position : (float
  * state to produce the optimal velocity (x velocit, y velocity) of the
    cue and which billiard to hit towards which pocket to play against
    the player
-   requires:
-   [st] is a state
+   requires: [st] is a state
 *)
 let ai_evaluate_next_move st : ( float * float )=
+  let cue_position = find_billiard_position st.on_board 0 in
+  if List.length st.on_board = 16 then
+    let vector = closest_billiard cue_position st.on_board (2000., 2000.) in
+    (5. *. fst vector, 5. *. snd vector)
+  else
   (* check if first search method will work *)
   let search1 = search1_possible st in
-  let white_position = find_billiard_position st.on_board 0 in
   if search1 <> -1 then
     let ball_position = find_billiard_position st.on_board search1 in
-    search1_calculation white_position ball_position
+    search1_calculation cue_position ball_position
   else
   (* check if second search method will work *)
   let search2 = search2_possible st in
   if search2 <> -1 then
     let ball_position = find_billiard_position st.on_board search2 in
-    search2_calculation white_position ball_position
+    search2_calculation cue_position ball_position
   else
   (* use third method *)
-    search1_calculation white_position (0.0, 0.0)
+    closest_billiard cue_position st.on_board (2000., 2000.)
       (* TODO *)
