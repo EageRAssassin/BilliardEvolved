@@ -338,16 +338,17 @@ let release_cue st =
   let quadrant = get_quadrant st in
   let xy_kinetic =
     if quadrant = 1 then
-      (g *. (Pervasives.cos (bearing)), (g *. Pervasives.sin (bearing)))
+      (-1. *. g *. (Pervasives.cos (bearing)),
+       (-1. *. g *. Pervasives.sin (bearing)))
     else if quadrant = 2 then let angle = 3.1415926 -. bearing in
-      (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle))
+      (g *. (Pervasives.cos angle), (-1. *. g *. Pervasives.sin angle))
     else if quadrant = 3 then let angle = bearing -. 3.1415926 in
-      (-1. *. g *. (Pervasives.cos angle), (-1. *. g *. Pervasives.sin angle))
+      (g *. (Pervasives.cos angle), (g *. Pervasives.sin angle))
     else let angle = 2. *. 3.1415926 -. bearing in
       (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle)) in
   let command = player_command in Billiards.cue_ball.velocity <-
     if st.ball_moving then  Billiards.cue_ball.velocity
-    else if command.j then (-30. *. (fst xy_kinetic), -30. *. (snd xy_kinetic))
+    else if command.j then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
     else Billiards.cue_ball.velocity
 
 
