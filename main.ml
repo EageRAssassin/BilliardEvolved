@@ -35,7 +35,7 @@ let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
-  append_text h1 "Billiards Evolved";
+  (* append_text h1 "Billiards Evolved"; *)
   let p = Html.createP document in
   (*audio*)
   (*font*)
@@ -46,6 +46,12 @@ let main () =
   canvas##height <- int_of_float Gui.canvas_height;
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
+  let _ = Html.addEventListener
+    document Html.Event.keydown (Html.handler Game.keydown)
+    Js._true in
+  let _ = Html.addEventListener
+    document Html.Event.keydown (Html.handler Game.keyup)
+    Js._true in
   Game.game_loop context false
 
 (* start the game *)

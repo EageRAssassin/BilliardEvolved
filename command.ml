@@ -6,4 +6,8 @@ let player_command = {
   s = false;
   d = false;
   j = false;
+  q = false;
+  e = false;
+  two = false;
+  x = false;
 }
