@@ -13,8 +13,11 @@ let initial_state = {
   on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
                  six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
               thirteen_ball; fourteen_ball; fifteen_ball;];
-  cue_bearing = 20.;
-  cue_pos = (805., 290.);
+  cue_bearing = 0.;
+  counter = 0;
+  gap = 45.;
+  is_collide = false;
+  cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
@@ -31,6 +34,43 @@ let initial_state = {
 let state = ref (initial_state)
 
 (*controls*)
+(* mutable ref to store the current game state *)
+let state = ref (initial_state)
+
+(*https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp
+*)
+let keydown event =
+  let new_state = State.change_state !state in
+  let () = match event##keyCode with
+    | 87 -> player_command.w <- true; state := new_state
+    | 65 -> player_command.a <- true; state := new_state
+    | 83 -> player_command.s <- true; state := new_state
+    | 68 -> player_command.d <- true; state := new_state
+    | 74 -> player_command.j <- true; state := new_state
+    | 81 -> player_command.q <- true; state := new_state
+    | 69 -> player_command.e <- true; state := new_state
+    | 50 -> player_command.two <- true; state := new_state
+    | 88 -> player_command.x <- true; state := new_state
+
+    | _ -> player_command.s <- true; state := new_state (* other *)
+  in Js._true
+
+let keyup event =
+  let new_state = State.change_state !state in
+  let () = match event##keyCode with
+    | 87 -> player_command.w <- false; state := new_state
+    | 65 -> player_command.a <- false; state := new_state
+    | 83 -> player_command.s <- false; state := new_state
+    | 68 -> player_command.d <- false; state := new_state
+    | 74 -> player_command.j <- false; state := new_state
+    | 81 -> player_command.q <- false; state := new_state
+    | 69 -> player_command.e <- false; state := new_state
+    | 50 -> player_command.two <- false; state := new_state
+    | 88 -> player_command.x <- false; state := new_state
+
+    | _ -> player_command.s <- false; state := new_state (* other *)
+  in Js._true
 
 (* the main game loop modify this later*)
 let game_loop context has_won =

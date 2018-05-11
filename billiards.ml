@@ -5,8 +5,9 @@ let cue_ball = {
   suit = 0;
   name = "Cue Ball" ;
   size = (30.,30.);
-  velocity = (-2000.,0.);
-  position = (780.,290.); (*see arrangement.png for init. for now all are
+  (* velocity = (0.,0.); *)
+  velocity = (-0.,-0.);
+  position = (880.,390.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = -100; (*should never be potted*)
   (* legal_player = None;
@@ -27,7 +28,7 @@ let one_ball = {
   name = "One Ball" ;
   size = (30.,30.);
   velocity = (0.,0.);
-  position = (312.,290.); (*see arrangement.png for init. for now all are
+  position = (412.,390.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -46,7 +47,7 @@ let two_ball = {
   name = "Two Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (208.,320.); (*see arrangement.png for init. for now all are
+  position = (308.,420.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -65,7 +66,7 @@ let three_ball = {
   name = "Three Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (286.,275.); (*see arrangement.png for init. for now all are
+  position = (386.,375.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -84,7 +85,7 @@ let four_ball = {
   name = "Four Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (234.,275.); (*see arrangement.png for init. for now all are
+  position = (334.,375.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -103,7 +104,7 @@ let five_ball = {
   name = "Five Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (208.,260.); (*see arrangement.png for init. for now all are
+  position = (308.,360.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -122,7 +123,7 @@ let six_ball = {
   name = "Six Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (260.,320.); (*see arrangement.png for init. for now all are
+  position = (360.,420.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -141,7 +142,7 @@ let seven_ball = {
   name = "Seven Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (208.,350.); (*see arrangement.png for init. for now all are
+  position = (308.,450.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -160,7 +161,7 @@ let eight_ball = {
   name = "Eight Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (260.,290.); (*see arrangement.png for init. for now all are
+  position = (360.,390.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -179,7 +180,7 @@ let nine_ball = {
   name = "Nine Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (234.,245.); (*see arrangement.png for init. for now all are
+  position = (334.,345.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -198,7 +199,7 @@ let ten_ball = {
   name = "Ten Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (208.,290.); (*see arrangement.png for init. for now all are
+  position = (308.,390.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -217,7 +218,7 @@ let eleven_ball = {
   name = "Eleven Ball" ;
   size = (30.,30.);
   velocity = (0.,0.);
-  position = (286.,305.); (*see arrangement.png for init. for now all are
+  position = (386.,405.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -236,7 +237,7 @@ let twelve_ball = {
   name = "Twelve Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (208.,230.); (*see arrangement.png for init. for now all are
+  position = (308.,330.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -255,7 +256,7 @@ let thirteen_ball = {
   name = "Thirteen Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (234.,335.); (*see arrangement.png for init. for now all are
+  position = (334.,435.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -274,7 +275,7 @@ let fourteen_ball = {
   name = "Fourteen Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (260.,260.); (*see arrangement.png for init. for now all are
+  position = (360.,360.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
@@ -293,7 +294,7 @@ let fifteen_ball = {
   name = "Fifteen Ball" ;
   size = (30.,30.);
 velocity = (0.,0.);
-  position = (234.,305.); (*see arrangement.png for init. for now all are
+  position = (334.,405.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = 100;
   (* legal_player = None; (* whoever pots a solid first *)
