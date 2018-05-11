@@ -63,6 +63,7 @@ type state =
     foul : foul;
     hit_force : float * float;
     player_aiming : bool;
+    win: int;
   }
 
 type command =

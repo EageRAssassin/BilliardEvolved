@@ -27,6 +27,7 @@ let initial_state = {
   is_playing = player1;
   hit_force = (0., 0.);
   player_aiming = false;
+  win = 0;
   (* all_tables = [Tables.default] *)
 }
 

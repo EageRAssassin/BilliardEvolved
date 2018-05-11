@@ -25,10 +25,10 @@ val change_state : state -> state
 *)
 val change_force : state -> int -> state
 
- (* [next_turn st] will trigger the next turn where the user is given
+ (* [next_round st] will trigger the next round where the user is given
     control after all balls cease movement
     requires:
     [st] is current game state
   *
   *)
-val next_turn : state -> state
+val next_round : state -> state

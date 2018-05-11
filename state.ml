@@ -250,13 +250,6 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
       else check_is_collide st
     | _ -> false
 
-(* [check_foul billiards p] will decide if the user [player] have commited a foul *)
-let check_foul (billiards_to_be_removed : billiard list) (p : player) : bool =
-  false (*TODO*)
-
-(* [foul_handler st] will handle the foul case in [st] and return a new state *)
-let foul_handler (st : state) : state =
-  st
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
   else if command.d then st.cue_bearing -. 1.
@@ -355,7 +348,32 @@ let release_cue st =
 let replace_cue_ball st =
   if List.mem Billiards.cue_ball st.on_board = false then
     Billiards.cue_ball.position <- (880., 390.);
-        st.on_board <- Billiards.cue_ball :: st.on_board
+  st.on_board <- Billiards.cue_ball :: st.on_board
+
+  (*[contain_cue_ball billiards] check whether the billiards list contains
+  cue ball *)
+  let rec contain_cue_ball billiards =
+    match billiards with
+    | x::xs -> if (x.suit = 0 ) then true
+      else contain_cue_ball xs
+    | []-> false
+
+(*[contain_8_ball_undone billiards] check whether the billiards list contains
+  8 ball *)
+let rec contain_8_ball_undone billiards player_target_balls=
+  match billiards with
+  | x::xs -> if (x.suit = 8 ) && (player_target_balls <>[] ) then true
+(*TODO: balls need to be removed *)
+    else contain_8_ball_undone xs player_target_balls
+  | []-> false
+
+(* [check_foul billiards p] will decide if the user [player] have commited a foul *)
+let check_foul (billiards_to_be_removed : billiard list) (p : player) (balls_onboard: billiard list) : bool =
+  let player_target_balls = List.filter (fun (b: billiard) -> if p.name = "player_1" then 1 <= b.suit && b.suit <= 7
+                                          else 9 <= b.suit && b.suit <= 15) balls_onboard in
+  if contain_cue_ball billiards_to_be_removed then true
+  else if contain_8_ball_undone billiards_to_be_removed player_target_balls then true
+  else false
 
 
 (* [change_state st] will change the attributes of fields in [st] and
@@ -373,17 +391,17 @@ let change_state (st: state)  : state =
                           |> change_billiards_velocity in
   let billiards_to_be_removed =
     List.filter remove_on_board position_on_board in
-  let check_foul = check_foul billiards_to_be_removed st.is_playing in
   (* moved them here to help with my reset cue bearing *)
   let new_on_board2 = check_in_pot position_on_board in
   let ball_move = check_billiards_moving new_on_board2 in
+  let check_foul_result = check_foul billiards_to_be_removed st.is_playing new_on_board2 in
   let new_bearing = update_cue_bearing st ball_move st.cue_bearing in
   let new_cue_pos = update_cue_pos st ball_move in
   let new_gap = update_gap st ball_move st.gap in
   replace_cue_ball st;
   release_cue st;
 
-  if not check_foul then
+  if not check_foul_result then
     (* let new_on_board2 = check_in_pot position_on_board in *)
     {st with
       on_board = new_on_board2 ;
@@ -393,10 +411,43 @@ let change_state (st: state)  : state =
       cue_pos = new_cue_pos;
       counter = st.counter + 1;
       gap = new_gap;
-      (* is_collide = check_is_collide st *)
     }
   else
+
+
+    (* [foul_handler st] will handle the foul case in [st] and return a new state *)
+    let foul_handler (st : state) : state =
+      let current_player = st.is_playing in
+      let player_target_balls = List.filter (fun (b: billiard) -> if current_player.name = "player_1" then 1 <= b.suit && b.suit <= 7
+                                              else 9 <= b.suit && b.suit <= 15) new_on_board2 in
+      if contain_cue_ball billiards_to_be_removed then   (*if the suit ball is removed *)
+        (* [new_on_board_recover_cue new_on_board2] checks whether the ball removed
+           is the cue, and return a new state with cue ball's position reset.*)
+        let new_on_board_recover_cue new_on_board2 =
+          Billiards.cue_ball.position <- (880.,390.);
+          Billiards.cue_ball.velocity <- (0.,0.);
+          Billiards.cue_ball::new_on_board2 in
+
+          {st with
+           on_board = new_on_board_recover_cue new_on_board2 ;
+           ball_moving = ball_move;
+           is_playing = st.is_playing;
+           cue_bearing = new_bearing;
+           cue_pos = new_cue_pos;
+           counter = st.counter + 1;
+           gap = new_gap;
+           foul = Cue_pot;
+           (* is_collide = check_is_collide st *)
+          }
+      else if contain_8_ball_undone billiards_to_be_removed player_target_balls then
+        (*if the 8 ball is removed and there are still balls to be removed *)
+        if current_player.name = "player_1"
+        then {st with win = 2;}
+        else {st with win = 1;}
+      else failwith "contain 8 balls situation not found "
+       in
     foul_handler st
+
 
 (* [change_force st] will change the attributes of hit_force in [st] according
    to the attribute [direction]
@@ -440,11 +491,11 @@ let rec find_next_player (players : player list) (is_playing : player) =
   | [] -> failwith "player not found"
   | h :: t -> if h = is_playing then find_next_player t is_playing else h
 
-(* [next_turn st] will trigger the next turn where the user is given
+(* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires: [st] is current game state
  *)
-let next_turn st =
+let next_round st =
   (* change the player *)
   let players = st.player in
   let current_player = st.is_playing in
@@ -453,4 +504,5 @@ let next_turn st =
   let next_player_changed = {next_player with is_playing = true;} in
   {st with is_playing = next_player_changed;
            player = [current_player_changed ; next_player_changed];
-           player_aiming = true;}
+           player_aiming = true;
+           foul = No_foul;}

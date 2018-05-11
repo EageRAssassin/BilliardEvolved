@@ -73,6 +73,7 @@ type state =
     foul : foul;
     hit_force : float * float;
     player_aiming : bool;
+    win: int; (*0 no one win, 1 play win, 2 AI win*)
   }
 
 type command = {
