@@ -27,7 +27,7 @@ let rec closest_billiard (cue_position : (float*float)) (billiards : billiard li
 
 (* [min_distance_to_pocket position1] will return the minimal distance from
    billiard [position] to pocket *)
-let min_distance_to_pocket (position : (float*float)) (cue : (float*float)): float =
+let min_distance_to_pocket (position : (float*float)): float =
   let distance1 = distance_between position (80.,80.) in
   let distance2 = distance_between position (80.,535.) in
   let distance3 = distance_between position (535.,80.) in
@@ -71,7 +71,7 @@ let rec find_pocket_distances_from (cue_position : (float*float)) (billiard_list
   match billiard_list with
   | x :: xs -> if billiard_between cue_position x.position all_billiards
     then -1.0 :: find_pocket_distances_from cue_position xs all_billiards
-    else (min_distance_to_pocket x.position cue_position) :: find_pocket_distances_from cue_position xs all_billiards
+    else (min_distance_to_pocket x.position) :: find_pocket_distances_from cue_position xs all_billiards
   | [] -> []
 
 (* [find_pocket_distances_from_bouncing_wall white_position billiard_list]
@@ -91,7 +91,7 @@ let rec find_pocket_distances_from_bouncing_wall (cue_position : (float*float)) 
                                    billiard_between cue_position (fst x.position, 460.*.2.-.(snd x.position)) all_billiards in
     if hit_feasible_by_bouncing
     then -1.0 :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
-    else (min_distance_to_pocket x.position cue_position) :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
+    else (min_distance_to_pocket x.position) :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
   | [] -> []
 
 (* [find_billiard_position st suit] will return the coordinate of the billiard
@@ -147,9 +147,39 @@ let search2_possible st : int =
    angles that aI needs to hit [ball_position] from [white_position] directly *)
 (* TODO *)
 let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
-  let vector_x = fst ball_position -. fst cue_position in
-  let vector_y = snd ball_position -. snd cue_position in
-  (vector_x, vector_y)
+  let pocket_to_be_hit : (float * float) =
+    let min_dist = min_distance_to_pocket ball_position in
+    if min_dist = distance_between ball_position (80.,80.) then (80.,80.)
+    else if min_dist = distance_between ball_position (80.,535.) then (80.,535.)
+    else if min_dist = distance_between ball_position (535.,80.) then (535.,80.)
+    else if min_dist = distance_between ball_position (535.,535.) then (535.,535.)
+    else if min_dist = distance_between ball_position (980.,80.) then (980.,80.)
+    else if min_dist = distance_between ball_position (980.,535.) then (980.,535.)
+    else failwith "No pocket to be hit" in
+  (* 4 situation: *)
+  (* 1. pocket upper left, ball middle, cue lower right *)
+  if fst cue_position > fst pocket_to_be_hit && snd cue_position > snd pocket_to_be_hit
+  then
+    (*TODO hit point calculation*)
+    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
+    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
+  (* 2. pocket lower left, ball middle, cue upper right *)
+  else if fst cue_position > fst pocket_to_be_hit && snd cue_position < snd pocket_to_be_hit
+  then
+    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
+    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
+  (* 3. pocket upper right, ball middle, cue lower left *)
+  else if fst cue_position < fst pocket_to_be_hit && snd cue_position > snd pocket_to_be_hit
+  then
+    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
+    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
+  (* 4. pocket lower right, ball middle, cue upper left *)
+  else if fst cue_position < fst pocket_to_be_hit && snd cue_position < snd pocket_to_be_hit
+  then
+    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
+    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
+  else failwith "search1_calculation failed"
+
 
 (* [search2_calculation white_position ball_position] will return the x and y
    angles that AI needs to hit [ball_position] from [white_position] directly *)
