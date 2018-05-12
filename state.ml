@@ -1,5 +1,6 @@
 open Types
 open Command
+open Player
 (* open Billiards *)
 
 (* type billiards: see billiard.mli *)
@@ -540,9 +541,6 @@ let rec hit_legal_plot_ball ball_removed legalpot=
   | [] -> false
 
 
-let remove_8_from_legal_pot st =
-
-
 (* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires: [st] is current game state
@@ -570,20 +568,20 @@ let next_round st =
 
   (*not hit balls in the legal pot*)
   if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
-    {st with is_playing = next_player_changed;
-             player = [current_player_changed ; next_player_changed];
+    {st with is_playing = next_player;
+             player = [current_player ; next_player];
              player_aiming = true;
-             round = round + 1;}
+             round = st.round + 1;}
     (*white ball in cue*)
   else if contain_cue_ball billiards_to_be_removed then
-    {st with is_playing = next_player_changed;
-             player = [current_player_changed ; next_player_changed];
+    {st with is_playing = next_player;
+             player = [current_player ; next_player];
              player_aiming = true;
              foul = Cue_pot;
-             round = round + 1;}
+             round = st.round + 1;}
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
-  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) && (round <> 1) then
+  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) && (st.round <> 1) then
     if current_player.name = "player_1"
     then  {st with win = 2;}
     else  {st with win = 1;}
-  else {st with round = round +1 ;}
+  else {st with round = st.round +1 ;}
