@@ -28,10 +28,11 @@ let initial_state = {
   foul = No_foul;
   is_playing = player1;
   hit_force = (0., 0.);
-  player_aiming = false;
   win = 0;
   round = 0;
   (* all_tables = [Tables.default] *)
+  billiards_removed_in_a_round = [];
+
 }
 
 (* mutable ref to store the current game state *)

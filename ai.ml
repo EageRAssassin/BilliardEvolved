@@ -17,11 +17,11 @@ let distance_between (position1 : (float*float)) (position2 : (float*float)) : f
   sqrt ((abs_float (x1 -. x2)) *. (abs_float (x1 -. x2))
         +. (abs_float (y1 -. y2)) *. (abs_float (y1 -. y2)))
 
-(* [nearst_billiard cue_position media/billiards.png] will return the vector needed to hit
+(* [nearst_billiard cue_position billiards] will return the vector needed to hit
    from the cue_position to the closest billiard
-   required: [media/billiards.png] is not an empty list *)
-let rec closest_billiard (cue_position : (float*float)) (media/billiards.png : billiard list) (min_vector : (float * float)) : (float * float) =
-  match media/billiards.png with
+   required: [billiards] is not an empty list *)
+let rec closest_billiard (cue_position : (float*float)) (billiards : billiard list) (min_vector : (float * float)) : (float * float) =
+  match billiards with
   | x :: xs ->
     let distance = distance_between x.position cue_position in
     let min_dist = sqrt((fst min_vector) *. (fst min_vector) +.
@@ -45,10 +45,10 @@ let min_distance_to_pocket (position : (float*float)): float =
   List.fold_left find_min 3000. [distance1;distance2;distance3;distance4;distance5;distance6]
 
 (* [billiard_between position1 position2] will return true if there are
-   media/billiards.png between two balls of position1 and position2
-   requires: media/billiards.png is a list with valid media/billiards.png
+   billiards between two balls of position1 and position2
+   requires: billiards is a list with valid billiards
 *)
-let rec billiard_between (position1 : (float*float)) (position2 : (float*float)) (media/billiards.png : billiard list) : bool =
+let rec billiard_between (position1 : (float*float)) (position2 : (float*float)) (billiards : billiard list) : bool =
   (* y = mx + b *)
   let x1 = fst position1 in
   let y1 = snd position1 in
@@ -66,18 +66,18 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
          && b_y > (min y1 y2) && b_y < (max y1 y2))
         || billiard_between_helper function_m function_b xs
       | [] -> false in
-  billiard_between_helper m b media/billiards.png
+  billiard_between_helper m b billiards
 
 (* [find_distances_from white_position billiard_list] will return a list with
    1. The distances of all the balls to the nearest pocket,
    if there is no ball between the ball and the white ball
    2. -1 if there is ball between the ball and the white ball
 *)
-let rec find_pocket_distances_from (cue_position : (float*float)) (billiard_list : billiard list) (all_media/billiards.png : billiard list) : float list=
+let rec find_pocket_distances_from (cue_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
   match billiard_list with
-  | x :: xs -> if billiard_between cue_position x.position all_media/billiards.png
-    then -1.0 :: find_pocket_distances_from cue_position xs all_media/billiards.png
-    else (min_distance_to_pocket x.position) :: find_pocket_distances_from cue_position xs all_media/billiards.png
+  | x :: xs -> if billiard_between cue_position x.position all_billiards
+    then -1.0 :: find_pocket_distances_from cue_position xs all_billiards
+    else (min_distance_to_pocket x.position) :: find_pocket_distances_from cue_position xs all_billiards
   | [] -> []
 
 (* [find_pocket_distances_from_bouncing_wall white_position billiard_list]
@@ -86,24 +86,24 @@ let rec find_pocket_distances_from (cue_position : (float*float)) (billiard_list
    if there is no ball between the ball and the white ball with one bounce
    2. -1 if there is ball between the ball and the white ball
 *)
-let rec find_pocket_distances_from_bouncing_wall (cue_position : (float*float)) (billiard_list : billiard list) (all_media/billiards.png : billiard list) : float list=
+let rec find_pocket_distances_from_bouncing_wall (cue_position : (float*float)) (billiard_list : billiard list) (all_billiards : billiard list) : float list=
   match billiard_list with
   | x :: xs ->
     (* check bouncing with 4 walls *)
     (*TODO dimension of wall?*)
-    let hit_feasible_by_bouncing = billiard_between cue_position (-.(fst x.position), snd x.position) all_media/billiards.png ||
-                                   billiard_between cue_position (fst x.position, -.(snd x.position)) all_media/billiards.png ||
-                                   billiard_between cue_position (920.*.2.-.(fst x.position), snd x.position) all_media/billiards.png ||
-                                   billiard_between cue_position (fst x.position, 460.*.2.-.(snd x.position)) all_media/billiards.png in
+    let hit_feasible_by_bouncing = billiard_between cue_position (-.(fst x.position), snd x.position) all_billiards ||
+                                   billiard_between cue_position (fst x.position, -.(snd x.position)) all_billiards ||
+                                   billiard_between cue_position (920.*.2.-.(fst x.position), snd x.position) all_billiards ||
+                                   billiard_between cue_position (fst x.position, 460.*.2.-.(snd x.position)) all_billiards in
     if hit_feasible_by_bouncing
-    then -1.0 :: find_pocket_distances_from_bouncing_wall cue_position xs all_media/billiards.png
-    else (min_distance_to_pocket x.position) :: find_pocket_distances_from_bouncing_wall cue_position xs all_media/billiards.png
+    then -1.0 :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
+    else (min_distance_to_pocket x.position) :: find_pocket_distances_from_bouncing_wall cue_position xs all_billiards
   | [] -> []
 
 (* [find_billiard_position st suit] will return the coordinate of the billiard
-   with suit [suit] among media/billiards.png [billiard_list], returns (-1, -1) if
+   with suit [suit] among billiards [billiard_list], returns (-1, -1) if
    there is not such ball in the state
-   requires: billiard_list is a list with valid media/billiards.png *)
+   requires: billiard_list is a list with valid billiards *)
 let rec find_billiard_position (billiard_list : billiard list) (suit : int) : (float * float) =
   match billiard_list with
   | x :: xs -> if x.suit = suit then x.position
@@ -124,14 +124,14 @@ let rec findnth_billiard (distance_list : float list) (distance : float) (index 
    requires: [st] is a valid state *)
 let search1_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
-  let media/billiards.png_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
-  if List.length media/billiards.png_on_board > 0 then
-    let distance_list : float list = find_pocket_distances_from white_position media/billiards.png_on_board media/billiards.png_on_board in
+  let billiards_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
+  if List.length billiards_on_board > 0 then
+    let distance_list : float list = find_pocket_distances_from white_position billiards_on_board billiards_on_board in
     (* check if any ball is hittable in distance list *)
     let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 4000. distance_list in
     if nearest < 4000. then findnth_billiard distance_list nearest 0
     else -1
-  else failwith "No media/billiards.png on board"
+  else failwith "No billiards on board"
 
 (* [search2_possible st] will evaluate the whether the strategy in search2
    is possible, and return the suit of the ball if the strategy is possible.
@@ -140,14 +140,14 @@ let search1_possible st : int =
    requires: [st] is a valid state *)
 let search2_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
-  let media/billiards.png_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
-  if List.length media/billiards.png_on_board > 0 then
-    let distance_list : float list = find_pocket_distances_from_bouncing_wall white_position media/billiards.png_on_board media/billiards.png_on_board in
+  let billiards_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
+  if List.length billiards_on_board > 0 then
+    let distance_list : float list = find_pocket_distances_from_bouncing_wall white_position billiards_on_board billiards_on_board in
     (* check if any ball is hittable in distance list *)
     let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 4000. distance_list in
     if nearest < 4000. then findnth_billiard distance_list nearest 0
     else -1
-  else failwith "No media/billiards.png on board"
+  else failwith "No billiards on board"
 
 (* [search1_calculation white_position ball_position] will return the x and y
    angles that AI needs to hit [ball_position] from [white_position] directly *)
