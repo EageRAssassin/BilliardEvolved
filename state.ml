@@ -149,8 +149,8 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.100.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.100.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
   ball.position <- (tempx,tempy);
   ball
 
@@ -395,8 +395,6 @@ let update_cue_gap st ball_moving curr_gap =
     else if gap > 200. then 200.
     else gap
 
-
-
 let update_cue_bearing_cursor st ball_moving =
   let ball_coord = Billiards.cue_ball.position in
   let command = player_command in
@@ -462,7 +460,6 @@ let check_foul (billiards_to_be_removed : billiard list) (p : player) (balls_onb
   else if contain_8_ball_undone billiards_to_be_removed player_target_balls then true
   else false
 
-
 (* [find_next_player players is_playing] will find the next player aside from
    [is_playing] player.
    raises: "player not found" if next player does not exist in the list
@@ -487,7 +484,6 @@ let rec hit_legal_plot_ball ball_removed legalpot=
    control after all balls cease movement
    requires: [st] is current game state
 *)
-
 let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
@@ -500,8 +496,7 @@ let next_round (st : state) =
   if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then another_player.legal_pot <- [Billiards.eight_ball];
 
-  let billiards_to_be_removed = List.filter remove_on_board balls_on_board in
-
+  let billiards_to_be_removed = st.billiards_removed_in_a_round in
   (*not hit balls in the legal pot*)
   if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
     begin
@@ -522,8 +517,8 @@ let next_round (st : state) =
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
   else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
     if current_player.name = "player_1"
-    then begin st.win <- 2; end
-    else begin st.win <- 1; end
+    then begin st.win <- 2 end
+    else begin st.win <- 1 end
 
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
@@ -536,8 +531,8 @@ let change_state (st: state) : state =
                           |> List.map check_wall_touching
                           |> check_billiard_collision
                           |> change_billiards_velocity in
-  let billiards_to_be_removed =
-    List.filter remove_on_board position_on_board in
+  let billiards_to_be_removed = List.filter remove_on_board position_on_board in
+  st.billiards_removed_in_a_round <- st.billiards_removed_in_a_round @ billiards_to_be_removed;
   (* moved them here to help with my reset cue bearing *)
   let new_on_board2 = check_in_pot position_on_board in
   let ball_move = check_billiards_moving new_on_board2 in
@@ -554,15 +549,18 @@ let change_state (st: state) : state =
     List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
   replace_cue_ball st;
   release_cue st;
-  if not ball_move && (st.ball_moving = true && ball_move = false) then next_round st;
-
+  if not ball_move && (st.ball_moving = true && ball_move = false) then
+    begin
+      next_round st;
+      st.billiards_removed_in_a_round<-[];
+    end;
   if not check_foul_result then
     (* let new_on_board2 = check_in_pot position_on_board in *)
     {st with
       on_board = new_on_board2 ;
       prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
-      is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
+      (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)(*TODO WHY DELETING THIS LINE MAKE THE CHANGE ROUND WORKS??*)
       is_collide = check_is_collide st;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
@@ -605,24 +603,6 @@ let change_state (st: state) : state =
       else failwith "contain 8 balls situation not found "
        in
     foul_handler st
-
-
-(* [change_force st] will change the attributes of hit_force in [st] according
-   to the attribute [direction]
-   direction: 1 -> up; 2 -> left; 3 -> down; 4 -> right;
-   requires:
-   [st] is a game state
-   [direciton] is a integer value from 1 and 4
-*)
-let change_force (st : state) (direction : int) : state =
-  let original_hit_force = st.hit_force in
-  let result_h_f =
-    if direction = 1 then (fst original_hit_force , (snd original_hit_force) +. 1.)
-    else if direction = 2 then ((fst original_hit_force) -. 1. , snd original_hit_force)
-    else if direction = 3 then (fst original_hit_force , (snd original_hit_force) -. 1.)
-    else if direction = 4 then ((fst original_hit_force) +. 1. , snd original_hit_force)
-    else failwith "direction attribute error" in
-  {st with hit_force = result_h_f;}
 
 (* [get_cue_billiard billiard_list] will find the cue ball in the [billiard_list]
    raises: "No cue billiard on board" if cue ball does not exist in [billiard_list]

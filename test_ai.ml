@@ -1,6 +1,7 @@
 open OUnit2
 open Types
 open Billiards
+open Player
 open Ai
 
 let cue_ball_temp = {
@@ -79,26 +80,28 @@ let ball_300_10 = {
   mass = 10.;
 }
 
-let billiard_between_list1 = [ball_15_15]
-let billiard_between_list2 = [ball_300_10]
-let billiard_between_list3 = [ball_150_150]
-let billiard_between_list4 = [ball_15_15;ball_300_10;ball_150_150]
-
 let player1 = {
-  name = "player1";
-  is_playing = false;
-  score = 0;
-  cue = 0;
-  money = 0;
-}
-
-let player2 = {
-  name = "player2";
+  name = "player_1";
   is_playing = true;
   score = 0;
   cue = 0;
   money = 0;
+  legal_pot = [];
 }
+
+let player2 = {
+  name = "player_2";
+  is_playing = false;
+  score = 0;
+  cue = 0;
+  money = 0;
+  legal_pot = [];
+}
+
+let billiard_between_list1 = [ball_15_15]
+let billiard_between_list2 = [ball_300_10]
+let billiard_between_list3 = [ball_150_150]
+let billiard_between_list4 = [ball_15_15;ball_300_10;ball_150_150]
 
 let state_test_no_billiard = {
   on_board = [cue_ball_temp];
@@ -111,11 +114,13 @@ let state_test_no_billiard = {
   is_playing = player2;
   ball_moving = false;
   hit_force = (0.0, 0.0);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let state_test1 = {
@@ -129,11 +134,13 @@ let state_test1 = {
   is_playing = player2;
   ball_moving = false;
   hit_force = (0.0, 0.0);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let state_test2 = {
@@ -147,11 +154,13 @@ let state_test2 = {
   is_playing = player2;
   ball_moving = false;
   hit_force = (0.0, 0.0);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let state_test3 = {
@@ -165,11 +174,13 @@ let state_test3 = {
   is_playing = player2;
   ball_moving = false;
   hit_force = (0.0, 0.0);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let state_test_closest_billiard = {
@@ -184,11 +195,13 @@ let state_test_closest_billiard = {
   foul = No_foul;
   is_playing = player1;
   hit_force = (0., 0.);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let initial_state = {
@@ -204,11 +217,13 @@ let initial_state = {
   foul = No_foul;
   is_playing = player1;
   hit_force = (0., 0.);
-  player_aiming = false;
   counter = 0;
   gap = 0.;
   is_collide = true;
   win = 0;
+  round = 0;
+  prev_ball_moving = false;
+  billiards_removed_in_a_round = [];
 }
 
 let tests =
@@ -222,8 +237,7 @@ let tests =
     (* "test0" >:: (fun _ -> assert_equal (0., 0.) (ai_evaluate_next_move state_test0)); *)
     "test0" >:: (fun _ -> assert_equal 1 (try search1_possible state_test_no_billiard with _ -> 1));
     "test1" >:: (fun _ -> assert_equal 0 (search1_possible state_test1));
-    "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2));
-    (* "test3" >:: (fun _ -> assert_equal 1 (search2_possible state_test2)); *)
+    "test2" >:: (fun _ -> assert_equal 0 (search1_possible state_test2));
 
     (* Search 1 calculation *)
     (* pot upper left *)
@@ -233,9 +247,9 @@ let tests =
     (* pot upper middle *)
     "search1_calculation3" >:: (fun _ -> assert_equal (1012.8721062626214, -779.526868471060652) (search1_calculation (500., 350.) (600., 250.)));
     (* pot upper right *)
-    "search1_calculation4" >:: (fun _ -> assert_equal (2500., -587.526800744152752) (search1_calculation (500., 350.) (900., 250.)));
+    "search1_calculation4" >:: (fun _ -> assert_equal (3000., -705.03216089298337) (search1_calculation (500., 350.) (900., 250.)));
     (* pot lower right *)
-    "search1_calculation5" >:: (fun _ -> assert_equal (2500., 1281.9173094431344) (search1_calculation (500., 350.) (900., 550.)));
+    "search1_calculation5" >:: (fun _ -> assert_equal (2889.89910744833, 1481.84467535291151) (search1_calculation (500., 350.) (900., 550.)));
     (* pot lower middle *)
     "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.)));
     (* pot lower left *)
