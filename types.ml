@@ -72,12 +72,12 @@ type state =
     is_pot : billiard list;
     ball_moving : bool;
     mutable current_table_id: string;
-    is_playing : player;
-    foul : foul;
+    mutable is_playing : player;
+    mutable foul : foul;
     hit_force : float * float;
-    player_aiming : bool;
-    win: int; (*0 no one win, 1 play win, 2 AI win*)
-    round: int;
+    mutable player_aiming : bool;
+    mutable win: int; (*0 no one win, 1 play win, 2 AI win*)
+    mutable round: int;
   }
 
 type command = {

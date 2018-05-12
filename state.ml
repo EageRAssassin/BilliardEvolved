@@ -547,43 +547,41 @@ let rec hit_legal_plot_ball ball_removed legalpot=
    control after all balls cease movement
    requires: [st] is current game state
  *)
-let next_round st =
+let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
-  current_player.is_playing <- false;
-  let next_player = find_next_player players current_player in
-  next_player.is_playing <- true;
+  let another_player = find_next_player players current_player in
   let current_legal_pot = current_player.legal_pot in
   let balls_on_board = st.on_board in
 
   if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then current_player.legal_pot <- [Billiards.eight_ball];
-  if (next_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
-  then next_player.legal_pot <- [Billiards.eight_ball];
+  if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  then another_player.legal_pot <- [Billiards.eight_ball];
 
-  let position_on_board = List.map move_ball_position st.on_board
-                          |> List.map check_wall_touching
-                          |> check_billiard_collision
-                          |> change_billiards_velocity in
-  let billiards_to_be_removed =
-    List.filter remove_on_board position_on_board in
+  let billiards_to_be_removed = List.filter remove_on_board balls_on_board in
 
   (*not hit balls in the legal pot*)
   if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
-    {st with is_playing = next_player;
-             player = [current_player ; next_player];
-             player_aiming = true;
-             round = st.round + 1;}
+    begin
+    current_player.is_playing <- false;
+    another_player.is_playing <- true;
+    st.is_playing <- another_player;
+    st.player_aiming <- true;
+    st.round <- st.round + 1
+  end
     (*white ball in cue*)
   else if contain_cue_ball billiards_to_be_removed then
-    {st with is_playing = next_player;
-             player = [current_player ; next_player];
-             player_aiming = true;
-             foul = Cue_pot;
-             round = st.round + 1;}
+    begin
+    current_player.is_playing <- false;
+    another_player.is_playing <- true;
+    st.is_playing <- another_player;
+    st.player_aiming <- true;
+    st.foul <- Cue_pot;
+    st.round <- st.round + 1
+  end
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
   else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
     if current_player.name = "player_1"
-    then  {st with win = 2;}
-    else  {st with win = 1;}
-  else {st with round = st.round +1 ;}
+    then  st.win <- 2
+    else  st.win <- 1
