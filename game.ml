@@ -28,6 +28,7 @@ let initial_state = {
   hit_force = (0., 0.);
   player_aiming = false;
   win = 0;
+  round = 0;
   (* all_tables = [Tables.default] *)
 }
 

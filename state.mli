@@ -31,4 +31,4 @@ val change_force : state -> int -> state
     [st] is current game state
   *
   *)
-val next_round : state -> state
+val next_round : state -> unit

@@ -1,5 +1,6 @@
 open Types
 open Command
+open Player
 (* open Billiards *)
 
 (* type billiards: see billiard.mli *)
@@ -145,16 +146,16 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.50.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.50.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
   ball.position <- (tempx,tempy);
   ball
 
 (* [move_ball_velocity time ball] slow down the velocity while the ball is moving
    requires: [ball] is a valid billiard *)
 let move_ball_velocity ball =
-  let tempx = ref ( (fst ball.velocity) *. 0.96 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.96 )  in
+  let tempx = ref ( (fst ball.velocity) *. 0.983 )  in
+  let tempy = ref ( (snd ball.velocity) *. 0.983 )  in
   if abs_float(!tempx) < 1. then tempx := 0.;
   if abs_float(!tempy) < 1. then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
@@ -428,6 +429,12 @@ let change_state (st: state)  : state =
   let new_bearing = update_cue_bearing st ball_move st.cue_bearing in
   let new_cue_pos = update_cue_pos st ball_move in
   let new_gap = update_gap st ball_move st.gap in
+  let current_player = st.is_playing in
+  (*get the legal pot with the current onboard balls *)
+  let set_legal_pot =
+    let legal_pot = current_player.legal_pot in
+    List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
+
   replace_cue_ball st;
   release_cue st;
 
@@ -436,14 +443,14 @@ let change_state (st: state)  : state =
     {st with
       on_board = new_on_board2 ;
       ball_moving = ball_move;
-      is_playing = st.is_playing;
+      is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
       counter = st.counter + 1;
       gap = new_gap;
+
     }
   else
-
 
     (* [foul_handler st] will handle the foul case in [st] and return a new state
        requires: [st] is a valid state*)
@@ -462,7 +469,7 @@ let change_state (st: state)  : state =
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;
            ball_moving = ball_move;
-           is_playing = st.is_playing;
+          is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
            cue_bearing = new_bearing;
            cue_pos = new_cue_pos;
            counter = st.counter + 1;
@@ -526,18 +533,55 @@ let rec find_next_player (players : player list) (is_playing : player) =
   | [] -> failwith "player not found"
   | h :: t -> if h = is_playing then find_next_player t is_playing else h
 
+(*[hit_legal_plot_ball ball_removed legalpot] returns true if the player hit the
+  balls that is in the legal plot list
+  requires: [ball_removed] is a valid billiard list
+            [legalpot] is a valid billiard list *)
+let rec hit_legal_plot_ball ball_removed legalpot=
+  match ball_removed with
+  | x::xs -> if List.mem x legalpot then true else hit_legal_plot_ball xs legalpot
+  | [] -> false
+
+
 (* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires: [st] is current game state
  *)
-let next_round st =
-  (* change the player *)
+let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
-  let next_player = find_next_player players current_player in
-  let current_player_changed = {current_player with is_playing = false;} in
-  let next_player_changed = {next_player with is_playing = true;} in
-  {st with is_playing = next_player_changed;
-           player = [current_player_changed ; next_player_changed];
-           player_aiming = true;
-           foul = No_foul;}
+  let another_player = find_next_player players current_player in
+  let current_legal_pot = current_player.legal_pot in
+  let balls_on_board = st.on_board in
+
+  if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  then current_player.legal_pot <- [Billiards.eight_ball];
+  if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  then another_player.legal_pot <- [Billiards.eight_ball];
+
+  let billiards_to_be_removed = List.filter remove_on_board balls_on_board in
+
+  (*not hit balls in the legal pot*)
+  if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
+    begin
+    current_player.is_playing <- false;
+    another_player.is_playing <- true;
+    st.is_playing <- another_player;
+    st.player_aiming <- true;
+    st.round <- st.round + 1
+  end
+    (*white ball in cue*)
+  else if contain_cue_ball billiards_to_be_removed then
+    begin
+    current_player.is_playing <- false;
+    another_player.is_playing <- true;
+    st.is_playing <- another_player;
+    st.player_aiming <- true;
+    st.foul <- Cue_pot;
+    st.round <- st.round + 1
+  end
+    (*while ball eight is not in the legal list, hit the 8 ball in it*)
+  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
+    if current_player.name = "player_1"
+    then  st.win <- 2
+    else  st.win <- 1
