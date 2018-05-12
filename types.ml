@@ -34,9 +34,9 @@ type foul =
 
 type player =
   {
-    legal_pot: billiard list;
+    mutable legal_pot: billiard list;
     name: string;
-    is_playing : bool;
+    mutable is_playing : bool;
     score : int;
     cue : int;
     money: int;

@@ -8,7 +8,7 @@ let player1 = {
   score = 0;
   cue = 0;
   money = 0;
-  legal_pot = cue_ball::one_ball::two_ball::three_ball::four_ball::five_ball::
+  legal_pot = one_ball::two_ball::three_ball::four_ball::five_ball::
               six_ball::seven_ball::eight_ball::[];
 }
 
@@ -20,5 +20,5 @@ let player2 = {
   cue = 0;
   money = 0;
   legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
-              fifteen_ball::eight_ball::[];
+              fifteen_ball::[];
 }

@@ -145,8 +145,8 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.100.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.100.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
   ball.position <- (tempx,tempy);
   ball
 
@@ -428,6 +428,12 @@ let change_state (st: state)  : state =
   let new_bearing = update_cue_bearing st ball_move st.cue_bearing in
   let new_cue_pos = update_cue_pos st ball_move in
   let new_gap = update_gap st ball_move st.gap in
+  let current_player = st.is_playing in
+  (*get the legal pot with the current onboard balls *)
+  let set_legal_pot =
+    let legal_pot = current_player.legal_pot in
+    List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
+
   replace_cue_ball st;
   release_cue st;
 
@@ -436,14 +442,14 @@ let change_state (st: state)  : state =
     {st with
       on_board = new_on_board2 ;
       ball_moving = ball_move;
-      is_playing = st.is_playing;
+      is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
       counter = st.counter + 1;
       gap = new_gap;
+
     }
   else
-
 
     (* [foul_handler st] will handle the foul case in [st] and return a new state
        requires: [st] is a valid state*)
@@ -462,7 +468,7 @@ let change_state (st: state)  : state =
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;
            ball_moving = ball_move;
-           is_playing = st.is_playing;
+          is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
            cue_bearing = new_bearing;
            cue_pos = new_cue_pos;
            counter = st.counter + 1;
@@ -533,6 +539,10 @@ let rec hit_legal_plot_ball ball_removed legalpot=
   | x::xs -> if List.mem x legalpot then true else hit_legal_plot_ball xs legalpot
   | [] -> false
 
+
+let remove_8_from_legal_pot st =
+
+
 (* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires: [st] is current game state
@@ -540,10 +550,16 @@ let rec hit_legal_plot_ball ball_removed legalpot=
 let next_round st =
   let players = st.player in
   let current_player = st.is_playing in
+  current_player.is_playing <- false;
   let next_player = find_next_player players current_player in
-  let current_player_changed = {current_player with is_playing = false;} in
-  let next_player_changed = {next_player with is_playing = true;} in
+  next_player.is_playing <- true;
   let current_legal_pot = current_player.legal_pot in
+  let balls_on_board = st.on_board in
+
+  if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  then current_player.legal_pot <- [Billiards.eight_ball];
+  if (next_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  then next_player.legal_pot <- [Billiards.eight_ball];
 
   let position_on_board = List.map move_ball_position st.on_board
                           |> List.map check_wall_touching
@@ -556,16 +572,18 @@ let next_round st =
   if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
     {st with is_playing = next_player_changed;
              player = [current_player_changed ; next_player_changed];
-             player_aiming = true; }
+             player_aiming = true;
+             round = round + 1;}
     (*white ball in cue*)
   else if contain_cue_ball billiards_to_be_removed then
     {st with is_playing = next_player_changed;
              player = [current_player_changed ; next_player_changed];
              player_aiming = true;
-             foul = Cue_pot;}
+             foul = Cue_pot;
+             round = round + 1;}
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
   else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) && (round <> 1) then
     if current_player.name = "player_1"
     then  {st with win = 2;}
     else  {st with win = 1;}
-  else st
+  else {st with round = round +1 ;}
