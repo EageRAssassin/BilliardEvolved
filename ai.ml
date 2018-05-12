@@ -150,7 +150,7 @@ let search2_possible st : int =
   else failwith "No billiards on board"
 
 (* [search1_calculation white_position ball_position] will return the x and y
-   angles that aI needs to hit [ball_position] from [white_position] directly *)
+   angles that AI needs to hit [ball_position] from [white_position] directly *)
 (* TODO *)
 let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
   let pocket_to_be_hit : (float * float) =
@@ -165,9 +165,17 @@ let search1_calculation (cue_position : (float*float)) (ball_position : (float*f
   let x1 = fst ball_position -. fst pocket_to_be_hit in
   let y1 = snd ball_position -. snd pocket_to_be_hit in
   let ratio = ( sqrt (x1 *. x1 +. y1 *. y1) +. radius *. 2. ) /. sqrt (x1 *. x1 +. y1 *. y1) in
-  let cue_ratio = (fst cue_position -. fst ball_position) /. (snd cue_position -. snd ball_position) in
   let hit_point : (float * float) = (fst pocket_to_be_hit +. x1 *. ratio, snd pocket_to_be_hit +. y1 *. ratio) in
-  ((fst hit_point -. fst cue_position) *. 10., (snd hit_point -. snd cue_position) *. 10. *. cue_ratio *. 0.65)
+  let force_magnifier = (distance_between ball_position pocket_to_be_hit) /.
+                        (distance_between cue_position ball_position) in
+  let vector_x = (fst hit_point -. fst cue_position) *. 10. *. force_magnifier *. 2. in
+  let vector_y = (snd hit_point -. snd cue_position) *. 10. *. force_magnifier *. 2. in
+  if vector_x > 3000. && vector_y > 3000. then
+    if vector_x > vector_y then (3000., 3000.*.vector_y/.vector_x)
+    else (3000.*.vector_x/.vector_y, 3000.)
+  else if vector_x > 3000. then (3000., 3000.*.vector_y/.vector_x)
+  else if vector_x > 3000. then (3000.*.vector_x/.vector_y, 3000.)
+  else (vector_x, vector_y)
 
 
 (* [search2_calculation white_position ball_position] will return the x and y
