@@ -60,6 +60,7 @@ type state =
     player : player list;
     is_pot : billiard list;
     ball_moving : bool;
+    prev_ball_moving : bool;
     mutable current_table_id: string;
     mutable is_playing : player;
     mutable foul : foul;

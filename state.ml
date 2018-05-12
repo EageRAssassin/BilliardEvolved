@@ -476,7 +476,7 @@ let next_round (st : state) =
  * update those fields to make the next change_state
    requires:
    [st] is a game state *)
-let change_state (st: state)  : state =
+let change_state (st: state) : state =
   (* if player still aiming, then return current state *)
   if st.player_aiming then st else
   (* else make the balls move for .03 second *)
@@ -498,15 +498,16 @@ let change_state (st: state)  : state =
   let set_legal_pot =
     let legal_pot = current_player.legal_pot in
     List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
-(* TODO LETHAL EFFECT 
+(* TODO LETHAL EFFECT *)
   replace_cue_ball st;
-  release_cue st; *)
-  if not ball_move then next_round st;
+  release_cue st;
+  if not ball_move && (st.prev_ball_moving = true && ball_move = false) then next_round st;
 
   if not check_foul_result then
     (* let new_on_board2 = check_in_pot position_on_board in *)
     {st with
-      on_board = new_on_board2 ;
+     on_board = new_on_board2 ;
+     prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
       is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
       cue_bearing = new_bearing;

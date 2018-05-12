@@ -21,6 +21,7 @@ let initial_state = {
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
+  prev_ball_moving = false;
   (* if we use multiple skins *)
   current_table_id = "default";
   foul = No_foul;
