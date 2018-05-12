@@ -6,24 +6,12 @@ type id = int
 
 type foul = Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
 
-type player =
-  {
-    (* legal_pot: billiard list; *)
-    name: string;
-    is_playing : bool;
-    score : int;
-    cue : int;
-    money: int;
-  }
-
 type image_dim =
   {
     img: string;
     size: float * float;
     offset: float * float;
   }
-
-type score = int
 
 type billiard =
   {
@@ -39,6 +27,21 @@ type billiard =
     image: string;
     mass: float;
   }
+
+type player =
+  {
+    legal_pot: billiard list;
+    name: string;
+    is_playing : bool;
+    score : int;
+    cue : int;
+    money: int;
+  }
+
+
+
+type score = int
+
 
 type table =
   {

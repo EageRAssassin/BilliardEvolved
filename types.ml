@@ -1,21 +1,9 @@
+
 (*consider putting billiards, foul, state TYPE DEFINITION
   here. State.ml should contain functions and not type
   definitions *)
 
 type id = int
-
-type foul =
-    Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
-
-type player =
-  {
-    (* legal_pot: billiard list; *)
-    name: string;
-    is_playing : bool;
-    score : int;
-    cue : int;
-    money: int;
-  }
 
 type image_dim =
   {
@@ -23,8 +11,6 @@ type image_dim =
     size: float * float;
     offset: float * float;
   }
-
-type score = int
 
 type billiard =
   {
@@ -42,6 +28,23 @@ type billiard =
     image: string;
     mass: float;
   }
+
+type foul =
+    Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
+
+type player =
+  {
+    legal_pot: billiard list;
+    name: string;
+    is_playing : bool;
+    score : int;
+    cue : int;
+    money: int;
+  }
+
+
+type score = int
+
 
 (* type pool_cue = {
   cue_name: string;
@@ -74,6 +77,7 @@ type state =
     hit_force : float * float;
     player_aiming : bool;
     win: int; (*0 no one win, 1 play win, 2 AI win*)
+    round: int;
   }
 
 type command = {
