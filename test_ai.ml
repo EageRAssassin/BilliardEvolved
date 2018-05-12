@@ -112,6 +112,10 @@ let state_test_no_billiard = {
   ball_moving = false;
   hit_force = (0.0, 0.0);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let state_test1 = {
@@ -126,6 +130,10 @@ let state_test1 = {
   ball_moving = false;
   hit_force = (0.0, 0.0);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let state_test2 = {
@@ -140,6 +148,10 @@ let state_test2 = {
   ball_moving = false;
   hit_force = (0.0, 0.0);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let state_test3 = {
@@ -154,6 +166,10 @@ let state_test3 = {
   ball_moving = false;
   hit_force = (0.0, 0.0);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let state_test_closest_billiard = {
@@ -169,6 +185,10 @@ let state_test_closest_billiard = {
   is_playing = player1;
   hit_force = (0., 0.);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let initial_state = {
@@ -185,6 +205,10 @@ let initial_state = {
   is_playing = player1;
   hit_force = (0., 0.);
   player_aiming = false;
+  counter = 0;
+  gap = 0.;
+  is_collide = true;
+  win = 0;
 }
 
 let tests =
@@ -201,7 +225,10 @@ let tests =
     "test2" >:: (fun _ -> assert_equal 1 (search1_possible state_test2));
     (* "test3" >:: (fun _ -> assert_equal 1 (search2_possible state_test2)); *)
 
-
+    (* Search 1 calculation *)
+    "search1_calculation" >:: (fun _ -> assert_equal (1995.80398915498085, 1495.80398915498085) (search1_calculation (50., 100.) (150., 150.)));
+    (* "search1_calculation" >:: (fun _ -> assert_equal (997.530822208278778, 997.530822208278778) (search1_calculation (250., 250.) (200., 200.))); *)
+    (* (300., 300.) (200., 250.) *)
 
     (*-----------------GENERAL STATE TEST-----------------*)
     (* initial state: all balls on board. Should hit directly with full force *)

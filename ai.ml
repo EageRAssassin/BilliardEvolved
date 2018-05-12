@@ -1,5 +1,12 @@
 open Types
 
+let radius = 15.
+let playing_field = (460., 920.)
+let top_bd = 160. +. radius
+let bottom_bd = top_bd +. (fst playing_field) -. 2. *. radius
+let left_bd = 160. +. radius
+let right_bd = left_bd +. (snd playing_field) -. 2. *. radius
+
 (* [distance_between position1 position2] will return the distance between
    two balls, with position1 and position2 *)
 let distance_between (position1 : (float*float)) (position2 : (float*float)) : float =
@@ -28,14 +35,14 @@ let rec closest_billiard (cue_position : (float*float)) (billiards : billiard li
 (* [min_distance_to_pocket position1] will return the minimal distance from
    billiard [position] to pocket *)
 let min_distance_to_pocket (position : (float*float)): float =
-  let distance1 = distance_between position (80.,80.) in
-  let distance2 = distance_between position (80.,535.) in
-  let distance3 = distance_between position (535.,80.) in
-  let distance4 = distance_between position (535.,535.) in
-  let distance5 = distance_between position (980.,80.) in
-  let distance6 = distance_between position (980.,535.) in
+  let distance1 = distance_between position (left_bd, top_bd) in
+  let distance2 = distance_between position (left_bd, bottom_bd) in
+  let distance3 = distance_between position ((left_bd +. right_bd) /. 2., top_bd) in
+  let distance4 = distance_between position ((left_bd +. right_bd) /. 2., bottom_bd) in
+  let distance5 = distance_between position (right_bd, top_bd) in
+  let distance6 = distance_between position (right_bd, bottom_bd) in
   let find_min (acc : float) (b : float) : float = if acc > b then b else acc in
-  List.fold_left find_min 2000. [distance1;distance2;distance3;distance4;distance5;distance6]
+  List.fold_left find_min 3000. [distance1;distance2;distance3;distance4;distance5;distance6]
 
 (* [billiard_between position1 position2] will return true if there are
    billiards between two balls of position1 and position2
@@ -55,8 +62,7 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
         let b_x = fst x.position in
         let b_y = snd x.position in
         let distance_to_line = abs_float (m *. b_x +. (-1.0) *. b_y +. b) /. sqrt(m *. m +. 1.) in
-        (* TODO billiard's radius to be 30? *)
-        (distance_to_line < 30. && b_x > (min x1 x2) && b_x < (max x1 x2)
+        (distance_to_line < radius *. 2. && b_x > (min x1 x2) && b_x < (max x1 x2)
          && b_y > (min y1 y2) && b_y < (max y1 y2))
         || billiard_between_helper function_m function_b xs
       | [] -> false in
@@ -122,8 +128,8 @@ let search1_possible st : int =
   if List.length billiards_on_board > 0 then
     let distance_list : float list = find_pocket_distances_from white_position billiards_on_board billiards_on_board in
     (* check if any ball is hittable in distance list *)
-    let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 2000. distance_list in
-    if nearest < 2000. then findnth_billiard distance_list nearest 0
+    let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 4000. distance_list in
+    if nearest < 4000. then findnth_billiard distance_list nearest 0
     else -1
   else failwith "No billiards on board"
 
@@ -149,36 +155,19 @@ let search2_possible st : int =
 let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
   let pocket_to_be_hit : (float * float) =
     let min_dist = min_distance_to_pocket ball_position in
-    if min_dist = distance_between ball_position (80.,80.) then (80.,80.)
-    else if min_dist = distance_between ball_position (80.,535.) then (80.,535.)
-    else if min_dist = distance_between ball_position (535.,80.) then (535.,80.)
-    else if min_dist = distance_between ball_position (535.,535.) then (535.,535.)
-    else if min_dist = distance_between ball_position (980.,80.) then (980.,80.)
-    else if min_dist = distance_between ball_position (980.,535.) then (980.,535.)
+    if min_dist = distance_between ball_position (left_bd, top_bd) then (left_bd, top_bd)
+    else if min_dist = distance_between ball_position (left_bd, bottom_bd) then (left_bd, bottom_bd)
+    else if min_dist = distance_between ball_position ((left_bd +. right_bd) /. 2., top_bd) then ((left_bd +. right_bd) /. 2., top_bd)
+    else if min_dist = distance_between ball_position ((left_bd +. right_bd) /. 2., bottom_bd) then ((left_bd +. right_bd) /. 2., bottom_bd)
+    else if min_dist = distance_between ball_position (right_bd, top_bd) then (right_bd, top_bd)
+    else if min_dist = distance_between ball_position (right_bd, bottom_bd) then (right_bd, bottom_bd)
     else failwith "No pocket to be hit" in
-  (* 4 situation: *)
-  (* 1. pocket upper left, ball middle, cue lower right *)
-  if fst cue_position > fst pocket_to_be_hit && snd cue_position > snd pocket_to_be_hit
-  then
-    (*TODO hit point calculation*)
-    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
-    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
-  (* 2. pocket lower left, ball middle, cue upper right *)
-  else if fst cue_position > fst pocket_to_be_hit && snd cue_position < snd pocket_to_be_hit
-  then
-    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
-    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
-  (* 3. pocket upper right, ball middle, cue lower left *)
-  else if fst cue_position < fst pocket_to_be_hit && snd cue_position > snd pocket_to_be_hit
-  then
-    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
-    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
-  (* 4. pocket lower right, ball middle, cue upper left *)
-  else if fst cue_position < fst pocket_to_be_hit && snd cue_position < snd pocket_to_be_hit
-  then
-    let hit_point : (float * float) = (fst ball_position, snd ball_position) in
-    (fst hit_point -. fst cue_position, snd hit_point -. snd cue_position)
-  else failwith "search1_calculation failed"
+  let x1 = fst ball_position -. fst pocket_to_be_hit in
+  let y1 = snd ball_position -. snd pocket_to_be_hit in
+  let ratio = ( sqrt (x1 *. x1 +. y1 *. y1) +. radius *. 2. ) /. sqrt (x1 *. x1 +. y1 *. y1) in
+  let cue_ratio = (fst cue_position -. fst ball_position) /. (snd cue_position -. snd ball_position) in
+  let hit_point : (float * float) = (fst pocket_to_be_hit +. x1 *. ratio, snd pocket_to_be_hit +. y1 *. ratio) in
+  ((fst hit_point -. fst cue_position) *. 10., (snd hit_point -. snd cue_position) *. 10. *. cue_ratio *. 0.65)
 
 
 (* [search2_calculation white_position ball_position] will return the x and y
