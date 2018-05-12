@@ -333,7 +333,16 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
      four_ball; five_ball; six_ball; seven_ball; eight_ball; nine_ball;
      ten_ball; eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
      fifteen_ball] *)
-  draw_image_on_context context (js "media/power_bar.png") (35., 640. -. gap *. 2.3 );
+  if state.ball_moving = false then
+    (* let a1 = state.gap +. fst cue_ball.position in let a2 = snd cue_ball.position in
+       let g1 = fst state.cue_pos -. fst cue_ball.position in
+       let g2 = snd state.cue_pos -. snd cue_ball.position in *)
+    (* draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2 *)
+
+    draw_image_on_context context (js "media/power_bar.png") (35., 640. -. gap *. 2.3 )
+  else
+    draw_image_on_context context (js "media/empty.png") (0., 0.);
+
   draw_image_on_context context (js "media/left.png") (0., 0.);
     draw_bearing context (string_of_float state.cue_bearing);
   draw_stat context state.on_board;

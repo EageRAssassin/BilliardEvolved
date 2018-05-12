@@ -157,8 +157,8 @@ let move_ball_position ball =
 (* [move_ball_velocity time ball] slow down the velocity while the ball is moving
    requires: [ball] is a valid billiard *)
 let move_ball_velocity ball =
-  let tempx = ref ( (fst ball.velocity) *. 0.98 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.98 )  in
+  let tempx = ref ( (fst ball.velocity) *. 0.983)  in
+  let tempy = ref ( (snd ball.velocity) *. 0.983 )  in
   if abs_float(!tempx) < 1.5 then tempx := 0.;
   if abs_float(!tempy) < 1.5 then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
