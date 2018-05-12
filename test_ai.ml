@@ -14,11 +14,11 @@ let cue_ball_temp = {
   (* legal_player = None;
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25., 25.); (*size of billiard ball on THE IMAGE*)
     offset = (0., 75.); (*chooses which on the image provided to take from*)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -33,11 +33,11 @@ let ball_15_15 = {
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25.,25.); (*size of billiard ball on THE IMAGE*)
     offset = (50., 75.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -52,11 +52,11 @@ let ball_150_150 = {
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25.,25.); (*size of billiard ball on THE IMAGE*)
     offset = (50., 75.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -71,11 +71,11 @@ let ball_300_10 = {
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25.,25.); (*size of billiard ball on THE IMAGE*)
     offset = (50., 75.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 

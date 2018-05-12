@@ -29,11 +29,11 @@ let cue_ball = {
   (* legal_player = None;
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25., 25.); (*size of billiard ball on THE IMAGE*)
     offset = (0., 75.); (*chooses which on the image provided to take from*)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -62,11 +62,11 @@ let collide_ball1 = {
   (* legal_player = None;
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25., 25.); (*size of billiard ball on THE IMAGE*)
     offset = (0., 75.); (*chooses which on the image provided to take from*)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -81,11 +81,11 @@ let collide_ball2 = {
   (* legal_player = None;
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25., 25.); (*size of billiard ball on THE IMAGE*)
     offset = (0., 75.); (*chooses which on the image provided to take from*)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 

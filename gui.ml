@@ -22,7 +22,7 @@ let js = Js.string
 let document = Html.document
 
 let get_ball_img suit billiard velocity counter : billiard =
-  let img = "billiards.png" in
+  let img = "media/billiards.png" in
   if ( (fst velocity) *. (snd velocity) < 10. ) || counter mod 30 < 15 then
     match billiard.suit with
     | 0 -> {billiard with dim = {img; size = (30.,30.); offset = (0.,0.);}}
@@ -64,7 +64,7 @@ let get_ball_img suit billiard velocity counter : billiard =
 
 (* let roll_ball_img suit billiard velocity counter =
   let guard = (counter mod 5 = 0 && velocity <> (0.,0.)) in
-  let img = "billiards.png" in
+  let img = "media/billiards.png" in
   let b = get_ball_img suit billiard in
   if guard then
     if snd b.dim.offset = 0. then
@@ -129,7 +129,7 @@ let draw_billiards (context: Html.canvasRenderingContext2D Js.t) b_list counter 
   List.map (fun b -> draw_billiard context b counter) b_list |> ignore
 
 let draw_table (context: Html.canvasRenderingContext2D Js.t)
-  = draw_image_on_context context (js "pool_table_sm.png") (100.,100.)
+  = draw_image_on_context context (js "media/pool_table_sm.png") (0.,0.)
 (*
 let draw_cue (context: Html.canvasRenderingContext2D Js.t) b coord =
   let pos = (fst coord -. 15., snd coord -. 15.) in
@@ -140,8 +140,8 @@ let stat_helper (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
   (* let s' = float_of_int b.suit in *)
   if (s = 0 || s = 8 || s < 0 || s > 15) then draw_help context b (20000.,20000.)
   else
-    let x = (185 + ((s-1) mod 4) * 35 + ((s-1) / 8) * 400 ) in
-    let y = ((((s-1) mod 8) / 4) * 35 + 10) in
+    let x = (231 + ((s-1) mod 4) * 45 + ((s-1) / 8) * 613 ) in
+    let y = ((((s-1) mod 8) / 4) * 37 + 22) in
     let choose_b = get_ball_img s b (0.,0.) 0 in
     draw_help context choose_b (float_of_int x, float_of_int y)
 
@@ -149,35 +149,40 @@ let draw_stat (context: Html.canvasRenderingContext2D Js.t) b_list =
   List.map (fun b -> stat_helper context b) b_list |> ignore
 
 let draw_control c =
-  draw_image_on_context c (js "controls.png") (1250., 0.)
+  draw_image_on_context c (js "media/controls.png") (1250., 0.)
 
 (* placeholders *)
 let draw_p1 c =
-  draw_image_on_context c (js "human.png") (100., 5.)
+  draw_image_on_context c (js "mdeia/human.png") (100., 5.)
 
 let draw_p2 c =
-  draw_image_on_context c (js "computer.png") (500., 5.)
+  draw_image_on_context c (js "media/computer.png") (500., 5.)
 
 let draw_turn c p =
   if p then
-    draw_image_on_context c (js "turn.png") (57., 25.)
+    draw_image_on_context c (js "media/turnp1.png") (231., 7.)
   else
-    draw_image_on_context c (js "turn.png") (457., 25.)
+    draw_image_on_context c (js "media/turnp2.png") (843., 7.)
 
 let draw_score_p1 context n =
-  let score = js ("P1: " ^ string_of_int n) in
+  let score = js (" " ^ string_of_int n) in
   context##font <- js "25px Triforce";
-  context##fillText (score, 360., 55.)
+  context##fillText (score, 210., 717.)
 
 let draw_score_p2 context n =
-  let score = js ("P2: " ^ string_of_int n) in
+  let score = js (" " ^ string_of_int n) in
   context##font <- js "25px Triforce";
-  context##fillText (score, 760., 55.)
+  context##fillText (score, 910., 717.)
 
 let draw_debug context str y =
   let text = js (str) in
-  context##font <- js "15px Triforce";
+  context##font <- js "10px Triforce";
   context##fillText (text, 1200., y)
+
+let draw_bearing context str =
+  let text = js (str) in
+  context##font <- js "10px Triforce";
+  context##fillText (text, 20., 151.)
 
 (*
   (*single ball test *)
@@ -283,47 +288,41 @@ let draw_rotated2 context degrees img bx by gap =
   context##rotate(degrees *. 3.1416926 /. 180.);
   draw_image_on_context context (js img) (gap, -1. *. 6.);
   draw_image_on_context context
-    (js "fokn_laser_sight.png") ( -600. , 0.);
-  context##restore();
-  draw_debug context ("deg: " ^
-                      (string_of_float degrees)) 400.
+    (js "media/fokn_laser_sight.png") ( -600. , 0.);
+  context##restore()
   (* draw_debug context ("offset: (" ^
                       (string_of_float (fst (get_quad_2_offset bx by deg gap))) ^ ", " ^
                       (string_of_float (snd (get_quad_2_offset bx by deg gap))) ^ ")") 400. *)
+
+(* let play_sound *)
 
 (* trig offset helpers *)
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
-  draw_control context;
-  draw_p1 context;
-  draw_p2 context;
+  (* draw_control context; *)
+  (* draw_p1 context;
+     draw_p2 context; *)
+  draw_table context;
   draw_score_p1 context player1.score;
   draw_score_p2 context player2.score;
   draw_turn context (state.is_playing = player1);
-  draw_table context;
+
   draw_billiards context state.on_board state.counter;
-  draw_debug context ("cue_ball.position: (" ^
+  draw_debug context ("cue_ball.pos: (" ^
                       (string_of_float (fst cue_ball.position)) ^ ", " ^
-                      (string_of_float (snd cue_ball.position)) ^ ")") 300.;
+                      (string_of_float (snd cue_ball.position)) ^ ")") 15.;
   draw_debug context ("cue_pos: (" ^
                       (string_of_float (fst state.cue_pos)) ^ ", " ^
-                      (string_of_float (snd state.cue_pos)) ^ ")") 350.;
-  draw_debug context ("state number: " ^ (string_of_int state.counter)) 800.;
-  draw_debug context ("player: " ^ state.is_playing.name) 750.;
-  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 700.;
+                      (string_of_float (snd state.cue_pos)) ^ ")") 30.;
+  draw_debug context ("state number: " ^ (string_of_int state.counter)) 45.;
+  draw_debug context ("player: " ^ state.is_playing.name) 60.;
+  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 75.;
+  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 90.;
   (* let g1 = fst (state.cue_pos) -. fst cue_ball.position in
      let g2 = snd (state.cue_pos) -. snd cue_ball.position in *)
-  if state.ball_moving = false then
- (* let a1 = state.gap +. fst cue_ball.position in let a2 = snd cue_ball.position in
-    let g1 = fst state.cue_pos -. fst cue_ball.position in
-    let g2 = snd state.cue_pos -. snd cue_ball.position in *)
-    let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
-    let gap = state.gap in let bearing = state.cue_bearing in
-    (* draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2 *)
-    draw_rotated2 context bearing "pool_cue.png" a1 a2 gap
-  else
-    draw_image_on_context context (js "pool_cue_vert.png") (1150., 150.) ;
+  let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
+  let gap = state.gap in let bearing = state.cue_bearing in
 
      (* let a1 = ((fst cue_ball.position) +. 45.) in let a2 = snd cue_ball.position in
      let g1 = fst state.cue_pos -. fst cue_ball.position in
@@ -334,4 +333,16 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
      four_ball; five_ball; six_ball; seven_ball; eight_ball; nine_ball;
      ten_ball; eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
      fifteen_ball] *)
-  draw_stat context state.on_board
+  draw_image_on_context context (js "media/power_bar.png") (35., 640. -. gap *. 2.3 );
+  draw_image_on_context context (js "media/left.png") (0., 0.);
+    draw_bearing context (string_of_float state.cue_bearing);
+  draw_stat context state.on_board;
+  if state.ball_moving = false then
+ (* let a1 = state.gap +. fst cue_ball.position in let a2 = snd cue_ball.position in
+    let g1 = fst state.cue_pos -. fst cue_ball.position in
+    let g2 = snd state.cue_pos -. snd cue_ball.position in *)
+    (* draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2 *)
+
+    draw_rotated2 context bearing "media/pool_cue.png" a1 a2 gap
+  else
+    draw_image_on_context context (js "media/pool_cue_vert.png") (1170., 150.)

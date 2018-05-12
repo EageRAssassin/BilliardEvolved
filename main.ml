@@ -35,9 +35,12 @@ let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
-  (* append_text h1 "Billiards Evolved"; *)
+  (* append_text h1 "media/billiards.png Evolved"; *)
   let p = Html.createP document in
   (*audio*)
+  let audio = Html.createAudio document in
+    audio##src <- js "media/billiards.mp3";
+    audio##play ();
   (*font*)
   Dom.appendChild gui h1;
   Dom.appendChild gui p;

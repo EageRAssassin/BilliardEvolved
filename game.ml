@@ -93,7 +93,12 @@ let mousemove (event : Dom_html.mouseEvent Js.t) =
 let mousedown (event : Dom_html.mouseEvent Js.t) =
   let new_state = State.change_state !state in
   let () = match event##button with
-    | 0 -> player_command.cue_release <- true; state := new_state
+    | 0 ->
+      let audio = Html.createAudio document in
+      audio##src <- js "media/cue.mp3";
+      audio##play ();
+      player_command.cue_release <- true;
+    state := new_state
     | _ -> player_command.cue_release <- false; state := new_state
 in Js._true
 

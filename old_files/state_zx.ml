@@ -1,4 +1,4 @@
-(* open billiards
+(* open media/billiards.png
 open player
    open foul *)
 open Types
@@ -22,7 +22,7 @@ type state = {
   ball_moving : bool;
 }
 
-(* type billiards: see billiard.mli *)
+(* type media/billiards.png: see billiard.mli *)
 
 (* type player: see player.mli *)
 

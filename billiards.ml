@@ -38,7 +38,7 @@ let one_ball = {
      size = (0., 0.); (*size of billiard ball on THE IMAGE*)
      offset = (0., 0.); (*chooses which on the image provided to take from*)
    };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -53,11 +53,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (100., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -72,11 +72,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (150., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -91,11 +91,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (25., 25.); (*size of billiard ball on THE IMAGE*)
     offset = (200., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -110,11 +110,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (250., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -129,11 +129,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (300., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -148,11 +148,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (350., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -167,11 +167,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (400., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -186,11 +186,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.);(*size of billiard ball on THE IMAGE*)
     offset = (450., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -205,11 +205,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (500., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -224,11 +224,11 @@ let eleven_ball = {
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (550., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -243,11 +243,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (600., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -262,11 +262,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (650., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -281,11 +281,11 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (700., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }
 
@@ -300,10 +300,10 @@ velocity = (0.,0.);
   (* legal_player = None; (* whoever pots a solid first *)
      legal_pot = None; *)
   dim = {
-    img = "billiards.png";
+    img = "media/billiards.png";
     size = (30.,30.); (*size of billiard ball on THE IMAGE*)
     offset = (750., 0.); (*each billiard separated by exactly 25 pixels *)
   };
-  image = "billiards.png";
+  image = "media/billiards.png";
   mass = 10.;
 }

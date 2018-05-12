@@ -1,8 +1,11 @@
 open Types
 open Command
 open Player
+(* open Graphics *)
 (* open Billiards *)
-
+module Html = Dom_html
+let js = Js.string
+let document = Html.document
 (* type billiards: see billiard.mli *)
 
 (* type player: see player.mli *)
@@ -146,18 +149,18 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.100.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.100.)) in
   ball.position <- (tempx,tempy);
   ball
 
 (* [move_ball_velocity time ball] slow down the velocity while the ball is moving
    requires: [ball] is a valid billiard *)
 let move_ball_velocity ball =
-  let tempx = ref ( (fst ball.velocity) *. 0.983 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.983 )  in
-  if abs_float(!tempx) < 1. then tempx := 0.;
-  if abs_float(!tempy) < 1. then tempy := 0.;
+  let tempx = ref ( (fst ball.velocity) *. 0.98 )  in
+  let tempy = ref ( (snd ball.velocity) *. 0.98 )  in
+  if abs_float(!tempx) < 1.5 then tempx := 0.;
+  if abs_float(!tempy) < 1.5 then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
   ball
 
@@ -244,7 +247,8 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
       for j = i + 1 to (List.length billiards - 1) do
         let billiard_temp2 = List.nth billiards j in
         if (check_within_radius billiard_temp.position billiard_temp2.position 900.)
-        then  collide billiard_temp billiard_temp2
+        then
+        collide billiard_temp billiard_temp2
       done
     done;
     billiards
@@ -252,12 +256,16 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
 
 (* [check_is_collide st] check all the balls in state is collide or not
    requires: [st] is a valid billiard state *)
-  let rec check_is_collide st: bool =
-    match st.on_board with
-    | h1 :: h2 :: t -> if (check_within_radius h1.position h2.position 900.) then
+  let rec check_is_collide_h l =
+    match l with
+    | h1 :: h2 :: t -> if (check_within_radius h1.position h2.position 910.)
+                       && h1 <> h2 && (h1.velocity <> h2.velocity) then
             true
-      else check_is_collide st
+      else check_is_collide_h (h2::t)
     | _ -> false
+
+let check_is_collide st : bool =
+  check_is_collide_h st.on_board
 
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
@@ -555,6 +563,7 @@ let change_state (st: state) : state =
       prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
       is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
+      is_collide = check_is_collide st;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
       counter = st.counter + 1;

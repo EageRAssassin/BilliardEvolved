@@ -8,7 +8,7 @@ Rong Tan @rt389
 
 
 ##Description
-This is a top-down perspective game of billiards (pool) that pits a player against a computer AI-controlled
+This is a top-down perspective game of media/billiards.png (pool) that pits a player against a computer AI-controlled
 opponent, which include features of physics, player control, billiard mechanics, collision, GUI, and
 new game modes. The rules are similar to the traditional billiard rules. It is a fun game to play when you want to relax and chill.
 
@@ -23,13 +23,13 @@ $ make
 $ open "index.html"
 
 #Key Features
-Original design of the billiards, table, and other graphics
+Original design of the media/billiards.png, table, and other graphics
 Interactive Web-based GUI
 Cue controlled by keyboard, with an aiming helper
 an artificial intelligence (AI) opponent
-billiards rules(hit balls, foul) simulated
+media/billiards.png rules(hit balls, foul) simulated
 System Design
-Billiards
+media/billiards.png
 Modules
 State
 This module records the status of the game at any given time. This will allow the game to be run continuously, and updates for each move or change to the state, such as movement. This acts as the model of the model-view-controller design.

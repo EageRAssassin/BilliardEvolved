@@ -1,4 +1,4 @@
-(*consider putting billiards, foul, state TYPE DEFINITION
+(*consider putting media/billiards.png, foul, state TYPE DEFINITION
   here. State.ml should contain functions and not type
   definitions *)
 
