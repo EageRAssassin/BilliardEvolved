@@ -61,10 +61,11 @@ type state =
   {
     counter: int;
     mutable on_board : billiard list;
-    cue_bearing: float;
+    mutable round: int;
+    mutable cue_bearing: float;
     gap: float;
     is_collide: bool;
-    cue_pos: float*float;
+    mutable cue_pos: float*float;
     player : player list;
     is_pot : billiard list;
     ball_moving : bool;
@@ -86,6 +87,10 @@ type command = {
   mutable e : bool;
   mutable two : bool;
   mutable x : bool;
+  mutable cue_coord: (float*float);
+  mutable cue_bearing: float;
+  mutable cue_gap: float;
+  mutable cue_release: bool;
 }
 
 

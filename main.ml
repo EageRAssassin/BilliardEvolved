@@ -47,11 +47,20 @@ let main () =
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
   let _ = Html.addEventListener
-    document Html.Event.keydown (Html.handler Game.keydown)
-    Js._true in
+      document Html.Event.keydown (Html.handler Game.keydown)
+      Js._true in
   let _ = Html.addEventListener
-    document Html.Event.keydown (Html.handler Game.keyup)
-    Js._true in
+      document Html.Event.keydown (Html.handler Game.keyup)
+      Js._true in
+  let _ = Html.addEventListener
+      document Html.Event.mousemove (Html.handler Game.mousemove)
+      Js._true in
+  let _ = Html.addEventListener
+      document Html.Event.mousedown (Html.handler Game.mousedown)
+      Js._true in
+  let _ = Html.addEventListener
+      document Html.Event.mouseup (Html.handler Game.mouseup)
+      Js._true in
   Game.game_loop context false
 
 (* start the game *)

@@ -283,7 +283,7 @@ let draw_rotated2 context degrees img bx by gap =
   context##rotate(degrees *. 3.1416926 /. 180.);
   draw_image_on_context context (js img) (gap, -1. *. 6.);
   draw_image_on_context context
-    (js "fokn_laser_sight.png") (-1. *. gap -. 600. , 0.);
+    (js "fokn_laser_sight.png") ( -600. , 0.);
   context##restore();
   draw_debug context ("deg: " ^
                       (string_of_float degrees)) 400.

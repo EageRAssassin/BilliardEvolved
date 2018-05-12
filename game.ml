@@ -2,6 +2,7 @@ open Types
 open Command
 open Billiards
 open Player
+(* open State *)
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -15,6 +16,7 @@ let initial_state = {
               thirteen_ball; fourteen_ball; fifteen_ball;];
   cue_bearing = 0.;
   counter = 0;
+  round = 0;
   gap = 45.;
   is_collide = false;
   cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
@@ -54,7 +56,7 @@ let keydown event =
     | 50 -> player_command.two <- true; state := new_state
     | 88 -> player_command.x <- true; state := new_state
 
-    | _ -> player_command.s <- true; state := new_state (* other *)
+    | _ -> player_command.w <- true; state := new_state (* other *)
   in Js._true
 
 let keyup event =
@@ -70,8 +72,36 @@ let keyup event =
     | 50 -> player_command.two <- false; state := new_state
     | 88 -> player_command.x <- false; state := new_state
 
-    | _ -> player_command.s <- false; state := new_state (* other *)
+    | _ -> player_command.w <- false; state := new_state (* other *)
   in Js._true
+
+(* https://www.w3schools.com/jsref/dom_obj_event.asp
+   and Oxcigen's doc
+   https://ocsigen.org/js_of_ocaml/2.5/api/Dom_html
+*)
+
+let mousemove (event : Dom_html.mouseEvent Js.t) =
+  let new_state = State.change_state !state in
+  let () = match event##clientX, event##clientY with
+    | (x,y) ->
+      player_command.cue_coord <- (float_of_int x, float_of_int y);
+      (* player_command.cue_bearing <- *)
+      state := new_state in
+  Js._true
+
+let mousedown (event : Dom_html.mouseEvent Js.t) =
+  let new_state = State.change_state !state in
+  let () = match event##button with
+    | 0 -> player_command.cue_release <- true; state := new_state
+    | _ -> player_command.cue_release <- false; state := new_state
+in Js._true
+
+let mouseup (event : Dom_html.mouseEvent Js.t) =
+  let new_state = State.change_state !state in
+  let () = match event##button with
+    | 0 -> player_command.cue_release <- false; state := new_state
+    | _ -> player_command.cue_release <- false; state := new_state
+in Js._true
 
 (* the main game loop modify this later*)
 let game_loop context has_won =
@@ -82,26 +112,6 @@ let game_loop context has_won =
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
   in game_loop_helper ()
-    (*
-(* the main game loop *)
-let game_loop context has_won =
-  let rec game_loop_helper () =
-    state := State.do' !state;
-    Gui.draw_state context !state;
-    Html.window##requestAnimationFrame(
-      Js.wrap_callback (fun (t:float) -> game_loop_helper ())
-    ) |> ignore
-  in game_loop_helper ()
-    *)
-
-(*
-(* the main game loop *)
-let rec game_loop_helper context has_won =
-    state := State.change_state !state;
-    Gui.draw_state context !state;
-    Html.window##requestAnimationFrame(
-      Js.wrap_callback (fun (t:float) -> game_loop_helper context has_won)
-    ) |> ignore
 
 (*shoddy implementation, may not work*)
-let game_loop context has_won = game_loop_helper context has_won *)
+(* let game_loop context has_won = game_loop_helper context has_won *)

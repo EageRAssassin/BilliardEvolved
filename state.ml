@@ -116,28 +116,28 @@ let check_wall_touching ball =
     then
       begin
       ball.position <- (left_bd, snd ball.position);
-      ball.velocity <- ((0.-.fst ball.velocity)*.0.98, snd ball.velocity *.0.98)
+      ball.velocity <- ((0.-.fst ball.velocity)*.0.99, snd ball.velocity *.0.99)
     end;
     (*ball hit top bound*)
     if (y_top < top_bd)
     then
       begin
       ball.position <- (fst ball.position, top_bd);
-      ball.velocity <- (fst ball.velocity*.0.98, (0.-.snd ball.velocity)*.0.98)
+      ball.velocity <- (fst ball.velocity*.0.99, (0.-.snd ball.velocity)*.0.99)
     end;
     (*ball hit right bound*)
     if (x_right > right_bd)
     then
       begin
       ball.position <- (right_bd, snd ball.position);
-      ball.velocity <- ((0.-.fst ball.velocity)*.0.98, snd ball.velocity*.0.98)
+      ball.velocity <- ((0.-.fst ball.velocity)*.0.99, snd ball.velocity*.0.99)
     end;
     (*ball hit bottom bound*)
     if (y_bottom > bottom_bd)
     then
       begin
         ball.position <- (fst ball.position, bottom_bd);
-      ball.velocity <- (fst ball.velocity*.0.98, (0.-.snd ball.velocity)*.0.98)
+      ball.velocity <- (fst ball.velocity*.0.99, (0.-.snd ball.velocity)*.0.99)
     end;
     ball
 
@@ -145,18 +145,18 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.50.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.50.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
   ball.position <- (tempx,tempy);
   ball
 
 (* [move_ball_velocity time ball] slow down the velocity while the ball is moving
    requires: [ball] is a valid billiard *)
 let move_ball_velocity ball =
-  let tempx = ref ( (fst ball.velocity) *. 0.96 )  in
-  let tempy = ref ( (snd ball.velocity) *. 0.96 )  in
-  if abs_float(!tempx) < 1. then tempx := 0.;
-  if abs_float(!tempy) < 1. then tempy := 0.;
+  let tempx = ref ( (fst ball.velocity) *. 0.99 )  in
+  let tempy = ref ( (snd ball.velocity) *. 0.99 )  in
+  if abs_float(!tempx) < 2. then tempx := 0.;
+  if abs_float(!tempy) < 2. then tempy := 0.;
   ball.velocity <- (!tempx, !tempy);
   ball
 
@@ -282,9 +282,25 @@ let update_cue_bearing st ball_moving curr_bearing =
     else new_bearing in
   bearing
 
+(* let update_cue_bearing_cursor st ball_moving curr_bearing =
+  let command = player_command in
+  let new_bearing =
+    if ball_moving then 0.
+    else let ball_coord = Billiards.cue_ball.position in
+      let x = fst command.cue_coord -. fst ball_coord in
+      let y = snd command.cue_coord -. snd ball_coord in
+      if x = 0 then
+        if y =
+
+      command.cue_bearing in
+    let bearing =
+      if new_bearing < 0. then new_bearing +. 360.
+      else new_bearing in
+    bearing *)
+
 (* TODO: [ get_quadrant st ]
    requires: [st] is a valid state *)
-let get_quadrant st =
+let get_quadrant (st:state) =
   let bearing = mod_float st.cue_bearing 360. in
   if bearing <= 90. then 1
   else if st.cue_bearing <= 180. then 2
@@ -351,6 +367,37 @@ let update_cue_pos st ball_moving =
   if ball_moving then (290. , 0.)
   else (xb +. (fst offset) , yb +. (snd offset))
 
+(* let update_cue_pos_cursor st ball_moving =
+  let command = player_command in  *)
+
+let update_cue_cursor st ball_moving =
+  let command = player_command in
+  if ball_moving then (290. , 0.) else command.cue_coord
+
+let update_cue_gap st ball_moving curr_gap =
+  let command = player_command in
+  if command.s = true then curr_gap
+  else
+    let gap =
+    sqrt ((fst command.cue_coord -. fst Billiards.cue_ball.position) ** 2. +.
+          (snd command.cue_coord -. snd Billiards.cue_ball.position) ** 2.)
+    -. 75. in
+    if gap < 35. then 35.
+    else if gap > 200. then 200.
+    else gap
+
+
+
+let update_cue_bearing_cursor st ball_moving =
+  let ball_coord = Billiards.cue_ball.position in
+  let command = player_command in
+  let x_offset = fst command.cue_coord -. fst ball_coord in
+  let y_offset = snd command.cue_coord -. snd ball_coord in
+  if x_offset >= 0.
+  then (make_d (Pervasives.atan (y_offset /. x_offset)))
+  else
+    180. +. (make_d (Pervasives.atan (y_offset /. x_offset)))
+
 (*  TODO: [ release_cue st  ]
     requires: [st] is a valid state *)
 let release_cue st =
@@ -369,7 +416,7 @@ let release_cue st =
       (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle)) in
   let command = player_command in Billiards.cue_ball.velocity <-
     if st.ball_moving then  Billiards.cue_ball.velocity
-    else if command.j then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
+    else if command.cue_release then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
     else Billiards.cue_ball.velocity
 
 (*  TODO: [ replace_cue_ball st  ]
@@ -425,9 +472,11 @@ let change_state (st: state)  : state =
   let new_on_board2 = check_in_pot position_on_board in
   let ball_move = check_billiards_moving new_on_board2 in
   let check_foul_result = check_foul billiards_to_be_removed st.is_playing new_on_board2 in
-  let new_bearing = update_cue_bearing st ball_move st.cue_bearing in
-  let new_cue_pos = update_cue_pos st ball_move in
-  let new_gap = update_gap st ball_move st.gap in
+  (* let new_bearing = update_cue_bearing st ball_move st.cue_bearing in *)
+  let new_bearing = update_cue_bearing_cursor st ball_move in
+  (* let new_cue_pos = update_cue_pos st ball_move in *)
+  let new_cue_pos = update_cue_cursor st ball_move in
+  let new_gap = update_cue_gap st ball_move st.gap in
   replace_cue_ball st;
   release_cue st;
 
