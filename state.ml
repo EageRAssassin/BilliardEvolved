@@ -453,8 +453,7 @@ let next_round (st : state) =
       current_player.is_playing <- false;
       another_player.is_playing <- true;
       st.is_playing <- another_player;
-      st.player_aiming <- true;
-      st.round <- st.round + 1
+      st.round <- st.round + 1;
     end
     (*white ball in cue*)
   else if contain_cue_ball billiards_to_be_removed then
@@ -462,15 +461,14 @@ let next_round (st : state) =
       current_player.is_playing <- false;
       another_player.is_playing <- true;
       st.is_playing <- another_player;
-      st.player_aiming <- true;
       st.foul <- Cue_pot;
-      st.round <- st.round + 1
+      st.round <- st.round + 1;
     end
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
   else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
     if current_player.name = "player_1"
-    then  st.win <- 2
-    else  st.win <- 1
+    then begin st.win <- 2; end
+    else begin st.win <- 1; end
 
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
@@ -478,7 +476,6 @@ let next_round (st : state) =
    [st] is a game state *)
 let change_state (st: state) : state =
   (* if player still aiming, then return current state *)
-  if st.player_aiming then st else
   (* else make the balls move for .03 second *)
   let position_on_board = List.map move_ball_position st.on_board
                           |> List.map check_wall_touching
@@ -498,16 +495,15 @@ let change_state (st: state) : state =
   let set_legal_pot =
     let legal_pot = current_player.legal_pot in
     List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
-(* TODO LETHAL EFFECT *)
   replace_cue_ball st;
   release_cue st;
-  if not ball_move && (st.prev_ball_moving = true && ball_move = false) then next_round st;
+  if not ball_move && (st.ball_moving = true && ball_move = false) then next_round st;
 
   if not check_foul_result then
     (* let new_on_board2 = check_in_pot position_on_board in *)
     {st with
-     on_board = new_on_board2 ;
-     prev_ball_moving = st.ball_moving;
+      on_board = new_on_board2 ;
+      prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
       is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
       cue_bearing = new_bearing;
@@ -578,13 +574,3 @@ let rec get_cue_billiard (billiard_list : billiard list) : billiard =
   | x :: xs -> if x.suit = 0 then x
     else get_cue_billiard xs
   | [] -> failwith "No cue billiard on board"
-
-(* [apply_force st] will apply the foce in [st]'s hit_force to the cue ball,
-   and start to make the billiards move
- requires: [st] is a valid state*)
-let apply_force (st : state) : state =
-  let hit_force = st.hit_force in
-  let cue_ball = get_cue_billiard st.on_board in
-  cue_ball.velocity <- hit_force;
-  {st with hit_force = (0., 0.);
-           player_aiming = false;}
