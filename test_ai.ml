@@ -226,8 +226,21 @@ let tests =
     (* "test3" >:: (fun _ -> assert_equal 1 (search2_possible state_test2)); *)
 
     (* Search 1 calculation *)
-    "search1_calculation" >:: (fun _ -> assert_equal (1995.80398915498085, 1495.80398915498085) (search1_calculation (50., 100.) (150., 150.)));
-    (* "search1_calculation" >:: (fun _ -> assert_equal (997.530822208278778, 997.530822208278778) (search1_calculation (250., 250.) (200., 200.))); *)
+    (* pot upper left *)
+    "search1_calculation1" >:: (fun _ -> assert_equal (-287.867965644035735, -287.867965644035735) (search1_calculation (250., 250.) (200., 200.)));
+    (* pot upper left *)
+    "search1_calculation2" >:: (fun _ -> assert_equal (-1280.04948372310764, -304.614545236585229) (search1_calculation (300., 300.) (200., 250.)));
+    (* pot upper middle *)
+    "search1_calculation3" >:: (fun _ -> assert_equal (1012.8721062626214, -779.526868471060652) (search1_calculation (500., 350.) (600., 250.)));
+    (* pot upper right *)
+    "search1_calculation4" >:: (fun _ -> assert_equal (2500., -587.526800744152752) (search1_calculation (500., 350.) (900., 250.)));
+    (* pot lower right *)
+    "search1_calculation5" >:: (fun _ -> assert_equal (2500., 1281.9173094431344) (search1_calculation (500., 350.) (900., 550.)));
+    (* pot lower middle *)
+    "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.)));
+    (* pot lower left *)
+    "search1_calculation6" >:: (fun _ -> assert_equal (-2396.67693487273891, 953.099913803783807) (search1_calculation (800., 350.) (300., 550.)));
+
     (* (300., 300.) (200., 250.) *)
 
     (*-----------------GENERAL STATE TEST-----------------*)

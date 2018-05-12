@@ -16,13 +16,13 @@ let initial_state = {
               thirteen_ball; fourteen_ball; fifteen_ball;];
   cue_bearing = 0.;
   counter = 0;
-  round = 0;
   gap = 45.;
   is_collide = false;
   cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
   is_pot = [];
   player = [player1; player2];
   ball_moving = false;
+  prev_ball_moving = false;
   (* if we use multiple skins *)
   current_table_id = "default";
   foul = No_foul;
@@ -30,6 +30,7 @@ let initial_state = {
   hit_force = (0., 0.);
   player_aiming = false;
   win = 0;
+  round = 0;
   (* all_tables = [Tables.default] *)
 }
 
