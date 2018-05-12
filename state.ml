@@ -534,7 +534,9 @@ let rec find_next_player (players : player list) (is_playing : player) =
   | h :: t -> if h = is_playing then find_next_player t is_playing else h
 
 (*[hit_legal_plot_ball ball_removed legalpot] returns true if the player hit the
-balls that is in the legal plot list*)
+  balls that is in the legal plot list
+  requires: [ball_removed] is a valid billiard list
+            [legalpot] is a valid billiard list *)
 let rec hit_legal_plot_ball ball_removed legalpot=
   match ball_removed with
   | x::xs -> if List.mem x legalpot then true else hit_legal_plot_ball xs legalpot
@@ -580,7 +582,7 @@ let next_round st =
              foul = Cue_pot;
              round = st.round + 1;}
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
-  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) && (st.round <> 1) then
+  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
     if current_player.name = "player_1"
     then  {st with win = 2;}
     else  {st with win = 1;}
