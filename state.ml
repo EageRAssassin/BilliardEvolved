@@ -149,8 +149,8 @@ let check_wall_touching ball =
    position.
    requires: [ball] is a valid billiard *)
 let move_ball_position ball =
-  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.100.)) in
-  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.100.)) in
+  let tempx = (fst ball.position) +. (fst ball.velocity *. (1./.200.)) in
+  let tempy = (snd ball.position) +. (snd ball.velocity *. (1./.200.)) in
   ball.position <- (tempx,tempy);
   ball
 
