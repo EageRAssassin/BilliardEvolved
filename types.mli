@@ -70,6 +70,7 @@ type state =
     mutable win: int;
     mutable billiards_removed_in_a_round: billiard list;
     mutable is_start: bool;
+    (* mutable is_hit: bool; *)
     (* mutable is_win: bool; *)
   }
 

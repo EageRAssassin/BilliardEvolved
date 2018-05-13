@@ -148,7 +148,7 @@ let stat_helper (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
 let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
     (b: billiard) (legal_eight: bool) (player: int) (on_board: billiard list) =
   let s = b.suit in
-  (* if (List.mem b on_board) then *)
+  if (List.mem b on_board) then
     let p = float_of_int (player - 1) in
     if (s = 0 || s < 0 || s > 15) then draw_help context b (20000.,20000.)
     else if s = 8 && legal_eight then draw_help context Billiards.eight_ball
@@ -158,7 +158,7 @@ let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
       let y = (((legal_s - 1) / 4) * 37 + 22) in
       let choose_b = get_ball_img s b (0.,0.) 0 in
       draw_help context choose_b (float_of_int x, float_of_int y)
-  (* else draw_image_on_context context (js "media/blank.png") (0., 0.) *)
+  else draw_image_on_context context (js "media/blank.png") (0., 0.)
 
 (* let draw_stat (context: Html.canvasRenderingContext2D Js.t) b_list =
    List.map (fun b -> stat_helper context b) b_list |> ignore *)
@@ -337,7 +337,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
                       (string_of_float (fst state.cue_pos)) ^ ", " ^
                       (string_of_float (snd state.cue_pos)) ^ ")") 22.;
   draw_debug context ("state number: " ^ (string_of_int state.counter)) 34.;
-  draw_debug context ("hit_force: " ^ (string_of_float(fst state.hit_force) ^ " " ^ string_of_float(snd state.hit_force))) 46.;
+  draw_debug context ("player: " ^ state.is_playing.name) 46.;
   draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 58.;
   draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 70.;
   (* let g1 = fst (state.cue_pos) -. fst cue_ball.position in
@@ -383,4 +383,5 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
 
   if state.win = 1 then draw_image_on_context context (js "media/win.png") ( 0. , 0.)
   else if state.win = 2 then draw_image_on_context context (js "media/lose.png") ( 0. , 0.)
+
   else draw_image_on_context context (js "media/blank.png") ( 0. , 0.)

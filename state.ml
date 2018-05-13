@@ -41,6 +41,7 @@ let init = {
   (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
+  (* is_hit = false; *)
 
 }
 
@@ -465,15 +466,24 @@ let release_cue st =
         if st.is_playing.name = "player_2" then
           (* use AI *)
           begin
+          let audio = Html.createAudio document in
+          audio##src <- js "media/cue.mp3";
+             audio##play ();
+            (* st.is_hit <- false; *)
             ai_evaluate_next_move st;
-            Billiards.cue_ball.velocity
+            Billiards.cue_ball.velocity;
+
           end
         else if command.cue_release then
           begin
+          let audio = Html.createAudio document in
+          audio##src <- js "media/cue.mp3";
+             audio##play ();
+            (* st.is_hit <- true; *)
             st.hit_force <- (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic));
             (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
           end
-        else Billiards.cue_ball.velocity
+        else begin Billiards.cue_ball.velocity end
 (*  TODO: [ replace_cue_ball st  ]
     requires: [st] is a valid state *)
 let replace_cue_ball st =
