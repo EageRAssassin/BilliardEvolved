@@ -124,7 +124,7 @@ let rec findnth_billiard (distance_list : float list) (distance : float) (index 
    requires: [st] is a valid state *)
 let search1_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
-  let legal_pot = Player.player2.legal_pot in
+  let legal_pot = (List.hd (List.rev st.player)).legal_pot in
   let billiards_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
   if List.length billiards_on_board > 0 then
     let distance_list : float list = find_pocket_distances_from white_position legal_pot billiards_on_board in

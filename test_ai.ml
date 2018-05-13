@@ -126,9 +126,18 @@ let state_test_no_billiard = {
   is_start = false;
 }
 
+let player_1_temp = {
+  name = "player_1";
+  is_playing = true;
+  score = 0;
+  cue = 0;
+  money = 0;
+  legal_pot = ball_15_15::[];
+}
+
 let state_test1 = {
   on_board = [cue_ball_temp; ball_15_15];
-  player = [player1; player2];
+  player = [player_1_temp];
   cue_bearing = 0. ;
   cue_pos = (0. ,0. );
   is_pot = [];
