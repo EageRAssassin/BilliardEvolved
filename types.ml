@@ -39,6 +39,7 @@ type player =
     mutable score : int;
     cue : int;
     money: int;
+    default_legal_pot: billiard list;
   }
 
 
