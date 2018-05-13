@@ -9,7 +9,7 @@ let player1 = {
   cue = 0;
   money = 0;
   legal_pot = one_ball::two_ball::three_ball::four_ball::five_ball::
-              six_ball::seven_ball::eight_ball::[];
+              six_ball::seven_ball::[];
 }
 
 let player2 = {
