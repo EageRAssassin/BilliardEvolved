@@ -29,7 +29,7 @@ type billiard =
     mass: float;
   }
 
-type foul = Cue_eight |Cue_pot
+type foul = Cue_eight|Cue_pot|No_foul
 
 type player =
   {
