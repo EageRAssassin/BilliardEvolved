@@ -65,7 +65,7 @@ type state =
     mutable current_table_id: string;
     mutable is_playing : player;
     mutable foul : foul;
-    hit_force : float * float;
+    mutable hit_force : float * float;
     mutable win: int;
     mutable billiards_removed_in_a_round: billiard list;
     mutable is_start: bool;
