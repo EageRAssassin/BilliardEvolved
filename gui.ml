@@ -148,7 +148,7 @@ let stat_helper (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
 let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
     (b: billiard) (legal_eight: bool) (player: int) (on_board: billiard list) =
   let s = b.suit in
-  if (List.mem b on_board) then
+  (* if (List.mem b on_board) then *)
     let p = float_of_int (player - 1) in
     if (s = 0 || s < 0 || s > 15) then draw_help context b (20000.,20000.)
     else if s = 8 && legal_eight then draw_help context Billiards.eight_ball
@@ -158,7 +158,7 @@ let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
       let y = (((legal_s - 1) / 4) * 37 + 22) in
       let choose_b = get_ball_img s b (0.,0.) 0 in
       draw_help context choose_b (float_of_int x, float_of_int y)
-  else draw_image_on_context context (js "media/blank.png") (0., 0.)
+  (* else draw_image_on_context context (js "media/blank.png") (0., 0.) *)
 
 (* let draw_stat (context: Html.canvasRenderingContext2D Js.t) b_list =
    List.map (fun b -> stat_helper context b) b_list |> ignore *)

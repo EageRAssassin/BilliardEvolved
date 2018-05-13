@@ -530,16 +530,10 @@ let next_round (st : state) =
   let current_legal_pot = current_player.legal_pot in
   let balls_on_board = st.on_board in
 
-  let player_1 =  List.hd (List.filter (fun x -> x.name = "player_1") st.player) in
-
-   let temp_legal_pot = List.filter (fun x -> x.suit <> 8) player_1.legal_pot  in
-    if (st.round = 1 ) then player_1.legal_pot <- temp_legal_pot;
-
-
-  if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
+  (* if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then current_player.legal_pot <- [Billiards.eight_ball];
   if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
-  then another_player.legal_pot <- [Billiards.eight_ball];
+  then another_player.legal_pot <- [Billiards.eight_ball]; *)
 
   let billiards_to_be_removed = st.billiards_removed_in_a_round in
   (*not hit balls in the legal pot*)
@@ -589,6 +583,13 @@ let calc_score (st: state) p =
   begin
     if p_score < 0 then p.score <- 0 else p.score <- p_score;
   end
+
+let rec get_player_by_name name players =
+  match players with
+  |  x :: xs -> if x.name = name then x else get_player_by_name name xs
+  | [] -> failwith "no such name"
+
+
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
    requires:
@@ -612,11 +613,20 @@ let change_state (st: state) : state =
   (* let new_cue_pos = update_cue_pos st ball_move in *)
   let new_cue_pos = update_cue_cursor st (check_start || ball_move) in
   let new_gap = update_cue_gap st (check_start || ball_move) st.gap in
-  let current_player = st.is_playing in
-  (*get the legal pot with the current onboard balls *)
-  let set_legal_pot =
-    let legal_pot = current_player.legal_pot in
-    List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
+  (* let current_player = st.is_playing in *)
+
+
+  (*set legal pot *)
+  let player_1 = (get_player_by_name "player_1" st.player) in
+  let player_2 = (get_player_by_name "player_2" st.player) in
+   player_1.legal_pot <- List.filter (fun b -> 1 <= b.suit && b.suit <= 7) new_on_board2;
+   player_2.legal_pot <- List.filter (fun b -> 9 <= b.suit && b.suit <= 15) new_on_board2;
+
+   if (player_1.legal_pot=[] && List.mem Billiards.eight_ball new_on_board2)
+   then player_1.legal_pot <- [Billiards.eight_ball];
+   if (player_2.legal_pot=[] && List.mem Billiards.eight_ball new_on_board2)
+   then player_2.legal_pot <- [Billiards.eight_ball];
+
   replace_cue_ball st;
   release_cue st;
 
@@ -636,7 +646,8 @@ let change_state (st: state) : state =
       on_board = new_on_board2 ;
       prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
-      (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)(*TODO WHY DELETING THIS LINE MAKE THE CHANGE ROUND WORKS??*)
+      (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)
+      (*TODO WHY DELETING THIS LINE MAKE THE CHANGE ROUND WORKS??*)
       is_collide = check_is_collide st;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
@@ -662,7 +673,7 @@ let change_state (st: state) : state =
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;
            ball_moving = ball_move;
-           is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
+           (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)
            cue_bearing = new_bearing;
            cue_pos = new_cue_pos;
            counter = st.counter + 1;
