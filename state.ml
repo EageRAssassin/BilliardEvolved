@@ -2,6 +2,7 @@ open Types
 open Command
 open Player
 open Ai
+open Billiards
 
 (* open Graphics *)
 (* open Billiards *)
@@ -13,6 +14,36 @@ let document = Html.document
 (* type player: see player.mli *)
 
 (* foul: see foul .mli *)
+
+(* init state *)
+
+(* initial state *)
+let init = {
+  on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
+              thirteen_ball; fourteen_ball; fifteen_ball;];
+  cue_bearing = 0.;
+  counter = 0;
+  gap = 45.;
+  is_collide = false;
+  cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
+  is_pot = [];
+  player = [player1; player2];
+  ball_moving = false;
+  prev_ball_moving = false;
+  (* if we use multiple skins *)
+  current_table_id = "default";
+  foul = No_foul;
+  is_playing = player1;
+  hit_force = (0., 0.);
+  win = 0;
+  round = 0;
+  (* all_tables = [Tables.default] *)
+  billiards_removed_in_a_round = [];
+  is_start = true;
+
+}
+
 
 (* HELPER FUNCTION GOES BELOW *)
 
@@ -269,6 +300,10 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
 let check_is_collide st : bool =
   check_is_collide_h st.on_board
 
+let restart st =
+  let command = player_command in
+  if command.s then st.is_start <- false else st.is_start <- st.is_start
+
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
   else if command.d then st.cue_bearing -. 1.
@@ -383,16 +418,17 @@ let update_cue_pos st ball_moving =
 
 let update_cue_cursor st ball_moving =
   let command = player_command in
-  if ball_moving then (290. , 0.) else command.cue_coord
+  if (ball_moving || st.is_start || (st.win <> 0)) then (290. , 0.)
+  else command.cue_coord
 
 let update_cue_gap st ball_moving curr_gap =
   let command = player_command in
-  if command.s = true then curr_gap
+  if st.is_start || st.win <> 0 then curr_gap
   else
     let gap =
     sqrt ((fst command.cue_coord -. fst Billiards.cue_ball.position) ** 2. +.
           (snd command.cue_coord -. snd Billiards.cue_ball.position) ** 2.)
-    -. 75. in
+    -. 45. in
     if gap < 35. then 35.
     else if gap > 200. then 200.
     else gap
@@ -402,10 +438,10 @@ let update_cue_bearing_cursor st ball_moving =
   let command = player_command in
   let x_offset = fst command.cue_coord -. fst ball_coord in
   let y_offset = snd command.cue_coord -. snd ball_coord in
-  if x_offset >= 0.
+  if st.is_start || st.win <> 0 then 0.
+  else if x_offset >= 0.
   then (make_d (Pervasives.atan (y_offset /. x_offset)))
-  else
-    180. +. (make_d (Pervasives.atan (y_offset /. x_offset)))
+  else 180. +. (make_d (Pervasives.atan (y_offset /. x_offset)))
 
 (*  TODO: [ release_cue st  ]
     requires: [st] is a valid state *)
@@ -424,7 +460,7 @@ let release_cue st =
     else let angle = 2. *. 3.1415926 -. bearing in
       (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle)) in
   let command = player_command in Billiards.cue_ball.velocity <-
-    if st.ball_moving then  Billiards.cue_ball.velocity
+    if (st.ball_moving || (st.is_start || st.win <> 0)) then  Billiards.cue_ball.velocity
     else if command.cue_release then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
     else Billiards.cue_ball.velocity
         (*TODO add AI to billaird*)
@@ -552,12 +588,13 @@ let change_state (st: state) : state =
   (* moved them here to help with my reset cue bearing *)
   let new_on_board2 = check_in_pot position_on_board in
   let ball_move = check_billiards_moving new_on_board2 in
+  let check_start = (st.is_start || st.win <> 0) in
   let check_foul_result = check_foul billiards_to_be_removed st.is_playing new_on_board2 in
   (* let new_bearing = update_cue_bearing st ball_move st.cue_bearing in *)
-  let new_bearing = update_cue_bearing_cursor st ball_move in
+  let new_bearing = update_cue_bearing_cursor st (check_start || ball_move) in
   (* let new_cue_pos = update_cue_pos st ball_move in *)
-  let new_cue_pos = update_cue_cursor st ball_move in
-  let new_gap = update_cue_gap st ball_move st.gap in
+  let new_cue_pos = update_cue_cursor st (check_start || ball_move) in
+  let new_gap = update_cue_gap st (check_start || ball_move) st.gap in
   let current_player = st.is_playing in
   (*get the legal pot with the current onboard balls *)
   let set_legal_pot =
@@ -570,9 +607,8 @@ let change_state (st: state) : state =
 
      List.map (fun b -> calc_score st player2 b) st.on_board |> ignore; *)
   calc_score st player1; calc_score st player2;
-
-
-  if not ball_move && (st.ball_moving = true && ball_move = false) then
+  restart st;
+  if not ball_move && (st.ball_moving = true || ball_move) then
     begin
       next_round st;
       st.billiards_removed_in_a_round<-[];

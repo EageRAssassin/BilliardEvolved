@@ -79,6 +79,8 @@ type state =
     hit_force : float * float;
     mutable win: int; (*0 no one win, 1 play win, 2 AI win*)
     mutable billiards_removed_in_a_round: billiard list;
+    mutable is_start: bool;
+    (* mutable is_win: bool; *)
   }
 
 type command = {

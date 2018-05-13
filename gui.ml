@@ -6,8 +6,8 @@ open Player
  https://github.com/ocsigen/js_of_ocaml *)
 
 (* canvas width and height *)
-let canvas_width = 1501.
-let canvas_height = 1000.
+let canvas_width = 1331.
+let canvas_height = 741.
 
 let rad d = d *. 3.1415926 /. 180.
 let make_d r = r *. 180. /. 3.1415926
@@ -184,7 +184,7 @@ let draw_turn c p =
   else
     draw_image_on_context c (js "media/turnp2.png") (843., 7.)
 
-let draw_score_p1 context n =
+(* let draw_score_p1 context n =
   let score = js (" " ^ string_of_int n) in
   context##font <- js "25px Triforce";
   context##fillText (score, 210., 717.)
@@ -192,7 +192,7 @@ let draw_score_p1 context n =
 let draw_score_p2 context n =
   let score = js (" " ^ string_of_int n) in
   context##font <- js "25px Triforce";
-  context##fillText (score, 910., 717.)
+  context##fillText (score, 910., 717.) *)
 
 let draw_debug context str y =
   let text = js (str) in
@@ -320,25 +320,26 @@ let draw_rotated2 context degrees img bx by gap =
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
+
   (* draw_control context; *)
   (* draw_p1 context;
      draw_p2 context; *)
   draw_table context;
-  draw_score_p1 context player1.score;
-  draw_score_p2 context player2.score;
+  (* draw_score_p1 context player1.score;
+  draw_score_p2 context player2.score; *)
   draw_turn context (state.is_playing = player1);
 
   draw_billiards context state.on_board state.counter;
   draw_debug context ("cue_ball.pos: (" ^
                       (string_of_float (fst cue_ball.position)) ^ ", " ^
-                      (string_of_float (snd cue_ball.position)) ^ ")") 715.;
+                      (string_of_float (snd cue_ball.position)) ^ ")") 10.;
   draw_debug context ("cue_pos: (" ^
                       (string_of_float (fst state.cue_pos)) ^ ", " ^
-                      (string_of_float (snd state.cue_pos)) ^ ")") 730.;
-  draw_debug context ("state number: " ^ (string_of_int state.counter)) 745.;
-  draw_debug context ("player: " ^ state.is_playing.name) 760.;
-  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 775.;
-  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 790.;
+                      (string_of_float (snd state.cue_pos)) ^ ")") 22.;
+  draw_debug context ("state number: " ^ (string_of_int state.counter)) 34.;
+  draw_debug context ("player: " ^ state.is_playing.name) 46.;
+  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 58.;
+  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 70.;
   (* let g1 = fst (state.cue_pos) -. fst cue_ball.position in
      let g2 = snd (state.cue_pos) -. snd cue_ball.position in *)
   let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
@@ -375,4 +376,11 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
 
     draw_rotated2 context bearing "media/pool_cue.png" a1 a2 gap
   else
-    draw_image_on_context context (js "media/pool_cue_vert.png") (1170., 150.)
+    draw_image_on_context context (js "media/pool_cue_vert.png") (1170., 150.);
+
+  if state.is_start then draw_image_on_context context (js "media/start.png") ( 0. , 0.)
+  else draw_image_on_context context (js "media/blank.png") ( 0. , 0.);
+
+  if state.win = 1 then draw_image_on_context context (js "media/win.png") ( 0. , 0.)
+  else if state.win = 2 then draw_image_on_context context (js "media/lose.png") ( 0. , 0.)
+  else draw_image_on_context context (js "media/blank.png") ( 0. , 0.)
