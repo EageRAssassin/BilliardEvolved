@@ -1,6 +1,8 @@
 open Types
 open Command
 open Player
+open Ai
+
 (* open Graphics *)
 (* open Billiards *)
 module Html = Dom_html
@@ -198,10 +200,10 @@ let remain_on_board (b : billiard) : bool =
   let distance = 100. in
   let in_pocket_status =
   check_within_radius b_pos (left_bd +. 5., top_bd +. 5.) distance ||
-  check_within_radius b_pos (left_bd +. 445., top_bd +. 5.) distance ||
+  check_within_radius b_pos (left_bd +. 460., top_bd +. 5.) distance ||
   check_within_radius b_pos (right_bd -. 5., top_bd +. 5.) distance ||
   check_within_radius b_pos (left_bd +. 5., bottom_bd -. 5.) distance ||
-  check_within_radius b_pos (left_bd +. 445., bottom_bd -. 5.) distance ||
+  check_within_radius b_pos (left_bd +. 460., bottom_bd -. 5.) distance ||
   check_within_radius b_pos (right_bd -. 5., bottom_bd -. 5.) distance in
   not in_pocket_status
 
@@ -425,7 +427,7 @@ let release_cue st =
     if st.ball_moving then  Billiards.cue_ball.velocity
     else if command.cue_release then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
     else Billiards.cue_ball.velocity
-
+        (*TODO add AI to billaird*)
 (*  TODO: [ replace_cue_ball st  ]
     requires: [st] is a valid state *)
 let replace_cue_ball st =
@@ -587,7 +589,6 @@ let change_state (st: state) : state =
       cue_pos = new_cue_pos;
       counter = st.counter + 1;
       gap = new_gap;
-
     }
   else
 
@@ -608,7 +609,7 @@ let change_state (st: state) : state =
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;
            ball_moving = ball_move;
-          is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
+           is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ;
            cue_bearing = new_bearing;
            cue_pos = new_cue_pos;
            counter = st.counter + 1;
