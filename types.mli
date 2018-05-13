@@ -31,6 +31,7 @@ type billiard =
 type player =
   {
     mutable legal_pot: billiard list;
+    mutable default_legal_pot:billiard list;
     name: string;
     mutable is_playing : bool;
     mutable score : int;

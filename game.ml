@@ -11,11 +11,11 @@ let document = Html.document
 
 (* initial state *)
 let initial_state = {
-  (* on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
+  on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
                  six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-              thirteen_ball; fourteen_ball; fifteen_ball;]; *)
-
-  on_board = [cue_ball; one_ball; eight_ball; nine_ball;];
+              thirteen_ball; fourteen_ball; fifteen_ball;];
+(*
+  on_board = [cue_ball; one_ball; eight_ball; nine_ball;]; *)
   cue_bearing = 0.;
   counter = 0;
   gap = 45.;

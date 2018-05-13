@@ -34,11 +34,13 @@ type foul = Cue_eight|Cue_pot|No_foul
 type player =
   {
     mutable legal_pot: billiard list;
+    mutable default_legal_pot:billiard list;
     name: string;
     mutable is_playing : bool;
     mutable score : int;
     cue : int;
     money: int;
+
   }
 
 
