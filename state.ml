@@ -41,6 +41,7 @@ let init = {
   (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
+  (* is_hit = false; *)
 
 }
 
@@ -459,11 +460,30 @@ let release_cue st =
       (g *. (Pervasives.cos angle), (g *. Pervasives.sin angle))
     else let angle = 2. *. 3.1415926 -. bearing in
       (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle)) in
-  let command = player_command in Billiards.cue_ball.velocity <-
-    if (st.ball_moving || (st.is_start || st.win <> 0)) then  Billiards.cue_ball.velocity
-    else if command.cue_release then (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
-    else Billiards.cue_ball.velocity
-        (*TODO add AI to billaird*)
+      let command = player_command in Billiards.cue_ball.velocity <-
+        if (st.ball_moving || (st.is_start || st.win <> 0)) then  Billiards.cue_ball.velocity
+        else
+        if st.is_playing.name = "player_2" then
+          (* use AI *)
+          begin
+          let audio = Html.createAudio document in
+          audio##src <- js "media/cue.mp3";
+             audio##play ();
+            (* st.is_hit <- false; *)
+            ai_evaluate_next_move st;
+            Billiards.cue_ball.velocity;
+
+          end
+        else if command.cue_release then
+          begin
+          let audio = Html.createAudio document in
+          audio##src <- js "media/cue.mp3";
+             audio##play ();
+            (* st.is_hit <- true; *)
+            st.hit_force <- (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic));
+            (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
+          end
+        else begin Billiards.cue_ball.velocity end
 (*  TODO: [ replace_cue_ball st  ]
     requires: [st] is a valid state *)
 let replace_cue_ball st =
@@ -527,9 +547,9 @@ let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
   let another_player = find_next_player players current_player in
-  let current_legal_pot = current_player.legal_pot in
-  let balls_on_board = st.on_board in
-
+  (* let current_legal_pot = current_player.legal_pot in
+   *)
+  (* let balls_on_board = st.on_board in *)
   (* if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then current_player.legal_pot <- [Billiards.eight_ball];
   if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
@@ -537,7 +557,7 @@ let next_round (st : state) =
 
   let billiards_to_be_removed = st.billiards_removed_in_a_round in
   (*not hit balls in the legal pot*)
-  if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
+  if not (hit_legal_plot_ball billiards_to_be_removed current_player.default_legal_pot) then
     begin
       current_player.is_playing <- false;
       another_player.is_playing <- true;
@@ -554,7 +574,7 @@ let next_round (st : state) =
       st.round <- st.round + 1;
     end
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
-  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
+  else if (contain_8_ball_undone billiards_to_be_removed current_player.default_legal_pot) then
     if current_player.name = "player_1"
     then begin
       st.win <- 2;
@@ -568,6 +588,7 @@ let next_round (st : state) =
       another_player.is_playing <- true;
       st.foul <- Cue_eight;
     end
+
 
 (* let calc_score (st: state) p b =
   (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
@@ -589,6 +610,10 @@ let rec get_player_by_name name players =
   |  x :: xs -> if x.name = name then x else get_player_by_name name xs
   | [] -> failwith "no such name"
 
+let rec check_collide_w_cue_reset balls_on_board temp_cue = match balls_on_board with
+  | x::xs -> if check_within_radius x.position temp_cue 900. then true
+    else check_collide_w_cue_reset xs temp_cue
+  | [] -> false
 
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
@@ -665,10 +690,17 @@ let change_state (st: state) : state =
       if contain_cue_ball billiards_to_be_removed then   (*if the suit ball is removed *)
         (* [new_on_board_recover_cue new_on_board2] checks whether the ball removed
            is the cue, and return a new state with cue ball's position reset.*)
+
+
         let new_on_board_recover_cue new_on_board2 =
-          Billiards.cue_ball.position <- (880.,390.);
+          let temp_cue_position = ref (880.,390.) in
+          while check_collide_w_cue_reset st.on_board !temp_cue_position do
+            temp_cue_position := (fst !temp_cue_position +. 30., snd !temp_cue_position)
+          done;
+          Billiards.cue_ball.position <- !temp_cue_position ;
           Billiards.cue_ball.velocity <- (0.,0.);
           Billiards.cue_ball::new_on_board2 in
+
 
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;

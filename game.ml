@@ -11,11 +11,11 @@ let document = Html.document
 
 (* initial state *)
 let initial_state = {
-  (* on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
+  on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
                  six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-              thirteen_ball; fourteen_ball; fifteen_ball;]; *)
+              thirteen_ball; fourteen_ball; fifteen_ball;];
 
-  on_board = [cue_ball; one_ball; eight_ball; nine_ball;];
+  (* on_board = [cue_ball; one_ball; eight_ball; nine_ball;]; *)
   cue_bearing = 0.;
   counter = 0;
   gap = 45.;
@@ -35,6 +35,7 @@ let initial_state = {
   (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
+  (* is_hit = false; *)
 
 }
 
@@ -101,9 +102,9 @@ let mousedown (event : Dom_html.mouseEvent Js.t) =
   let new_state = State.change_state !state in
   let () = match event##button with
     | 0 ->
-      let audio = Html.createAudio document in
+      (* let audio = Html.createAudio document in
       audio##src <- js "media/cue.mp3";
-      audio##play ();
+      audio##play (); *)
       player_command.cue_release <- true;
     state := new_state
     | _ -> player_command.cue_release <- false; state := new_state

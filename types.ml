@@ -34,6 +34,7 @@ type foul = Cue_eight|Cue_pot|No_foul
 type player =
   {
     mutable legal_pot: billiard list;
+    mutable default_legal_pot:billiard list;
     name: string;
     mutable is_playing : bool;
     mutable score : int;
@@ -79,6 +80,7 @@ type state =
     mutable win: int; (*0 no one win, 1 play win, 2 AI win*)
     mutable billiards_removed_in_a_round: billiard list;
     mutable is_start: bool;
+    (* mutable is_hit: bool; *)
     (* mutable is_win: bool; *)
   }
 
