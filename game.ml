@@ -61,7 +61,7 @@ let keydown event =
     | 50 -> player_command.two <- true; state := new_state
     | 88 -> player_command.x <- true; state := new_state
 
-    | _ -> (* null *)
+    | _ -> () (* null *)
   in Js._true
 
 let keyup event =
