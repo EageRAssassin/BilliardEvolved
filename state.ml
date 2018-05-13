@@ -231,10 +231,10 @@ let remain_on_board (b : billiard) : bool =
   let distance = 100. in
   let in_pocket_status =
   check_within_radius b_pos (left_bd +. 5., top_bd +. 5.) distance ||
-  check_within_radius b_pos (left_bd +. 460., top_bd +. 5.) distance ||
+  check_within_radius b_pos (left_bd +. 445., top_bd +. 5.) distance ||
   check_within_radius b_pos (right_bd -. 5., top_bd +. 5.) distance ||
   check_within_radius b_pos (left_bd +. 5., bottom_bd -. 5.) distance ||
-  check_within_radius b_pos (left_bd +. 460., bottom_bd -. 5.) distance ||
+  check_within_radius b_pos (left_bd +. 445., bottom_bd -. 5.) distance ||
   check_within_radius b_pos (right_bd -. 5., bottom_bd -. 5.) distance in
   not in_pocket_status
 
@@ -245,10 +245,10 @@ let remove_on_board (b : billiard) : bool =
   let distance = 100. in
   let in_pocket_status =
     check_within_radius b_pos (left_bd +. 5., top_bd +. 5.) distance ||
-    check_within_radius b_pos (left_bd +. 460., top_bd +. 5.) distance ||
+    check_within_radius b_pos (left_bd +. 445., top_bd +. 5.) distance ||
     check_within_radius b_pos (right_bd -. 5., top_bd +. 5.) distance ||
     check_within_radius b_pos (left_bd +. 5., bottom_bd -. 5.) distance ||
-    check_within_radius b_pos (left_bd +. 460., bottom_bd -. 5.) distance ||
+    check_within_radius b_pos (left_bd +. 445., bottom_bd -. 5.) distance ||
     check_within_radius b_pos (right_bd -. 5., bottom_bd -. 5.) distance in
   in_pocket_status
 
