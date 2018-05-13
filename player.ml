@@ -19,6 +19,6 @@ let player2 = {
   score = 0;
   cue = 0;
   money = 0;
-  legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
+  legal_pot = eight_ball::nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
               fifteen_ball::[];
 }

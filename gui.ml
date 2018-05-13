@@ -145,8 +145,28 @@ let stat_helper (context: Html.canvasRenderingContext2D Js.t) (b: billiard) =
     let choose_b = get_ball_img s b (0.,0.) 0 in
     draw_help context choose_b (float_of_int x, float_of_int y)
 
-let draw_stat (context: Html.canvasRenderingContext2D Js.t) b_list =
-  List.map (fun b -> stat_helper context b) b_list |> ignore
+let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
+    (b: billiard) (legal_eight: bool) (player: int) (on_board: billiard list) =
+  let s = b.suit in
+  if (List.mem b on_board) then
+    let p = float_of_int (player - 1) in
+    if (s = 0 || s < 0 || s > 15) then draw_help context b (20000.,20000.)
+    else if s = 8 && legal_eight then draw_help context Billiards.eight_ball
+        ((231. +. 3. *. 45. +. p *. 613. ), (37. +. 22.))
+    else let legal_s = s mod 8 in
+      let x = (231 + ((legal_s - 1) mod 4) * 45 + (int_of_float p) * 613) in
+      let y = (((legal_s - 1) / 4) * 37 + 22) in
+      let choose_b = get_ball_img s b (0.,0.) 0 in
+      draw_help context choose_b (float_of_int x, float_of_int y)
+  else draw_image_on_context context (js "media/blank.png") (0., 0.)
+
+(* let draw_stat (context: Html.canvasRenderingContext2D Js.t) b_list =
+   List.map (fun b -> stat_helper context b) b_list |> ignore *)
+
+let draw_stat (context: Html.canvasRenderingContext2D Js.t) player p on_board =
+  let legal_eight = (List.mem eight_ball player.legal_pot) in
+  List.map (fun b -> draw_legal_billiards context b legal_eight p on_board)
+    player.legal_pot |> ignore
 
 let draw_control c =
   draw_image_on_context c (js "media/controls.png") (1250., 0.)
@@ -177,7 +197,7 @@ let draw_score_p2 context n =
 let draw_debug context str y =
   let text = js (str) in
   context##font <- js "10px Triforce";
-  context##fillText (text, 1200., y)
+  context##fillText (text, 1240., y)
 
 let draw_bearing context str =
   let text = js (str) in
@@ -311,14 +331,14 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_billiards context state.on_board state.counter;
   draw_debug context ("cue_ball.pos: (" ^
                       (string_of_float (fst cue_ball.position)) ^ ", " ^
-                      (string_of_float (snd cue_ball.position)) ^ ")") 15.;
+                      (string_of_float (snd cue_ball.position)) ^ ")") 715.;
   draw_debug context ("cue_pos: (" ^
                       (string_of_float (fst state.cue_pos)) ^ ", " ^
-                      (string_of_float (snd state.cue_pos)) ^ ")") 30.;
-  draw_debug context ("state number: " ^ (string_of_int state.counter)) 45.;
-  draw_debug context ("player: " ^ state.is_playing.name) 60.;
-  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 75.;
-  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 90.;
+                      (string_of_float (snd state.cue_pos)) ^ ")") 730.;
+  draw_debug context ("state number: " ^ (string_of_int state.counter)) 745.;
+  draw_debug context ("player: " ^ state.is_playing.name) 760.;
+  draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 775.;
+  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 790.;
   (* let g1 = fst (state.cue_pos) -. fst cue_ball.position in
      let g2 = snd (state.cue_pos) -. snd cue_ball.position in *)
   let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
@@ -345,7 +365,8 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
 
   draw_image_on_context context (js "media/left.png") (0., 0.);
     draw_bearing context (string_of_float state.cue_bearing);
-  draw_stat context state.on_board;
+  draw_stat context player1 1 state.on_board;
+  draw_stat context player2 2 state.on_board;
   if state.ball_moving = false then
  (* let a1 = state.gap +. fst cue_ball.position in let a2 = snd cue_ball.position in
     let g1 = fst state.cue_pos -. fst cue_ball.position in

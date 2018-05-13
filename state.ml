@@ -520,6 +520,20 @@ let next_round (st : state) =
     then begin st.win <- 2 end
     else begin st.win <- 1 end
 
+(* let calc_score (st: state) p b =
+  (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
+  (* let p_score = (16 - List.length (st.on_board)) * 100 in *)
+  begin
+    if ((List.mem b st.on_board) = false) && (List.mem b p.legal_pot) then
+      p.score <- p.score + 100 else p.score <- p.score;
+  end *)
+
+let calc_score (st: state) p =
+  (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
+  let p_score = (17 - List.length (st.on_board)) * 100 in
+  begin
+    if p_score < 0 then p.score <- 0 else p.score <- p_score;
+  end
 (* [change_state st] will change the attributes of fields in [st] and
  * update those fields to make the next change_state
    requires:
@@ -549,6 +563,13 @@ let change_state (st: state) : state =
     List.filter (fun x -> if (List.mem x legal_pot) then true else false) new_on_board2 in
   replace_cue_ball st;
   release_cue st;
+
+  (* List.map (fun b -> calc_score st player1 b) st.on_board |> ignore;
+
+     List.map (fun b -> calc_score st player2 b) st.on_board |> ignore; *)
+  calc_score st player1; calc_score st player2;
+
+
   if not ball_move && (st.ball_moving = true && ball_move = false) then
     begin
       next_round st;

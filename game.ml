@@ -44,6 +44,9 @@ let state = ref (initial_state)
 
 (*https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
   https://www.w3schools.com/charsets/ref_utf_basic_latin.asp
+
+  mapping uses ocsigen's type declarations
+  code (keycode, mouse click) uses HTML's event listener
 *)
 let keydown event =
   let new_state = State.change_state !state in
@@ -58,7 +61,7 @@ let keydown event =
     | 50 -> player_command.two <- true; state := new_state
     | 88 -> player_command.x <- true; state := new_state
 
-    | _ -> player_command.w <- true; state := new_state (* other *)
+    | _ -> (* null *)
   in Js._true
 
 let keyup event =
@@ -74,7 +77,7 @@ let keyup event =
     | 50 -> player_command.two <- false; state := new_state
     | 88 -> player_command.x <- false; state := new_state
 
-    | _ -> player_command.w <- false; state := new_state (* other *)
+    | _ -> () (*null*)
   in Js._true
 
 (* https://www.w3schools.com/jsref/dom_obj_event.asp

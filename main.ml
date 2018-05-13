@@ -40,7 +40,7 @@ let main () =
   (*audio*)
   let audio = Html.createAudio document in
     audio##src <- js "media/billiards.mp3";
-    audio##play ();
+    (* audio##play (); *)
   (*font*)
   Dom.appendChild gui h1;
   Dom.appendChild gui p;
