@@ -200,24 +200,28 @@ let search2_calculation (cue_position : (float*float)) (ball_position : (float*f
    the player
    requires: [st] is a state
 *)
-let ai_evaluate_next_move st : ( float * float )=
+let ai_evaluate_next_move st =
   let cue_position = find_billiard_position st.on_board 0 in
-  if List.length st.on_board = 16 then
+  (* 0. where there are 16 balls on board, hit the nearest one with full force *)
+  if List.length st.on_board >= 16 then
     let vector = closest_billiard cue_position st.on_board (2000., 2000.) in
-    (5. *. fst vector, 5. *. snd vector)
+    st.hit_force <- (1., 1.);
+    Billiards.cue_ball.velocity <- (5. *. fst vector, 5. *. snd vector)
   else
-  (* check if first search method will work *)
+  (* 1. check if first search method will work *)
   let search1 = search1_possible st in
   if search1 <> -1 then
     let ball_position = find_billiard_position st.on_board search1 in
-    search1_calculation cue_position ball_position
+    st.hit_force <- (float_of_int (List.length st.on_board), 999.);
+    Billiards.cue_ball.velocity <- search1_calculation cue_position ball_position
   else
   (* check if second search method will work *)
   let search2 = search2_possible st in
   if search2 <> -1 then
     let ball_position = find_billiard_position st.on_board search2 in
-    search2_calculation cue_position ball_position
+    st.hit_force <- (3., 3.);
+    Billiards.cue_ball.velocity <- search2_calculation cue_position ball_position
   else
   (* use third method *)
-    closest_billiard cue_position st.on_board (2000., 2000.)
-      (* TODO *)
+    st.hit_force <- (4., 4.);
+    Billiards.cue_ball.velocity <- closest_billiard cue_position st.on_board (2000., 2000.)

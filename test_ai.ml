@@ -226,6 +226,48 @@ let initial_state = {
   billiards_removed_in_a_round = [];
 }
 
+let cue_ball_changed = {
+  suit = 0;
+  name = "Cue Ball" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (250.,250.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let initial_state_cue_ball_changed = {
+  on_board = [cue_ball_changed;one_ball;two_ball; three_ball; four_ball; five_ball;
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
+              thirteen_ball; fourteen_ball; fifteen_ball;];
+  cue_bearing = 0.;
+  counter = 0;
+  gap = 45.;
+  is_collide = false;
+  cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
+  is_pot = [];
+  player = [player1; player2];
+  ball_moving = false;
+  prev_ball_moving = false;
+  current_table_id = "default";
+  foul = No_foul;
+  is_playing = player1;
+  hit_force = (0., 0.);
+  win = 0;
+  round = 100;
+  billiards_removed_in_a_round = [];
+
+}
+
 let tests =
   [
     (*-----------------FUNCTION TEST-----------------*)
@@ -259,8 +301,8 @@ let tests =
 
     (*-----------------GENERAL STATE TEST-----------------*)
     (* initial state: all balls on board. Should hit directly with full force *)
-    "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state));
-
+    (* "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state)); *)
+    (* "initial_state_changed" >:: (fun _ -> assert_equal (290., 400.) (ai_evaluate_next_move initial_state_cue_ball_changed)); *)
     (* "test_initial_state" >:: (fun _ -> assert_equal 1 (search1_possible state_test2)); *)
 
   ]
