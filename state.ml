@@ -527,9 +527,9 @@ let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
   let another_player = find_next_player players current_player in
-  let current_legal_pot = current_player.legal_pot in
-  let balls_on_board = st.on_board in
-
+  (* let current_legal_pot = current_player.legal_pot in
+   *)
+  (* let balls_on_board = st.on_board in *)
   (* if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then current_player.legal_pot <- [Billiards.eight_ball];
   if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
@@ -537,7 +537,7 @@ let next_round (st : state) =
 
   let billiards_to_be_removed = st.billiards_removed_in_a_round in
   (*not hit balls in the legal pot*)
-  if not (hit_legal_plot_ball billiards_to_be_removed current_legal_pot) then
+  if not (hit_legal_plot_ball billiards_to_be_removed current_player.legal_pot) then
     begin
       current_player.is_playing <- false;
       another_player.is_playing <- true;
@@ -554,7 +554,7 @@ let next_round (st : state) =
       st.round <- st.round + 1;
     end
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
-  else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
+  else if (contain_8_ball_undone billiards_to_be_removed current_player.default_legal_pot) then
     if current_player.name = "player_1"
     then begin
       st.win <- 2;
@@ -568,6 +568,7 @@ let next_round (st : state) =
       another_player.is_playing <- true;
       st.foul <- Cue_eight;
     end
+
 
 (* let calc_score (st: state) p b =
   (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
