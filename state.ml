@@ -518,6 +518,7 @@ let rec hit_legal_plot_ball ball_removed legalpot=
   | [] -> false
 
 
+
 (* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
    requires: [st] is current game state
@@ -528,6 +529,12 @@ let next_round (st : state) =
   let another_player = find_next_player players current_player in
   let current_legal_pot = current_player.legal_pot in
   let balls_on_board = st.on_board in
+
+  let player_1 =  List.hd (List.filter (fun x -> x.name = "player_1") st.player) in
+
+   let temp_legal_pot = List.filter (fun x -> x.suit <> 8) player_1.legal_pot  in
+    if (st.round = 1 ) then player_1.legal_pot <- temp_legal_pot;
+
 
   if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
   then current_player.legal_pot <- [Billiards.eight_ball];
@@ -555,8 +562,18 @@ let next_round (st : state) =
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
   else if (contain_8_ball_undone billiards_to_be_removed current_legal_pot) then
     if current_player.name = "player_1"
-    then begin st.win <- 2 end
-    else begin st.win <- 1 end
+    then begin
+      st.win <- 2;
+      current_player.is_playing <- false;
+      another_player.is_playing <- true;
+      st.foul <- Cue_eight;
+    end
+    else begin
+      st.win <- 1;
+      current_player.is_playing <- false;
+      another_player.is_playing <- true;
+      st.foul <- Cue_eight;
+    end
 
 (* let calc_score (st: state) p b =
   (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)

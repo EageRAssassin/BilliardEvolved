@@ -30,7 +30,8 @@ type billiard =
   }
 
 type foul =
-    Illegal_eight|Cue_eight|Cue_pot|Hit_wrong|No_hit_side|No_hit_ball|No_foul
+    Illegal_eight |Cue_eight |Cue_pot |Hit_wrong 
+    |No_hit_side |No_hit_ball |No_foul
 
 type player =
   {
