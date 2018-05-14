@@ -88,6 +88,8 @@ let player1 = {
   money = 0;
   legal_pot = one_ball::two_ball::three_ball::four_ball::five_ball::
               six_ball::seven_ball::eight_ball::[];
+  default_legal_pot = one_ball::two_ball::three_ball::four_ball::five_ball::
+              six_ball::seven_ball::eight_ball::[];
 }
 
 let player2 = {
@@ -97,6 +99,8 @@ let player2 = {
   cue = 0;
   money = 0;
   legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
+              fifteen_ball::[];
+  default_legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
               fifteen_ball::[];
 }
 
@@ -133,6 +137,7 @@ let player_1_temp = {
   cue = 0;
   money = 0;
   legal_pot = ball_15_15::[];
+  default_legal_pot = ball_15_15::[];
 }
 
 let state_test1 = {
@@ -254,6 +259,182 @@ let initial_state_cue_ball_changed = {
   cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
   is_pot = [];
   player = [player1; player2];
+  ball_moving = false;
+  prev_ball_moving = false;
+  current_table_id = "default";
+  foul = No_foul;
+  is_playing = player1;
+  hit_force = (0., 0.);
+  win = 0;
+  round = 100;
+  billiards_removed_in_a_round = [];
+  is_start = false;
+}
+
+(* -------------- RANDOM STATE TEST -------------- *)
+
+let cue_ball_random1 = {
+  suit = 0;
+  name = "c" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (50.,50.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b1 = {
+  suit = 0;
+  name = "c" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (200.,200.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b2 = {
+  suit = 0;
+  name = "b2" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (250.,500.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b3 = {
+  suit = 0;
+  name = "b3" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (650.,190.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b4 = {
+  suit = 0;
+  name = "b4" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (900.,300.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b5 = {
+  suit = 0;
+  name = "b5" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (900.,450.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let b6 = {
+  suit = 0;
+  name = "b6" ;
+  size = (25.,25.);
+  velocity = (0.,0.);
+  position = (50.,50.); (*see arrangement.png for init. for now all are
+                            the same place *)
+  score = -100; (*should never be potted*)
+  (* legal_player = None;
+     legal_pot = None; *)
+  dim = {
+    img = "media/billiards.png";
+    size = (25., 25.); (*size of billiard ball on THE IMAGE*)
+    offset = (0., 75.); (*chooses which on the image provided to take from*)
+  };
+  image = "media/billiards.png";
+  mass = 10.;
+}
+
+let player1_random1 = {
+  name = "player_1";
+  is_playing = true;
+  score = 0;
+  cue = 0;
+  money = 0;
+  legal_pot = b1::b2::b3::[];
+  default_legal_pot = b1::b2::b3::[];
+}
+
+let player2_random1 = {
+  name = "player_2";
+  is_playing = false;
+  score = 0;
+  cue = 0;
+  money = 0;
+  legal_pot = b4::b5::b6::[];
+  default_legal_pot = b4::b5::b6::[];
+}
+
+let state_test_random1 = {
+  on_board = [];
+  cue_bearing = 0.;
+  counter = 0;
+  gap = 45.;
+  is_collide = false;
+  cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
+  is_pot = [];
+  player = [player1_random1; player2_random1];
   ball_moving = false;
   prev_ball_moving = false;
   current_table_id = "default";

@@ -23,6 +23,6 @@ let player2 = {
   money = 0;
   legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
               fifteen_ball::[];
-  default_legal_pot = one_ball::two_ball::three_ball::four_ball::five_ball::
-              six_ball::seven_ball::[];
+  default_legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
+              fifteen_ball::[];
 }

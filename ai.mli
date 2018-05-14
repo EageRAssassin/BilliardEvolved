@@ -13,7 +13,7 @@ open Types
    3. line of travel is not obstructed (no ball between ball and pocket.
 
 *)
-val ai_evaluate_next_move : state -> unit
+val ai_evaluate_next_move : state -> (float * float)
 
 val search1_possible : state -> int
 val search2_possible : state -> int

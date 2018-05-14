@@ -470,8 +470,7 @@ let release_cue st =
           audio##src <- js "media/cue.mp3";
              audio##play ();
             (* st.is_hit <- false; *)
-            ai_evaluate_next_move st;
-            Billiards.cue_ball.velocity;
+            ai_evaluate_next_move st
 
           end
         else if command.cue_release then
@@ -556,6 +555,11 @@ let next_round (st : state) =
   then another_player.legal_pot <- [Billiards.eight_ball]; *)
 
   let billiards_to_be_removed = st.billiards_removed_in_a_round in
+  if current_player.legal_pot = [] && List.mem Billiards.eight_ball billiards_to_be_removed then
+    if current_player.name = "player_1"
+    then st.win <- 1
+    else st.win <- 2
+  else
   (*not hit balls in the legal pot*)
   if not (hit_legal_plot_ball billiards_to_be_removed current_player.default_legal_pot) then
     begin
