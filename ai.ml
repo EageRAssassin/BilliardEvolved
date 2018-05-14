@@ -177,13 +177,13 @@ let search1_calculation (cue_position : (float*float)) (ball_position : (float*f
   let force_magnifier = if force_magnifier < 1.0 then 1.5 else force_magnifier in
   let force_magnifier =
     if billiard_between ball_position pocket_to_be_hit billiards
-    then force_magnifier *. 3.
+    then force_magnifier *. 2.
     else force_magnifier in
   let vector_x = (fst hit_point -. fst cue_position) *. 10. *. force_magnifier *. 2. in
   let vector_y = (snd hit_point -. snd cue_position) *. 10. *. force_magnifier *. 2. in
-  if abs_float vector_x > 5000. then
-    if vector_x > 0. then (5000., 5000.*.vector_y/.vector_x) else (-5000., -5000.*.vector_y/.vector_x)
-  else if abs_float vector_x > 5000. then
+  if abs_float vector_x > 3000. then
+    if vector_x > 0. then (3000., 3000.*.vector_y/.vector_x) else (-3000., -3000.*.vector_y/.vector_x)
+  else if abs_float vector_x > 3000. then
     if vector_y > 0. then (3000.*.vector_x/.vector_y, 3000.) else (-3000.*.vector_x/.vector_y, -3000.)
   else (vector_x, vector_y)
 
@@ -213,7 +213,7 @@ let search2_calculation (cue_position : (float*float)) (ball_position : (float*f
 let ai_evaluate_next_move st : (float * float)=
   let cue_position = find_billiard_position st.on_board 0 in
   (* 0. where there are 16 balls on board, hit the nearest one with full force *)
-  if List.length st.on_board >= 16 && st.round < 2 then
+  if List.length st.on_board >= 16 && st.round < 1 then
     let vector = closest_billiard cue_position st.on_board (2000., 2000.) in
     st.hit_force <- (0., 0.);
     (30. *. fst vector, 30. *. snd vector)
@@ -237,5 +237,5 @@ let ai_evaluate_next_move st : (float * float)=
   (* use third method *)
     begin
       st.hit_force <- (3., 3.);
-      closest_billiard cue_position st.on_board (2000., 2000.)
+      closest_billiard cue_position Player.player2.legal_pot (2000., 2000.)
     end
