@@ -128,6 +128,8 @@ let state_test_no_billiard = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let player_1_temp = {
@@ -159,6 +161,8 @@ let state_test1 = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let state_test2 = {
@@ -180,6 +184,8 @@ let state_test2 = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let state_test3 = {
@@ -201,6 +207,8 @@ let state_test3 = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let state_test_closest_billiard = {
@@ -223,6 +231,8 @@ let state_test_closest_billiard = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let initial_state = {
@@ -246,6 +256,8 @@ let initial_state = {
   prev_ball_moving = false;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let initial_state_cue_ball_changed = {
@@ -269,6 +281,8 @@ let initial_state_cue_ball_changed = {
   round = 100;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 (* -------------- RANDOM STATE TEST -------------- *)
@@ -445,6 +459,8 @@ let state_test_random1 = {
   round = 100;
   billiards_removed_in_a_round = [];
   is_start = false;
+  is_mult = false;
+  is_test = false;
 }
 
 let tests =
@@ -493,7 +509,7 @@ let tests =
   ]
 
 let suite =
-  "Billiard test suite"
+  "Billiard ai test suite"
   >::: tests
 
 let _ = run_test_tt_main suite
