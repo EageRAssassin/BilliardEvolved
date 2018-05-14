@@ -41,6 +41,8 @@ let init = {
   (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
+  is_mult = false;
+  is_test = false;
   (* is_hit = false; *)
 
 }
@@ -305,6 +307,16 @@ let restart st =
   let command = player_command in
   if command.s then st.is_start <- false else st.is_start <- st.is_start
 
+let do_mult st =
+  let command = player_command in
+  if command.w then begin st.is_start <- false; st.is_mult <- true end
+  else st.is_start <- st.is_start
+
+  let do_test st =
+    let command = player_command in
+    if command.x then begin st.is_start <- false; st.is_test <- true end
+  else st.is_start <- st.is_start
+
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
   else if command.d then st.cue_bearing -. 1.
@@ -463,7 +475,8 @@ let release_cue st =
       let command = player_command in Billiards.cue_ball.velocity <-
         if (st.ball_moving || (st.is_start || st.win <> 0)) then  Billiards.cue_ball.velocity
         else
-        if st.is_playing.name = "player_2" then
+        if st.is_test ||
+           ((st.is_playing.name = "player_2") && (st.is_mult = false)) then
           (* use AI *)
           begin
           let audio = Html.createAudio document in
@@ -663,7 +676,9 @@ let change_state (st: state) : state =
 
      List.map (fun b -> calc_score st player2 b) st.on_board |> ignore; *)
   calc_score st player1; calc_score st player2;
-  restart st;
+   restart st;
+   do_mult st;
+do_test st;
   if not ball_move && (st.ball_moving = true || ball_move) then
     begin
       next_round st;
