@@ -7,7 +7,7 @@ let cue_ball = {
   size = (30.,30.);
   (* velocity = (0.,0.); *)
   velocity = (-0.,-0.);
-  position = (640.,550.); (*see arrangement.png for init. for now all are
+  position = (880.,390.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = -100; (*should never be potted*)
   (* legal_player = None;
