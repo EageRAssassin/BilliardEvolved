@@ -21,6 +21,9 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
+(* [get_ball_img] selects the ball's png representation based on its
+   suit. rotation is simulated by alternating between different orientations
+   of the billiard if it is moving every few frames *)
 let get_ball_img suit billiard velocity counter : billiard =
   let img = "media/billiards.png" in
   if ( (fst velocity) *. (snd velocity) < 10. ) || counter mod 30 < 15 then
