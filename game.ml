@@ -35,6 +35,8 @@ let initial_state = {
   (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
+  is_mult = false;
+  is_test = false;
   (* is_hit = false; *)
 
 }

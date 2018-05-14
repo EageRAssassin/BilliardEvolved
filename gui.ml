@@ -330,6 +330,12 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_turn context (state.is_playing = player1);
 
   draw_billiards context state.on_board state.counter;
+  if state.is_mult then
+    draw_image_on_context context (js "media/p2.png") (1051.,0.)
+  else draw_image_on_context context (js "media/blank.png") (0.,0.);
+  if state.is_test then
+    draw_image_on_context context (js "media/ai.png") (100.,0.)
+  else draw_image_on_context context (js "media/blank.png") (0.,0.);
   draw_debug context ("cue_ball.pos: (" ^
                       (string_of_float (fst cue_ball.position)) ^ ", " ^
                       (string_of_float (snd cue_ball.position)) ^ ")") 10.;
