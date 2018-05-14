@@ -1,16 +1,13 @@
 # BilliardEvolved
 
 CS 3110 Final project
-Wendy Huang @bh486
 Zi Heng Xu @zx223
 Rong Tan @rt389
-
-
+Wendy Huang @bh486
 
 ##Description
 This is a top-down perspective game of media/billiards.png (pool) that pits a player against a computer AI-controlled
-opponent, which include features of physics, player control, billiard mechanics, collision, GUI, and
-new game modes. The rules are similar to the traditional billiard rules. It is a fun game to play when you want to relax and chill.
+opponent, which include features of physics, player control, billiard mechanics, collision, GUI, and new game modes. The rules are similar to the traditional billiard rules. It is a fun game to play when you want to relax and chill.
 
 ## How to Run
 OCaml and Opam must be installed.
@@ -21,6 +18,9 @@ $ opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml
 Run:
 $ make
 $ open "index.html"
+
+test:
+$ make test
 
 #Key Features
 Original design of the media/billiards.png, table, and other graphics
@@ -47,7 +47,7 @@ Main
 This module runs the game by calling the necessary Javascript animation functions. It calls the game loop and adds the canvas and basic HTML elements to the page.
 
 AI
-This module contains functions that allow enemies to act autonomously and attack the user’s character. It will provide commands in a fashion to emulate key inputs.
+This module contains functions that allow the AI to evaluate its move and hit the ball with unparalleled accuracy
 
 Room/Sprites
 These modules contain the parameters to instantiate the initial player, map, and enemies.
@@ -67,14 +67,14 @@ The state contains all of the information about the game, such as the sprites (i
 The command file contains a mutable record that updates based on the user input from the keyboard and parses it to match a command type defined. The command types represent the keys pressed, such as w, a, s, d, j. The GUI module contains all of the code and functions that render and display the content of the game state on screen for the user to see through HTML, CSS, and JavaScript converted from OCaml. Functions in Gui.ml include methods to cycle through sprite sheets, match specific images to room records, create a DOM for web display, and more. The Game module contains functions required for sprite animation, game looping, and listeners for browser key commands. Moreover the initial maps, sprites, obstacles, textures, enemy sprites, weapons, and entrances and exits to other rooms are congregated into the beginning state of the game in this module. The room and sprite modules contain the actual records for rooms and sprites with the necessary starting parameters to remove noise from the game module.
 
 AI
-The AI module consists of four types of enemies with all of the extensibility of the player sprites (since all sprites are represented with the same type in the game’s backend). This means that the enemy sprites can use moves just as the player sprite does, as well as have adjustable health, speed, size, actions, etc. The four types of enemies currently are as follows:
-
-Stationary: This is a simple AI who approaches the player aggressively until it reaches a certain distance, then stops. It is really a moving statue made to resemble an evil the world hasn’t witnessed in eons…
-Blind: These enemies are unable to detect the player location unless the player is moving (making noise), because of this they remain stationary unless the player is moving, in which case they approach the character one step at a time. If the enemy does get close enough it will be able to hear the player breathing, and it will attack aggressively.
-Coop: These enemies are unique in that their actions depend on the other enemies on the map. These enemies do not like to attack alone, so instead they work together. If a Coop enemy is alone facing a player they will wait for other enemies to come to their aid before approaching. Because of this, these enemies can be manipulated into approaching very slowly if a Blind enemy is nearby. Coop enemies are also able to fly over obstacles such as trees.
-Boss: The boss enemy is the only one who is able to use moves. In the current game implementation it also is the enemy with the most health. The Boss’s moves do not consist of physical objects such as the player’s sword, instead they act as attribute buffs. While the boss begins quite slow it has the ability to randomly increase its speed if the player is far enough away. In addition, the boss is able to transform once it’s heath gets below 50%. In this new form the boss is able to permanently increase its attack radius. Both of these moves make it important to kill the boss quickly. The boss is also able to fly over obstacles.
-Data
-The State module maintains data on locations, actions, and types of AI enemies present on the map along with the location and actions of the sprites. Data containing the sprite’s name, health, location, speed, and animation parameters will also be maintained throughout the duration of the game. This data is stored in the form of records where each entity will have their respective fields that can be altered based on the actions of AI and the user. The data containing the map and sprites is stored in various lists. The three maps used were designed on paper before being hardcoded into a map type.
+The AI module's most important method is ai_evaluate_next_move, which uses our AI to analyze the current state to produce the optimal velocity (x velocit, y velocity) of the cue and which billiard to hit towards which pocket to play against the player. 
+AI's strategy is listed in the following:
+   1. If all balls are on board, hit the nearest billiard from the AI's
+      legal pot with full force
+   2. Search for all balls that can be hit directly,
+      Find the ball that is closest to its pocket, and hit it
+      PS: the ball is between the pocket and the cue ball
+   3. Search for the AI's balls that is nearest to the cue ball and hit it
 
 External Dependencies
 For the GUI, Oscigen’s js_of_ocaml library was incorporated to translate OCaml code to browser-based Javascript for accessibility.

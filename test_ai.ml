@@ -98,10 +98,10 @@ let player2 = {
   score = 0;
   cue = 0;
   money = 0;
-  legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
-              fifteen_ball::[];
-  default_legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::fourteen_ball::
-              fifteen_ball::[];
+  legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::thirteen_ball::
+              fourteen_ball::fifteen_ball::[];
+  default_legal_pot = nine_ball::ten_ball::eleven_ball::twelve_ball::
+                      thirteen_ball::fourteen_ball::fifteen_ball::[];
 }
 
 let billiard_between_list1 = [ball_15_15]
@@ -237,8 +237,9 @@ let state_test_closest_billiard = {
 
 let initial_state = {
   on_board = [cue_ball; one_ball; two_ball; three_ball; four_ball; five_ball;
-              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-              thirteen_ball; fourteen_ball; fifteen_ball;];
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball;
+              eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
+              fifteen_ball;];
   cue_bearing = 20.;
   cue_pos = (805., 290.);
   is_pot = [];
@@ -262,8 +263,10 @@ let initial_state = {
 
 let initial_state_cue_ball_changed = {
   on_board = [cue_ball; two_ball; three_ball; four_ball; five_ball;
-              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-              thirteen_ball; fourteen_ball; fifteen_ball;];
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball;
+              eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
+
+fifteen_ball;];
   cue_bearing = 0.;
   counter = 0;
   gap = 45.;
@@ -446,7 +449,8 @@ let state_test_random1 = {
   counter = 0;
   gap = 45.;
   is_collide = false;
-  cue_pos = (((fst cue_ball_random1.position) +. 45.), (snd cue_ball_random1.position));
+  cue_pos = (((fst cue_ball_random1.position) +. 45.),
+             (snd cue_ball_random1.position));
   is_pot = [];
   player = [player1_random1; player2_random1];
   ball_moving = false;
@@ -467,44 +471,88 @@ let tests =
   [
     (*-----------------FUNCTION TEST-----------------*)
     (*billiard_between*)
-    "test_billiard_between0" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list1));
-    "test_billiard_between1" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list2));
-    "test_billiard_between2" >:: (fun _ -> assert_equal false (billiard_between (0. , 0.) (100., 100.) billiard_between_list3));
-    "test_billiard_between3" >:: (fun _ -> assert_equal true (billiard_between (0. , 0.) (100., 100.) billiard_between_list4));
+    "test_billiard_between0" >::
+    (fun _ -> assert_equal true
+        (billiard_between (0. , 0.) (100., 100.) billiard_between_list1));
+    "test_billiard_between1" >::
+    (fun _ -> assert_equal false
+        (billiard_between (0. , 0.) (100., 100.) billiard_between_list2));
+    "test_billiard_between2" >::
+    (fun _ -> assert_equal false
+        (billiard_between (0. , 0.) (100., 100.) billiard_between_list3));
+    "test_billiard_between3" >::
+    (fun _ -> assert_equal true
+        (billiard_between (0. , 0.) (100., 100.) billiard_between_list4));
 
     (* search1_possible evaluation *)
     (* No billiards on table *)
-    "search1_possible_test0" >:: (fun _ -> assert_equal 1 (try search1_possible state_test_no_billiard with _ -> 1));
+    "search1_possible_test0" >::
+    (fun _ -> assert_equal 1
+        (try search1_possible state_test_no_billiard with _ -> 1));
     (* 1 billiard on table *)
-    "search1_possible_test1" >:: (fun _ -> assert_equal 0 (search1_possible state_test1));
+    "search1_possible_test1" >::
+    (fun _ -> assert_equal 0 (search1_possible state_test1));
     (* 2 billiards on table *)
-    "search1_possible_test2" >:: (fun _ -> assert_equal 0 (search1_possible state_test2));
+    "search1_possible_test2" >::
+    (fun _ -> assert_equal 0 (search1_possible state_test2));
+    (* state_test_random1 *)
+    "search1_possible_test3" >::
+    (fun _ -> assert_equal 2 (search1_possible state_test_random1));
 
     (* closest_billiard *)
-    "search1_possible_test2" >:: (fun _ -> assert_equal (300., 50.) (closest_billiard cue_ball_random1.position player2_random1.legal_pot (2000., 2000.)));
+    "search1_possible_test2" >::
+    (fun _ -> assert_equal (300., 50.)
+        (closest_billiard cue_ball_random1.position player2_random1.legal_pot
+           (2000., 2000.)));
 
     (* Search 1 calculation *)
     (* pot upper left *)
-    "search1_calculation1" >:: (fun _ -> assert_equal (-863.603896932107205, -863.603896932107205) (search1_calculation (250., 250.) (200., 200.) []));
+    "search1_calculation1" >::
+    (fun _ -> assert_equal
+        (-863.603896932107205, -863.603896932107205)
+        (search1_calculation (250., 250.) (200., 200.) []));
     (* pot upper left *)
-    "search1_calculation2" >:: (fun _ -> assert_equal (-2715.39501058484575, -646.185031754537249) (search1_calculation (300., 300.) (200., 250.) []));
+    "search1_calculation2" >::
+    (fun _ -> assert_equal
+        (-2715.39501058484575, -646.185031754537249)
+        (search1_calculation (300., 300.) (200., 250.) []));
     (* pot upper middle *)
-    "search1_calculation3" >:: (fun _ -> assert_equal (2768.10361449569973, -2130.38855435887763) (search1_calculation (500., 350.) (600., 250.) []));
+    "search1_calculation3" >::
+    (fun _ -> assert_equal
+        (2768.10361449569973, -2130.38855435887763)
+        (search1_calculation (500., 350.) (600., 250.) []));
     (* pot upper right *)
-    "search1_calculation4" >:: (fun _ -> assert_equal (3000., -705.03216089298337) (search1_calculation (500., 350.) (900., 250.) []));
+    "search1_calculation4" >::
+    (fun _ -> assert_equal
+        (3000., -705.03216089298337)
+        (search1_calculation (500., 350.) (900., 250.) []));
     (* pot lower right *)
-    "search1_calculation5" >:: (fun _ -> assert_equal (3000., 1538.3007713317611) (search1_calculation (500., 350.) (900., 550.) []));
+    "search1_calculation5" >::
+    (fun _ -> assert_equal
+        (3000., 1538.3007713317611)
+        (search1_calculation (500., 350.) (900., 550.) []));
     (* pot lower middle *)
-    "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.) []));
+    "search1_calculation6" >::
+    (fun _ -> assert_equal
+        (-2127.36802173926026, 1809.16997020531312)
+        (search1_calculation (800., 350.) (700., 450.) []));
     (* pot lower left *)
-    "search1_calculation6" >:: (fun _ -> assert_equal (-3000., 1193.02676961055568) (search1_calculation (800., 350.) (300., 550.) []));
+    "search1_calculation6" >::
+    (fun _ -> assert_equal
+        (-3000., 1193.02676961055568)
+        (search1_calculation (800., 350.) (300., 550.) []));
 
     (*-----------------GENERAL STATE TEST-----------------*)
-    (* initial state: all balls on board. Should hit directly with full force *)
-    (* "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state));
-       "initial_state_changed" >:: (fun _ -> assert_equal (290., 400.) (ai_evaluate_next_move initial_state_cue_ball_changed)); *)
-    "test_initial_state" >:: (fun _ -> assert_equal 0 (search1_possible state_test2));
-    "test_state_test_random1" >:: (fun _ -> assert_equal 2 (search1_possible state_test_random1));
+    (* AI first round, hit with huge force *)
+    "test_initial_state" >::
+    (fun _ -> assert_equal (-14820., 450.)
+        (ai_evaluate_next_move initial_state));
+    "test_initial_state_changed" >::
+    (fun _ -> assert_equal (-3000., -131.814199045586861)
+        (ai_evaluate_next_move initial_state_cue_ball_changed));
+    "test_state_test_random1" >::
+    (fun _ -> assert_equal (-3000., -244.056389985511174)
+        (ai_evaluate_next_move state_test_random1));
 
   ]
 

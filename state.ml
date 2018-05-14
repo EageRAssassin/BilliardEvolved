@@ -514,7 +514,7 @@ let replace_cue_ball st =
 (*[contain_8_ball_undone billiards] check whether the billiards list contains
   8 ball
   requires: [billiards] [player_target_balls] is valid billiard list *)
-let rec contain_8_ball_undone billiards player_target_balls=
+let rec contain_8_ball_undone billiards player_target_balls =
   match billiards with
   | x::xs -> if (x.suit = 8 ) && (player_target_balls <>[] ) then true
     else contain_8_ball_undone xs player_target_balls
@@ -606,15 +606,6 @@ let next_round (st : state) =
       st.foul <- Cue_eight;
     end
 
-
-(* let calc_score (st: state) p b =
-  (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
-  (* let p_score = (16 - List.length (st.on_board)) * 100 in *)
-  begin
-    if ((List.mem b st.on_board) = false) && (List.mem b p.legal_pot) then
-      p.score <- p.score + 100 else p.score <- p.score;
-  end *)
-
 let calc_score (st: state) p =
   (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
   let p_score = (17 - List.length (st.on_board)) * 100 in
@@ -676,9 +667,9 @@ let change_state (st: state) : state =
 
      List.map (fun b -> calc_score st player2 b) st.on_board |> ignore; *)
   calc_score st player1; calc_score st player2;
-   restart st;
-   do_mult st;
-do_test st;
+  restart st;
+  do_mult st;
+  do_test st;
   if not ball_move && (st.ball_moving = true || ball_move) then
     begin
       next_round st;
