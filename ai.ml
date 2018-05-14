@@ -59,6 +59,9 @@ let rec billiard_between (position1 : (float*float)) (position2 : (float*float))
     let rec billiard_between_helper function_m function_b (billiard_list : billiard list) =
       match billiard_list with
       | x :: xs ->
+        if x.position = position1 || x.position = position2 then
+          billiard_between_helper function_m function_b xs
+        else
         let b_x = fst x.position in
         let b_y = snd x.position in
         let distance_to_line = abs_float (m *. b_x +. (-1.0) *. b_y +. b) /. sqrt(m *. m +. 1.) in
@@ -141,18 +144,21 @@ let search1_possible st : int =
    requires: [st] is a valid state *)
 let search2_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
+  let legal_pot = (List.hd (List.rev st.player)).legal_pot in
   let billiards_on_board = List.filter (fun b -> b.suit <> 0) st.on_board in
   if List.length billiards_on_board > 0 then
-    let distance_list : float list = find_pocket_distances_from_bouncing_wall white_position billiards_on_board billiards_on_board in
+    let distance_list : float list = find_pocket_distances_from_bouncing_wall white_position legal_pot billiards_on_board in
     (* check if any ball is hittable in distance list *)
     let nearest = List.fold_left (fun acc e -> if e < acc then e else acc) 4000. distance_list in
     if nearest < 4000. then findnth_billiard distance_list nearest 0
     else -1
   else failwith "No billiards on board"
 
-(* [search1_calculation white_position ball_position] will return the x and y
-   vector that AI needs to hit [ball_position] from [white_position] directly *)
-let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
+(* [search1_calculation white_position ball_position billiards] will return the x and y
+   vector that AI needs to hit [ball_position] from [white_position] directly
+   if there is any billaird in [billiards] between the ball and the pocket,
+   AI will increase its strength. *)
+let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) (billiards : billiard list): (float*float) =
   let pocket_to_be_hit : (float * float) =
     let min_dist = min_distance_to_pocket ball_position in
     if min_dist = distance_between ball_position (left_bd, top_bd) then (left_bd, top_bd)
@@ -169,6 +175,10 @@ let search1_calculation (cue_position : (float*float)) (ball_position : (float*f
   let force_magnifier = (distance_between ball_position pocket_to_be_hit) /.
                         (distance_between cue_position ball_position) in
   let force_magnifier = if force_magnifier < 1.0 then 1.5 else force_magnifier in
+  let force_magnifier =
+    if billiard_between ball_position pocket_to_be_hit billiards
+    then force_magnifier *. 3.
+    else force_magnifier in
   let vector_x = (fst hit_point -. fst cue_position) *. 10. *. force_magnifier *. 2. in
   let vector_y = (snd hit_point -. snd cue_position) *. 10. *. force_magnifier *. 2. in
   if abs_float vector_x > 5000. then
@@ -214,13 +224,14 @@ let ai_evaluate_next_move st : (float * float)=
     let search1_suit = (List.nth Player.player2.legal_pot search1).suit in
     let ball_position = find_billiard_position Player.player2.legal_pot search1_suit in
     st.hit_force <- (1., float_of_int search1_suit);
-    search1_calculation cue_position ball_position
+    search1_calculation cue_position ball_position st.on_board
   else
   (* check if second search method will work *)
   let search2 = search2_possible st in
   if search2 <> -1 then
-    let ball_position = find_billiard_position st.on_board search2 in
-    st.hit_force <- (2., 2.);
+    let search2_suit = (List.nth Player.player2.legal_pot search2).suit in
+    let ball_position = find_billiard_position Player.player2.legal_pot search2_suit in
+    st.hit_force <- (2., float_of_int search2_suit);
     search2_calculation cue_position ball_position
   else
   (* use third method *)

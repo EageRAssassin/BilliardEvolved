@@ -462,19 +462,19 @@ let tests =
 
     (* Search 1 calculation *)
     (* pot upper left *)
-    "search1_calculation1" >:: (fun _ -> assert_equal (-863.603896932107205, -863.603896932107205) (search1_calculation (250., 250.) (200., 200.)));
+    "search1_calculation1" >:: (fun _ -> assert_equal (-863.603896932107205, -863.603896932107205) (search1_calculation (250., 250.) (200., 200.) []));
     (* pot upper left *)
-    "search1_calculation2" >:: (fun _ -> assert_equal (-2715.39501058484575, -646.185031754537249) (search1_calculation (300., 300.) (200., 250.)));
+    "search1_calculation2" >:: (fun _ -> assert_equal (-2715.39501058484575, -646.185031754537249) (search1_calculation (300., 300.) (200., 250.) []));
     (* pot upper middle *)
-    "search1_calculation3" >:: (fun _ -> assert_equal (2768.10361449569973, -2130.38855435887763) (search1_calculation (500., 350.) (600., 250.)));
+    "search1_calculation3" >:: (fun _ -> assert_equal (2768.10361449569973, -2130.38855435887763) (search1_calculation (500., 350.) (600., 250.) []));
     (* pot upper right *)
-    "search1_calculation4" >:: (fun _ -> assert_equal (5000., -1175.0536014883055) (search1_calculation (500., 350.) (900., 250.)));
+    "search1_calculation4" >:: (fun _ -> assert_equal (5000., -1175.0536014883055) (search1_calculation (500., 350.) (900., 250.) []));
     (* pot lower right *)
-    "search1_calculation5" >:: (fun _ -> assert_equal (5000., 2563.8346188862688) (search1_calculation (500., 350.) (900., 550.)));
+    "search1_calculation5" >:: (fun _ -> assert_equal (5000., 2563.8346188862688) (search1_calculation (500., 350.) (900., 550.) []));
     (* pot lower middle *)
-    "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.)));
+    "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.) []));
     (* pot lower left *)
-    "search1_calculation6" >:: (fun _ -> assert_equal (-5000., 1988.37794935092597) (search1_calculation (800., 350.) (300., 550.)));
+    "search1_calculation6" >:: (fun _ -> assert_equal (-5000., 1988.37794935092597) (search1_calculation (800., 350.) (300., 550.) []));
 
     (* (300., 300.) (200., 250.) *)
 
