@@ -339,7 +339,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_debug context ("state number: " ^ (string_of_int state.counter)) 34.;
   draw_debug context ("player: " ^ state.is_playing.name) 46.;
   draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 58.;
-  draw_debug context ("is_collide: " ^ string_of_bool state.is_collide) 70.;
+  draw_debug context ("hit_force: " ^ (string_of_float (fst state.hit_force)) ^ " " ^ (string_of_float (snd state.hit_force))) 70.;
   (* let g1 = fst (state.cue_pos) -. fst cue_ball.position in
      let g2 = snd (state.cue_pos) -. snd cue_ball.position in *)
   let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in

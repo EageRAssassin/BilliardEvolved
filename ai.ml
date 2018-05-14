@@ -120,7 +120,7 @@ let rec findnth_billiard (distance_list : float list) (distance : float) (index 
 (* [search1_possible st] will evaluate the whether the strategy in search1
    is possible, and return the suit of the ball if the strategy is possible.
    It returns -1 if the strategy is impossible
-   returns: the suit of the ball if the strategy is possible, -1 if impossible
+   returns: the number of the ball in the legal list if the strategy is possible, -1 if impossible
    requires: [st] is a valid state *)
 let search1_possible st : int =
   let white_position = find_billiard_position st.on_board 0 in
@@ -151,8 +151,7 @@ let search2_possible st : int =
   else failwith "No billiards on board"
 
 (* [search1_calculation white_position ball_position] will return the x and y
-   angles that AI needs to hit [ball_position] from [white_position] directly *)
-(* TODO *)
+   vector that AI needs to hit [ball_position] from [white_position] directly *)
 let search1_calculation (cue_position : (float*float)) (ball_position : (float*float)) : (float*float) =
   let pocket_to_be_hit : (float * float) =
     let min_dist = min_distance_to_pocket ball_position in
@@ -169,13 +168,13 @@ let search1_calculation (cue_position : (float*float)) (ball_position : (float*f
   let hit_point : (float * float) = (fst pocket_to_be_hit +. x1 *. ratio, snd pocket_to_be_hit +. y1 *. ratio) in
   let force_magnifier = (distance_between ball_position pocket_to_be_hit) /.
                         (distance_between cue_position ball_position) in
+  let force_magnifier = if force_magnifier < 1.0 then 1.5 else force_magnifier in
   let vector_x = (fst hit_point -. fst cue_position) *. 10. *. force_magnifier *. 2. in
   let vector_y = (snd hit_point -. snd cue_position) *. 10. *. force_magnifier *. 2. in
-  if vector_x > 3000. && vector_y > 3000. then
-    if vector_x > vector_y then (3000., 3000.*.vector_y/.vector_x)
-    else (3000.*.vector_x/.vector_y, 3000.)
-  else if vector_x > 3000. then (3000., 3000.*.vector_y/.vector_x)
-  else if vector_x > 3000. then (3000.*.vector_x/.vector_y, 3000.)
+  if abs_float vector_x > 5000. then
+    if vector_x > 0. then (5000., 5000.*.vector_y/.vector_x) else (-5000., -5000.*.vector_y/.vector_x)
+  else if abs_float vector_x > 5000. then
+    if vector_y > 0. then (3000.*.vector_x/.vector_y, 3000.) else (-3000.*.vector_x/.vector_y, -3000.)
   else (vector_x, vector_y)
 
 
@@ -204,7 +203,7 @@ let search2_calculation (cue_position : (float*float)) (ball_position : (float*f
 let ai_evaluate_next_move st : (float * float)=
   let cue_position = find_billiard_position st.on_board 0 in
   (* 0. where there are 16 balls on board, hit the nearest one with full force *)
-  if List.length st.on_board >= 16 then
+  if List.length st.on_board >= 16 && st.round < 2 then
     let vector = closest_billiard cue_position st.on_board (2000., 2000.) in
     st.hit_force <- (0., 0.);
     (30. *. fst vector, 30. *. snd vector)
@@ -212,8 +211,9 @@ let ai_evaluate_next_move st : (float * float)=
   (* 1. check if first search method will work *)
   let search1 = search1_possible st in
   if search1 <> -1 then
-    let ball_position = find_billiard_position Player.player2.legal_pot search1 in
-    st.hit_force <- (1., 1.);
+    let search1_suit = (List.nth Player.player2.legal_pot search1).suit in
+    let ball_position = find_billiard_position Player.player2.legal_pot search1_suit in
+    st.hit_force <- (1., float_of_int search1_suit);
     search1_calculation cue_position ball_position
   else
   (* check if second search method will work *)

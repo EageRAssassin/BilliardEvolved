@@ -43,7 +43,7 @@ let ball_15_15 = {
 }
 
 let ball_150_150 = {
-  suit = 1;
+  suit = 2;
   name = "Ball 150 150" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -278,7 +278,7 @@ let cue_ball_random1 = {
   name = "c" ;
   size = (25.,25.);
   velocity = (0.,0.);
-  position = (50.,50.); (*see arrangement.png for init. for now all are
+  position = (600.,400.); (*see arrangement.png for init. for now all are
                             the same place *)
   score = -100; (*should never be potted*)
   (* legal_player = None;
@@ -293,7 +293,7 @@ let cue_ball_random1 = {
 }
 
 let b1 = {
-  suit = 0;
+  suit = 1;
   name = "c" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -312,7 +312,7 @@ let b1 = {
 }
 
 let b2 = {
-  suit = 0;
+  suit = 2;
   name = "b2" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -331,7 +331,7 @@ let b2 = {
 }
 
 let b3 = {
-  suit = 0;
+  suit = 3;
   name = "b3" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -350,7 +350,7 @@ let b3 = {
 }
 
 let b4 = {
-  suit = 0;
+  suit = 4;
   name = "b4" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -369,7 +369,7 @@ let b4 = {
 }
 
 let b5 = {
-  suit = 0;
+  suit = 5;
   name = "b5" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -388,7 +388,7 @@ let b5 = {
 }
 
 let b6 = {
-  suit = 0;
+  suit = 6;
   name = "b6" ;
   size = (25.,25.);
   velocity = (0.,0.);
@@ -427,19 +427,19 @@ let player2_random1 = {
 }
 
 let state_test_random1 = {
-  on_board = [];
+  on_board = cue_ball_random1::b1::b2::b3::b4::b5::b6::[];
   cue_bearing = 0.;
   counter = 0;
   gap = 45.;
   is_collide = false;
-  cue_pos = (((fst cue_ball.position) +. 45.), (snd cue_ball.position));
+  cue_pos = (((fst cue_ball_random1.position) +. 45.), (snd cue_ball_random1.position));
   is_pot = [];
   player = [player1_random1; player2_random1];
   ball_moving = false;
   prev_ball_moving = false;
   current_table_id = "default";
   foul = No_foul;
-  is_playing = player1;
+  is_playing = player1_random1;
   hit_force = (0., 0.);
   win = 0;
   round = 100;
@@ -462,27 +462,28 @@ let tests =
 
     (* Search 1 calculation *)
     (* pot upper left *)
-    "search1_calculation1" >:: (fun _ -> assert_equal (-287.867965644035735, -287.867965644035735) (search1_calculation (250., 250.) (200., 200.)));
+    "search1_calculation1" >:: (fun _ -> assert_equal (-863.603896932107205, -863.603896932107205) (search1_calculation (250., 250.) (200., 200.)));
     (* pot upper left *)
-    "search1_calculation2" >:: (fun _ -> assert_equal (-1280.04948372310764, -304.614545236585229) (search1_calculation (300., 300.) (200., 250.)));
+    "search1_calculation2" >:: (fun _ -> assert_equal (-2715.39501058484575, -646.185031754537249) (search1_calculation (300., 300.) (200., 250.)));
     (* pot upper middle *)
-    "search1_calculation3" >:: (fun _ -> assert_equal (1012.8721062626214, -779.526868471060652) (search1_calculation (500., 350.) (600., 250.)));
+    "search1_calculation3" >:: (fun _ -> assert_equal (2768.10361449569973, -2130.38855435887763) (search1_calculation (500., 350.) (600., 250.)));
     (* pot upper right *)
-    "search1_calculation4" >:: (fun _ -> assert_equal (3000., -705.03216089298337) (search1_calculation (500., 350.) (900., 250.)));
+    "search1_calculation4" >:: (fun _ -> assert_equal (5000., -1175.0536014883055) (search1_calculation (500., 350.) (900., 250.)));
     (* pot lower right *)
-    "search1_calculation5" >:: (fun _ -> assert_equal (2889.89910744833, 1481.84467535291151) (search1_calculation (500., 350.) (900., 550.)));
+    "search1_calculation5" >:: (fun _ -> assert_equal (5000., 2563.8346188862688) (search1_calculation (500., 350.) (900., 550.)));
     (* pot lower middle *)
     "search1_calculation6" >:: (fun _ -> assert_equal (-2127.36802173926026, 1809.16997020531312) (search1_calculation (800., 350.) (700., 450.)));
     (* pot lower left *)
-    "search1_calculation6" >:: (fun _ -> assert_equal (-2396.67693487273891, 953.099913803783807) (search1_calculation (800., 350.) (300., 550.)));
+    "search1_calculation6" >:: (fun _ -> assert_equal (-5000., 1988.37794935092597) (search1_calculation (800., 350.) (300., 550.)));
 
     (* (300., 300.) (200., 250.) *)
 
     (*-----------------GENERAL STATE TEST-----------------*)
     (* initial state: all balls on board. Should hit directly with full force *)
-    (* "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state)); *)
-    (* "initial_state_changed" >:: (fun _ -> assert_equal (290., 400.) (ai_evaluate_next_move initial_state_cue_ball_changed)); *)
-    (* "test_initial_state" >:: (fun _ -> assert_equal 1 (search1_possible state_test2)); *)
+    (* "initial_state" >:: (fun _ -> assert_equal (-2340., 0.) (ai_evaluate_next_move initial_state));
+       "initial_state_changed" >:: (fun _ -> assert_equal (290., 400.) (ai_evaluate_next_move initial_state_cue_ball_changed)); *)
+    "test_initial_state" >:: (fun _ -> assert_equal 0 (search1_possible state_test2));
+    "test_state_test_random1" >:: (fun _ -> assert_equal 2 (search1_possible state_test_random1));
 
   ]
 
