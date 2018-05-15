@@ -80,6 +80,12 @@ Division of Labor
 In general, Rong worked on the AI and testing, Wendy worked on the physics and
 testing, and Zi Heng drew & implemented the GUI and controls
 
+State
+The state contains the functions for change turns of player, check fouls, and a fully functional physics module. The physics module's functionality is listed as follows:
+1. For every frame in the game, all the balls moving will update their position after adding up the multiplication of 1/200 second and their velocity, and make the velocities to be 98.3% of the original velocities, so that all the balls are moving naturally due to friction. If their velocity is dropped below 1.5, it will be set to 0.  
+2. For every frame in the game, all the balls moving will check if they have touched the four walls. If they touched any, they will reverse direction in corresponding dimension, and decrease their velocity to 0.99 of their original velocity due to friction.
+3. For every frame in the game, all the balls moving will check if they have contact with other balls. If so, the 2 corresponding balls will use our collide function to commit a kinetic energy transfer and update their velocities.  
+
 Rong Tan: implemented and tested the AI module in the Billiard Evolved Game. Also participated in the debugging process in the game model and public beta testing of the game.
 Estimated hours of working: 50 hours
 Ziheng Xu: drawn all models for the GUI and implemented and tested the GUI module using Js_of_Ocaml. Implemented the game loop and player controls (commands)
