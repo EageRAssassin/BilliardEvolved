@@ -111,6 +111,7 @@ Acknowledgements
 The music is from Kahoot.
 The game draws inspiration from Facebook's 8-ball pool in that it bears a
 slight resemblance to its GUI.
+The inspiration for designing physics model for detecting and handing balls collision comes from the online forum StackOverFlow. 
 Oxcigen's Js_of_Ocaml is used heavily, and some basic type declaractions (such
   as the headers, the DOM HTML, appendchild were referenced from his
   demos, specifically his minesweeper.ml, which he declared to be public
