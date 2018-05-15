@@ -295,8 +295,8 @@ let draw_debug context str y =
 but this is used only for the bearing *)
 let draw_bearing context str =
   let text = js (str) in
-  context##font <- js "10px  ";
-  context##fillText (text, 20., 151.)
+  context##font <- js "30px  ";
+  context##fillText (text, 20., 171.)
 
 (*
   (*single ball test *)
@@ -466,7 +466,8 @@ draw_rotated context state.cue_bearing "pool_cue.png" a1 a2 g1 g2; *)
 
   draw_image context (js "media/left.png") (0., 0.);
   draw_bearing context
-    (string_of_float (float_of_int (int_of_float (10. *. state.cue_bearing))));
+    (string_of_float ((float_of_int (int_of_float
+                                       (10. *. state.cue_bearing)))/. 10.));
   draw_stat context player1 1 state.on_board;
   draw_stat context player2 2 state.on_board;
   if state.ball_moving = false then
