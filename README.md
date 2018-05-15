@@ -49,11 +49,21 @@ This module runs the game by calling the necessary Javascript animation function
 AI
 This module contains functions that allow the AI to evaluate its move and hit the ball with unparalleled accuracy
 
-Room/Sprites
-These modules contain the parameters to instantiate the initial player, map, and enemies.
+State
+The state contains the functions for change turns of player, check fouls, and a fully functional physics module. The physics module's functionality is listed as follows:
+1. For every frame in the game, all the balls moving will update their position after adding up the multiplication of 1/200 second and their velocity, and make the velocities to be 98.3% of the original velocities, so that all the balls are moving naturally due to friction. If their velocity is dropped below 1.5, it will be set to 0.  
+2. For every frame in the game, all the balls moving will check if they have touched the four walls. If they touched any, they will reverse direction in corresponding dimension, and decrease their velocity to 0.99 of their original velocity due to friction.
+3. For every frame in the game, all the balls moving will check if they have contact with other balls. If so, the 2 corresponding balls will use our collide function to commit a kinetic energy transfer and update their velocities.  
+
 
 Division of Labor
-In general, Julian and Alex worked on the backend while Mindy and Tom worked on the frontend. More detail is provided below.
+Rong Tan: implemented and tested the AI module in the Billiard Evolved Game. Also participated in the debugging process in the game model and public beta testing of the game.
+Estimated hours of working: 50 hours
+Ziheng Xu: drawn all models for the GUI and implemented and tested the GUI module using Js_of_Ocaml. Implemented the game loop and player controls (commands)
+Estimated hours of working: 50 hours
+Wendy Huang: implemented and tested the physics module and game model in the Billiard Evolved Game
+Estimated hours of working: 50 hours
+
 
 Julian: Primarily worked on design and State. He spent ~40 hours on this project.
 Alex: Primarily worked on design and the AI, as well as implementing the ai-portion of command, and some of the functionality in State. He spent ~35 hours on this project.
@@ -67,7 +77,7 @@ The state contains all of the information about the game, such as the sprites (i
 The command file contains a mutable record that updates based on the user input from the keyboard and parses it to match a command type defined. The command types represent the keys pressed, such as w, a, s, d, j. The GUI module contains all of the code and functions that render and display the content of the game state on screen for the user to see through HTML, CSS, and JavaScript converted from OCaml. Functions in Gui.ml include methods to cycle through sprite sheets, match specific images to room records, create a DOM for web display, and more. The Game module contains functions required for sprite animation, game looping, and listeners for browser key commands. Moreover the initial maps, sprites, obstacles, textures, enemy sprites, weapons, and entrances and exits to other rooms are congregated into the beginning state of the game in this module. The room and sprite modules contain the actual records for rooms and sprites with the necessary starting parameters to remove noise from the game module.
 
 AI
-The AI module's most important method is ai_evaluate_next_move, which uses our AI to analyze the current state to produce the optimal velocity (x velocit, y velocity) of the cue and which billiard to hit towards which pocket to play against the player. 
+The AI module's most important method is ai_evaluate_next_move, which uses our AI to analyze the current state to produce the optimal velocity (x velocit, y velocity) of the cue and which billiard to hit towards which pocket to play against the player.
 AI's strategy is listed in the following:
    1. If all balls are on board, hit the nearest billiard from the AI's
       legal pot with full force
