@@ -20,8 +20,9 @@ let document = Html.document
 (* initial state *)
 let init = {
   on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
-              six_ball; seven_ball; eight_ball; nine_ball; ten_ball; eleven_ball; twelve_ball;
-              thirteen_ball; fourteen_ball; fifteen_ball;];
+              six_ball; seven_ball; eight_ball; nine_ball; ten_ball;
+              eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
+              fifteen_ball;];
   cue_bearing = 0.;
   counter = 0;
   gap = 45.;
@@ -38,18 +39,16 @@ let init = {
   hit_force = (0., 0.);
   win = 0;
   round = 0;
-  (* all_tables = [Tables.default] *)
   billiards_removed_in_a_round = [];
   is_start = true;
   is_mult = false;
   is_test = false;
-  (* is_hit = false; *)
 
 }
 
 
 (* HELPER FUNCTION GOES BELOW *)
-
+(* initialize basic variable *)
 let radius = 15.
 let playing_field = (460., 920.)
 let top_bd = 160. +. radius
@@ -95,7 +94,8 @@ let collide (b1 : billiard) (b2 : billiard) =
               [r] are valid radius *)
   let straight_v vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r in
 
-  (* [perpendicular_v vx vy dx dy r] returns the perpendicular velocity to collision
+  (* [perpendicular_v vx vy dx dy r] returns the perpendicular velocity
+     to collision
      requires: [vx] [vy] are valid velocity
             [dx] [dy] are valid distance
            [r] are valid radius *)
@@ -121,24 +121,34 @@ let collide (b1 : billiard) (b2 : billiard) =
   let collision_v v1 v2 m1 m2 =
     v1 *. (m1-.m2) /. (m1+.m2) +. v2 *. (2. *. m2) /. (m1 +. m2) in
 
-  let velocity_st_1 = straight_v (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
-  let velocity_perpen_1 = perpendicular_v (fst b1.velocity) (snd b1.velocity) dx1 dy1 radius in
+  let velocity_st_1 = straight_v (fst b1.velocity) (snd b1.velocity)
+      dx1 dy1 radius in
+  let velocity_perpen_1 = perpendicular_v (fst b1.velocity) (snd b1.velocity)
+      dx1 dy1 radius in
 
-  let velocity_st_2 = straight_v (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
-  let velocity_perpen_2 = perpendicular_v (fst b2.velocity) (snd b2.velocity) dx2 dy2 radius in
+  let velocity_st_2 = straight_v (fst b2.velocity) (snd b2.velocity)
+      dx2 dy2 radius in
+  let velocity_perpen_2 = perpendicular_v (fst b2.velocity) (snd b2.velocity)
+      dx2 dy2 radius in
 
   (*straight collision velocities *)
-  let newvelocity_st_1 = collision_v velocity_st_1 velocity_st_2 b1.mass b2.mass in
-  let newvelocity_st_2 = collision_v velocity_st_2 velocity_st_1 b2.mass b1.mass in
+  let newvelocity_st_1 = collision_v velocity_st_1 velocity_st_2
+      b1.mass b2.mass in
+  let newvelocity_st_2 = collision_v velocity_st_2 velocity_st_1
+      b2.mass b1.mass in
 
   (* the velocity for b1*)
-  let b1_x_velocity = x_velocity newvelocity_st_1 velocity_perpen_1 dx1 dy1 radius in
-  let b1_y_velocity = y_velocity newvelocity_st_1 velocity_perpen_1 dx1 dy1 radius in
+  let b1_x_velocity = x_velocity newvelocity_st_1 velocity_perpen_1
+      dx1 dy1 radius in
+  let b1_y_velocity = y_velocity newvelocity_st_1 velocity_perpen_1
+      dx1 dy1 radius in
   b1.velocity <- (b1_x_velocity, b1_y_velocity);
 
   (* the velocity for b2*)
-  let b2_x_velocity = x_velocity newvelocity_st_2 velocity_perpen_2 dx2 dy2 radius in
-  let b2_y_velocity = y_velocity newvelocity_st_2 velocity_perpen_2 dx2 dy2 radius in
+  let b2_x_velocity = x_velocity newvelocity_st_2 velocity_perpen_2
+      dx2 dy2 radius in
+  let b2_y_velocity = y_velocity newvelocity_st_2 velocity_perpen_2
+      dx2 dy2 radius in
   b2.velocity <- (b2_x_velocity, b2_y_velocity)
 
 (* [check_wall_touching ball ] check with the balls that hit the wall and change
@@ -190,7 +200,7 @@ let move_ball_position ball =
   ball.position <- (tempx,tempy);
   ball
 
-(* [move_ball_velocity time ball] slow down the velocity while the ball is moving
+(* [move_ball_velocity time ball] slow down the velocity while [ball] is moving
    requires: [ball] is a valid billiard *)
 let move_ball_velocity ball =
   let tempx = ref ( (fst ball.velocity) *. 0.983)  in
@@ -219,7 +229,8 @@ let rec check_billiards_moving (billiards : billiard list) : bool =
    10 units
     requires: [a] [b] is a valid float tuple
               [distance] is a valid float *)
-let check_within_radius (a : (float * float)) (b : (float * float)) (distance : float) : bool =
+let check_within_radius (a : (float * float)) (b : (float * float))
+    (distance : float) : bool =
   let ax = fst a in
   let ay = snd a in
   let bx = fst b in
@@ -269,7 +280,8 @@ let change_billiards_velocity (billiards : billiard list) : billiard list =
 (* [remove_billiard_in_list b billiards] will remove [b] in [billiards]
    requires: [b] is a valid billiard
              [billiards] is a valid billiard list *)
-let rec remove_billiard_in_list (b : billiard) (billiards : billiard list) : billiard list =
+let rec remove_billiard_in_list (b : billiard) (billiards : billiard list)
+  : billiard list =
   match billiards with
   | [] -> []
   | h :: t -> if h = b then t else h :: remove_billiard_in_list b t
@@ -282,7 +294,8 @@ let check_billiard_collision (billiards : billiard list) : billiard list =
       let billiard_temp = List.nth billiards i in
       for j = i + 1 to (List.length billiards - 1) do
         let billiard_temp2 = List.nth billiards j in
-        if (check_within_radius billiard_temp.position billiard_temp2.position 900.)
+        if (check_within_radius
+              billiard_temp.position billiard_temp2.position 900.)
         then
         collide billiard_temp billiard_temp2
       done
@@ -341,22 +354,6 @@ let update_cue_bearing st ball_moving curr_bearing =
     else new_bearing in
   bearing
 
-(* let update_cue_bearing_cursor st ball_moving curr_bearing =
-  let command = player_command in
-  let new_bearing =
-    if ball_moving then 0.
-    else let ball_coord = Billiards.cue_ball.position in
-      let x = fst command.cue_coord -. fst ball_coord in
-      let y = snd command.cue_coord -. snd ball_coord in
-      if x = 0 then
-        if y =
-
-      command.cue_bearing in
-    let bearing =
-      if new_bearing < 0. then new_bearing +. 360.
-      else new_bearing in
-    bearing *)
-
 (* TODO: [ get_quadrant st ]
    requires: [st] is a valid state *)
 let get_quadrant (st:state) =
@@ -390,7 +387,6 @@ let update_gap st ball_moving curr_gap =
   in
   gap
 
-
 (* [cue_pos_offset st gap] calculates the offset of the cue tip position
 with respect to cue_ball
    requires: [st] is a valid state
@@ -413,7 +409,6 @@ let cue_pos_offset st gap =
     ((new_gap *. (Pervasives.cos ((2. *. 3.1415926) -. bearing))),
      (-1. *. new_gap *. (Pervasives.sin ((2. *. 3.1415926) -. bearing))))
 
-
 (*  [ cue_pos_offset st gap ] calculates the cue tip position with respect to
     cue_ball coordinates.
     requires: [st] is a valid state
@@ -425,9 +420,6 @@ let update_cue_pos st ball_moving =
   (* so that the cue does not collide with balls mid movement *)
   if ball_moving then (290. , 0.)
   else (xb +. (fst offset) , yb +. (snd offset))
-
-(* let update_cue_pos_cursor st ball_moving =
-  let command = player_command in  *)
 
 let update_cue_cursor st ball_moving =
   let command = player_command in
@@ -473,7 +465,8 @@ let release_cue st =
     else let angle = 2. *. 3.1415926 -. bearing in
       (-1. *. g *. (Pervasives.cos angle), (g *. Pervasives.sin angle)) in
       let command = player_command in Billiards.cue_ball.velocity <-
-        if (st.ball_moving || (st.is_start || st.win <> 0)) then  Billiards.cue_ball.velocity
+    if (st.ball_moving || (st.is_start || st.win <> 0))
+    then Billiards.cue_ball.velocity
         else
         if st.is_test ||
            ((st.is_playing.name = "player_2") && (st.is_mult = false)) then
@@ -503,7 +496,7 @@ let replace_cue_ball st =
     Billiards.cue_ball.position <- (880., 390.);
   st.on_board <- Billiards.cue_ball :: st.on_board
 
-(*[contain_cue_ball billiards] check whether the billiards list contains cue ball
+(*[contain_cue_ball billiards] check whether [billiards] list contains cue ball
    requires: [billiards] is valid billiard list *)
   let rec contain_cue_ball billiards =
     match billiards with
@@ -523,12 +516,14 @@ let rec contain_8_ball_undone billiards player_target_balls =
 (* [check_foul billiards p] will decide if the user [player] have commited a foul
    requires: [billiards_to_be_removed] [balls_onboard] is a valid billiard list
              [p] is a valid player *)
-let check_foul (billiards_to_be_removed : billiard list) (p : player) (balls_onboard: billiard list) : bool =
-  let player_target_balls = List.filter (fun (b: billiard) -> if p.name = "player_1" then 1 <= b.suit && b.suit <= 7
-                                          else 9 <= b.suit && b.suit <= 15) balls_onboard in
+let check_foul (billiards_to_be_removed : billiard list) (p : player)
+    (balls_onboard: billiard list) : bool =
+  let player_target_balls = List.filter
+      (fun (b: billiard) ->
+         if p.name = "player_1" then 1 <= b.suit && b.suit <= 7
+         else 9 <= b.suit && b.suit <= 15) balls_onboard in
   if contain_cue_ball billiards_to_be_removed then true
-  else if contain_8_ball_undone billiards_to_be_removed player_target_balls then true
-  else false
+  else contain_8_ball_undone billiards_to_be_removed player_target_balls
 
 (* [find_next_player players is_playing] will find the next player aside from
    [is_playing] player.
@@ -546,10 +541,9 @@ let rec find_next_player (players : player list) (is_playing : player) =
             [legalpot] is a valid billiard list *)
 let rec hit_legal_plot_ball ball_removed legalpot=
   match ball_removed with
-  | x::xs -> if List.mem x legalpot then true else hit_legal_plot_ball xs legalpot
+  | x::xs -> if List.mem x legalpot
+    then true else hit_legal_plot_ball xs legalpot
   | [] -> false
-
-
 
 (* [next_round st] will trigger the next turn where the user is given
    control after all balls cease movement
@@ -559,22 +553,16 @@ let next_round (st : state) =
   let players = st.player in
   let current_player = st.is_playing in
   let another_player = find_next_player players current_player in
-  (* let current_legal_pot = current_player.legal_pot in
-   *)
-  (* let balls_on_board = st.on_board in *)
-  (* if (current_legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
-  then current_player.legal_pot <- [Billiards.eight_ball];
-  if (another_player.legal_pot=[] && List.mem Billiards.eight_ball balls_on_board)
-  then another_player.legal_pot <- [Billiards.eight_ball]; *)
-
   let billiards_to_be_removed = st.billiards_removed_in_a_round in
-  if current_player.legal_pot = [] && List.mem Billiards.eight_ball billiards_to_be_removed then
+  if current_player.legal_pot = [] &&
+     List.mem Billiards.eight_ball billiards_to_be_removed then
     if current_player.name = "player_1"
     then st.win <- 1
     else st.win <- 2
   else
   (*not hit balls in the legal pot*)
-  if not (hit_legal_plot_ball billiards_to_be_removed current_player.default_legal_pot) then
+  if not (hit_legal_plot_ball billiards_to_be_removed
+            current_player.default_legal_pot) then
     begin
       current_player.is_playing <- false;
       another_player.is_playing <- true;
@@ -591,7 +579,8 @@ let next_round (st : state) =
       st.round <- st.round + 1;
     end
     (*while ball eight is not in the legal list, hit the 8 ball in it*)
-  else if (contain_8_ball_undone billiards_to_be_removed current_player.default_legal_pot) then
+  else if (contain_8_ball_undone billiards_to_be_removed
+             current_player.default_legal_pot) then
     if current_player.name = "player_1"
     then begin
       st.win <- 2;
@@ -607,7 +596,6 @@ let next_round (st : state) =
     end
 
 let calc_score (st: state) p =
-  (* let p_score = (7 - List.length (p.legal_pot)) * 100 in *)
   let p_score = (17 - List.length (st.on_board)) * 100 in
   begin
     if p_score < 0 then p.score <- 0 else p.score <- p_score;
@@ -618,7 +606,8 @@ let rec get_player_by_name name players =
   |  x :: xs -> if x.name = name then x else get_player_by_name name xs
   | [] -> failwith "no such name"
 
-let rec check_collide_w_cue_reset balls_on_board temp_cue = match balls_on_board with
+let rec check_collide_w_cue_reset balls_on_board temp_cue =
+  match balls_on_board with
   | x::xs -> if check_within_radius x.position temp_cue 900. then true
     else check_collide_w_cue_reset xs temp_cue
   | [] -> false
@@ -635,25 +624,24 @@ let change_state (st: state) : state =
                           |> check_billiard_collision
                           |> change_billiards_velocity in
   let billiards_to_be_removed = List.filter remove_on_board position_on_board in
-  st.billiards_removed_in_a_round <- st.billiards_removed_in_a_round @ billiards_to_be_removed;
+  st.billiards_removed_in_a_round <- st.billiards_removed_in_a_round
+                                     @ billiards_to_be_removed;
   (* moved them here to help with my reset cue bearing *)
   let new_on_board2 = check_in_pot position_on_board in
   let ball_move = check_billiards_moving new_on_board2 in
   let check_start = (st.is_start || st.win <> 0) in
-  let check_foul_result = check_foul billiards_to_be_removed st.is_playing new_on_board2 in
-  (* let new_bearing = update_cue_bearing st ball_move st.cue_bearing in *)
+  let check_foul_result = check_foul billiards_to_be_removed
+      st.is_playing new_on_board2 in
   let new_bearing = update_cue_bearing_cursor st (check_start || ball_move) in
-  (* let new_cue_pos = update_cue_pos st ball_move in *)
   let new_cue_pos = update_cue_cursor st (check_start || ball_move) in
   let new_gap = update_cue_gap st (check_start || ball_move) st.gap in
-  (* let current_player = st.is_playing in *)
-
-
   (*set legal pot *)
   let player_1 = (get_player_by_name "player_1" st.player) in
   let player_2 = (get_player_by_name "player_2" st.player) in
-   player_1.legal_pot <- List.filter (fun b -> 1 <= b.suit && b.suit <= 7) new_on_board2;
-   player_2.legal_pot <- List.filter (fun b -> 9 <= b.suit && b.suit <= 15) new_on_board2;
+  player_1.legal_pot <- List.filter (fun b -> 1 <= b.suit && b.suit <= 7)
+      new_on_board2;
+  player_2.legal_pot <- List.filter (fun b -> 9 <= b.suit && b.suit <= 15)
+      new_on_board2;
 
    if (player_1.legal_pot=[] && List.mem Billiards.eight_ball new_on_board2)
    then player_1.legal_pot <- [Billiards.eight_ball];
@@ -662,10 +650,6 @@ let change_state (st: state) : state =
 
   replace_cue_ball st;
   release_cue st;
-
-  (* List.map (fun b -> calc_score st player1 b) st.on_board |> ignore;
-
-     List.map (fun b -> calc_score st player2 b) st.on_board |> ignore; *)
   calc_score st player1; calc_score st player2;
   restart st;
   do_mult st;
@@ -676,13 +660,10 @@ let change_state (st: state) : state =
       st.billiards_removed_in_a_round<-[];
     end;
   if not check_foul_result then
-    (* let new_on_board2 = check_in_pot position_on_board in *)
     {st with
       on_board = new_on_board2 ;
       prev_ball_moving = st.ball_moving;
       ball_moving = ball_move;
-      (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)
-      (*TODO WHY DELETING THIS LINE MAKE THE CHANGE ROUND WORKS??*)
       is_collide = check_is_collide st;
       cue_bearing = new_bearing;
       cue_pos = new_cue_pos;
@@ -691,49 +672,49 @@ let change_state (st: state) : state =
     }
   else
 
-    (* [foul_handler st] will handle the foul case in [st] and return a new state
+    (* [foul_handler st] will handle the foul in [st] and return a new state
        requires: [st] is a valid state*)
     let foul_handler (st : state) : state =
       let current_player = st.is_playing in
-      let player_target_balls = List.filter (fun (b: billiard) -> if current_player.name = "player_1" then 1 <= b.suit && b.suit <= 7
-                                              else 9 <= b.suit && b.suit <= 15) new_on_board2 in
-      if contain_cue_ball billiards_to_be_removed then   (*if the suit ball is removed *)
-        (* [new_on_board_recover_cue new_on_board2] checks whether the ball removed
-           is the cue, and return a new state with cue ball's position reset.*)
-
-
+      let player_target_balls = List.filter
+          (fun (b: billiard) -> if current_player.name = "player_1"
+            then 1 <= b.suit && b.suit <= 7
+            else 9 <= b.suit && b.suit <= 15) new_on_board2 in
+      (* if the cue ball is removed *)
+      if contain_cue_ball billiards_to_be_removed then
+        (* [new_on_board_recover_cue new_on_board2] checks whether the ball
+           removed is the cue, and return a new state with cue ball's position
+           reset.*)
         let new_on_board_recover_cue new_on_board2 =
           let temp_cue_position = ref (880.,390.) in
           while check_collide_w_cue_reset st.on_board !temp_cue_position do
-            temp_cue_position := (fst !temp_cue_position +. 30., snd !temp_cue_position)
+            temp_cue_position := (fst !temp_cue_position +. 30.,
+                                  snd !temp_cue_position)
           done;
           Billiards.cue_ball.position <- !temp_cue_position ;
           Billiards.cue_ball.velocity <- (0.,0.);
           Billiards.cue_ball::new_on_board2 in
-
-
           {st with
            on_board = new_on_board_recover_cue new_on_board2 ;
            ball_moving = ball_move;
-           (* is_playing = {st.is_playing with legal_pot = set_legal_pot;}  ; *)
            cue_bearing = new_bearing;
            cue_pos = new_cue_pos;
            counter = st.counter + 1;
            gap = new_gap;
            foul = Cue_pot;
-           (* is_collide = check_is_collide st *)
           }
-      else if contain_8_ball_undone billiards_to_be_removed player_target_balls then
+      else if contain_8_ball_undone billiards_to_be_removed player_target_balls
+      then
         (*if the 8 ball is removed and there are still balls to be removed *)
         if current_player.name = "player_1"
         then {st with win = 2;}
         else {st with win = 1;}
       else failwith "contain 8 balls situation not found "
-       in
-    foul_handler st
+       in foul_handler st
 
-(* [get_cue_billiard billiard_list] will find the cue ball in the [billiard_list]
-   raises: "No cue billiard on board" if cue ball does not exist in [billiard_list]
+(* [get_cue_billiard billiard_list] will find the cue ball in [billiard_list]
+   raises: "No cue billiard on board"
+           if cue ball does not exist in [billiard_list]
    requires: [billiard_list] is a valid billiard list *)
 let rec get_cue_billiard (billiard_list : billiard list) : billiard =
   match billiard_list with
