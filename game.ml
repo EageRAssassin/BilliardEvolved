@@ -67,7 +67,7 @@ let keydown event =
     | 50 -> player_command.two <- true; state := new_state
     | 88 -> player_command.x <- true; state := new_state
 
-    | _ -> () (* null *)
+    | _ -> player_command.d <- false; state := new_state (* null *)
   in Js._true
 
 let keyup event =
@@ -83,7 +83,7 @@ let keyup event =
     | 50 -> player_command.two <- false; state := new_state
     | 88 -> player_command.x <- false; state := new_state
 
-    | _ -> () (*null*)
+    | _ -> player_command.d <- false; state := new_state (*null*)
   in Js._true
 
 (* https://www.w3schools.com/jsref/dom_obj_event.asp
