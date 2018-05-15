@@ -67,7 +67,7 @@ The state contains all of the information about the game, such as the sprites (i
 The command file contains a mutable record that updates based on the user input from the keyboard and parses it to match a command type defined. The command types represent the keys pressed, such as w, a, s, d, j. The GUI module contains all of the code and functions that render and display the content of the game state on screen for the user to see through HTML, CSS, and JavaScript converted from OCaml. Functions in Gui.ml include methods to cycle through sprite sheets, match specific images to room records, create a DOM for web display, and more. The Game module contains functions required for sprite animation, game looping, and listeners for browser key commands. Moreover the initial maps, sprites, obstacles, textures, enemy sprites, weapons, and entrances and exits to other rooms are congregated into the beginning state of the game in this module. The room and sprite modules contain the actual records for rooms and sprites with the necessary starting parameters to remove noise from the game module.
 
 AI
-The AI module's most important method is ai_evaluate_next_move, which uses our AI to analyze the current state to produce the optimal velocity (x velocit, y velocity) of the cue and which billiard to hit towards which pocket to play against the player. 
+The AI module's most important method is ai_evaluate_next_move, which uses our AI to analyze the current state to produce the optimal velocity (x velocit, y velocity) of the cue and which billiard to hit towards which pocket to play against the player.
 AI's strategy is listed in the following:
    1. If all balls are on board, hit the nearest billiard from the AI's
       legal pot with full force
@@ -80,7 +80,7 @@ External Dependencies
 For the GUI, Oscigen’s js_of_ocaml library was incorporated to translate OCaml code to browser-based Javascript for accessibility.
 
 Acknowledgements
-The sprite sheets we used are from wiizelda.net and WWCZ.info, and we referenced MariOCaml, a fall 2015 CS 3110 project, for our GUI and animation code. The audio is taken from YouTube. The font used in the game is Triforce, and is from DarkAngelX on DeviantArt. All rights go to their respective creators.
+The sprite sheets we used are from wiizelda.net and WWCZ.info, and we referenced MariOCaml, a fall 2015 CS 3110 project, for our GUI and animation code. The audio is taken from YouTube. The font used in the game is  , and is from DarkAngelX on DeviantArt. All rights go to their respective creators.
 
 Authors
 This was built for Cornell University's CS 3110 Spring 2018 final project and was built by:
