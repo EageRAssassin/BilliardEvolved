@@ -6,45 +6,70 @@ Rong Tan @rt389
 Wendy Huang @bh486
 
 ##Description
-This is a top-down perspective game of media/billiards.png (pool) that pits a player against a computer AI-controlled
-opponent, which include features of physics, player control, billiard mechanics, collision, GUI, and new game modes. The rules are similar to the traditional billiard rules. It is a fun game to play when you want to relax and chill.
+This is a top-down perspective game of media/billiards.png (pool) that pits a player against a computer AI-controlled opponent or another player. Included features include physics, a mouse-based player control, billiard mechanics, collision, and a beautiful, fully pixel-by-pixel drawn GUI. The rules are
+similar to the traditional billiard rules. It is a fun game to play when
+you want to relax and chill.
 
 ## How to Run
 OCaml and Opam must be installed.
 
-Prerequisites:
+Prerequisites: (type these in your terminal/command prompt)
 $ opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml-lwt
 
-Run:
+Navigate to the folder containing this game, and to Run:
 $ make
 $ open "index.html"
+OPTIONAL: we recommend using safari since the music seems to glitch in
+google chrome. Thus, use
+            $ open -a safari index.html
+if you are on mac
+
 
 test:
 $ make test
 
 #Key Features
-Original design of the media/billiards.png, table, and other graphics
-Interactive Web-based GUI
-Cue controlled by keyboard, with an aiming helper
-an artificial intelligence (AI) opponent
-media/billiards.png rules(hit balls, foul) simulated
-System Design
-media/billiards.png
-Modules
-State
-This module records the status of the game at any given time. This will allow the game to be run continuously, and updates for each move or change to the state, such as movement. This acts as the model of the model-view-controller design.
+Fully original design of ALL graphic components, including the table, the GUI the billiards, the cue, and other graphics.
+Music is copyright from Kahoot.
+Interactive mouse-based GUI featuring dynamic polling and representation
 
-Command
-This module contains the functions needed to let a user play the game, as well as calling the AI for move inputs. The AI will input commands exactly like the player for code reusability, in this way adding additional enemy types or players would be very easy.
+THere are two game modes:
+1. Single player: where a cue is aimed and controlled
+by a mouse cursor, against an artificial intelligence (AI) opponent who
+utilises mathematical calculations and preferential algorithm to simulate human
+decision-making
+2. Multiplayer: essentially two players playing agaisnt each other
+(3.) A hidden game mode where if you press X in the menu page
+
+
+State
+Contains all parameters (information our game needs) as a single game
+state. Included examples include: a mapping of every billiard position, the
+current player, what billiards are on board, the current placement of
+the billiard cue and the bearing (by the controlling player or the AI) etc.
 
 GUI
-This module contains the code necessary for the visual implementation of the backend and will update to reflect visual changes in the state. This acts as the view of the MVC design.
+This module contains all the code needed to translate the State into a
+graphical representation of those parameters. Essentially, through the usage
+of js_of_ocaml it uses HTML canvas and DOM to append each element. From
+our media folder, images are sourced and called according to the state.
+
+The GUI is loyal only to the state for the most part, ensuring modularity, in
+that the "end justifies the means" i.e. the way in which AI works will not
+change the GUI representation as long as it gives the necessary information
+
+Command
+This contains all the commands for a player. We originally used the Keyboard
+but upgraded to mouse for aiming the cue. This explains the superfluous
+mapping which we decided to keep since they are used for some other
+trivial controls (e.g. choosing the game mode in the start screen )
 
 Game
-This module executes the game loop and calls updates to state and drawing based on the player inputs. This acts as the controller of the MVC design.
+Using HTML's event listener, it polls the user input to feed values to state
 
 Main
-This module runs the game by calling the necessary Javascript animation functions. It calls the game loop and adds the canvas and basic HTML elements to the page.
+This calls the necessary javascript operations to run the game loop, which
+consists of the GUI as a context being redrawn repeatedly.
 
 AI
 This module contains functions that allow the AI to evaluate its move and hit the ball with unparalleled accuracy
