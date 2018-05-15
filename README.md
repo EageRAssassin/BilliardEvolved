@@ -25,7 +25,7 @@ google chrome. Thus, use
 if you are on mac
 
 In the start, choose to play against an AI by pressing S and against a player
-by pressing w. 
+by pressing w.
 
 test:
 $ make test
