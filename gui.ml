@@ -16,7 +16,7 @@ let make_d r = r *. 180. /. 3.1415926
 (* js_of_ocaml helper declarations *)
 (* see http://ocsigen.org/js_of_ocaml/3.1.0/api/Dom_html for specifications
    and ttps://github.com/ocsigen/js_of_ocaml for an example of their usage
-   in /examples/minesweeper.ml *)
+   in /examples/minesweeper.ml for the basic declarations *)
 
 module Html = Dom_html
 let js = Js.string

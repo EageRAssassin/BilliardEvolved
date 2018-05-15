@@ -119,7 +119,7 @@ let mouseup (event : Dom_html.mouseEvent Js.t) =
     | _ -> player_command.cue_release <- false; state := new_state
 in Js._true
 
-(* the main game loop modify this later*)
+(* the main game loop. takes inspiration from Oxcigen's demos *)
 let game_loop context has_won =
   let rec game_loop_helper () =
     state := State.change_state !state;
@@ -128,6 +128,3 @@ let game_loop context has_won =
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
   in game_loop_helper ()
-
-(*shoddy implementation, may not work*)
-(* let game_loop context has_won = game_loop_helper context has_won *)
