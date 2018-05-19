@@ -483,7 +483,7 @@ let release_cue st =
           (* use AI *)
           begin let sound =
             if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
-            else "media/wilhelm_scream.mp3" in
+            else "media/cue.mp3" in
           let audio = Html.createAudio document in
           audio##src <- js sound;
              audio##play ();
