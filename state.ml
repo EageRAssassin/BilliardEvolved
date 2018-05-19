@@ -88,30 +88,35 @@ let collide (b1 : billiard) (b2 : billiard) =
   let dy1 = (!y2 -. !y1) /. 2. in
   let dy2 = (!y2 -. !y1) /. 2. in
 
-  (* [straight_v vx vy dx dy r] returns the straight velocity to collision
-     requires: [vx] [vy] are valid velocity
-               [dx] [dy] are valid distance
-              [r] are valid radius *)
-  let straight_v vx vy dx dy r = vx *. dx /. r +. vy *. dy /. r in
-
-  (* [perpendicular_v vx vy dx dy r] returns the perpendicular velocity
+  (* [straight_v velocity_x velocity_y dx dy radius] returns the straight velocity
      to collision
-     requires: [vx] [vy] are valid velocity
+     requires: [velocity_x] [velocity_y] are valid velocity
+               [dx] [dy] are valid distance
+              [radius] are valid radius *)
+  let straight_v velocity_x velocity_y dx dy radius =
+                    velocity_x *. dx /. radius +. velocity_y *. dy /. radius in
+
+  (* [perpendicular_v velocity_x velocity_y dx dy radius] returns the perpendicular
+     velocity to collision
+     requires: [velocity_x] [velocity_y] are valid velocity
             [dx] [dy] are valid distance
-           [r] are valid radius *)
-  let perpendicular_v vx vy dx dy r =  vy *. dx /. r -. vx *. dy /. r in
+           [radius] are valid radius *)
+  let perpendicular_v velocity_x velocity_y dx dy radius =
+    velocity_y *. dx /. radius -. velocity_x *. dy /. radius in
 
   (* [x_velocity vs vp dx dy r] returns x velocity
-     requires: [vx] [vy] are valid velocity
+     requires: [velocity_st] [velocity_per] are valid velocity
             [dx] [dy] are valid distance
-           [r] are valid radius *)
-  let x_velocity vs vp dx dy r =  vs *. dx /. r -. vp *. dy /. r in
+           [radius] are valid radius *)
+  let x_velocity velocity_st velocity_per dx dy radius =
+    velocity_st *. dx /. radius -. velocity_per *. dy /. radius in
 
-  (* [y_velocity vs vp dx dy r] returns y velocity
-     requires: [vx] [vy] are valid velocity
+  (* [y_velocity velocity_st velocity_per dx dy radius] returns y velocity
+     requires: [velocity_st] [velocity_per] are valid velocity
             [dx] [dy] are valid distance
-           [r] are valid radius *)
-  let y_velocity vs vp dx dy r =  vs *. dy /. r +. vp *. dx /. r in
+           [radius] are valid radius *)
+  let y_velocity velocity_st velocity_per dx dy radius =
+    velocity_st *. dy /. radius +. velocity_per *. dx /. radius in
 
   (* [collision_v v1 v2 m1 m2]returns velocity of a ball after collision
      requires: [vx] [vy] are valid velocity
