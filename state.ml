@@ -18,7 +18,7 @@ let document = Html.document
 (* init state *)
 
 (* initial state *)
-let init = {
+(* let init = {
   on_board = [cue_ball;one_ball;two_ball; three_ball; four_ball; five_ball;
               six_ball; seven_ball; eight_ball; nine_ball; ten_ball;
               eleven_ball; twelve_ball; thirteen_ball; fourteen_ball;
@@ -44,7 +44,7 @@ let init = {
   is_mult = false;
   is_test = false;
 
-}
+} *)
 
 
 (* HELPER FUNCTION GOES BELOW *)
@@ -325,10 +325,15 @@ let do_mult st =
   if command.w then begin st.is_start <- false; st.is_mult <- true end
   else st.is_start <- st.is_start
 
-  let do_test st =
-    let command = player_command in
-    if command.x then begin st.is_start <- false; st.is_test <- true end
+let do_test st =
+  let command = player_command in
+  if command.x then begin st.is_start <- false; st.is_test <- true end
   else st.is_start <- st.is_start
+
+let toggle_cue st =
+  let command = player_command in
+  let choose_cue = command.cue in
+  st.choose_cue <- choose_cue
 
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
@@ -340,13 +345,13 @@ let do_mult st =
              [ball_moving] is a valid
              [curr_bearing] is a valid *)
 let update_cue_bearing st ball_moving curr_bearing =
-  let command = player_command in
+  (* let command = player_command in *)
   let new_bearing =
   if ball_moving then 0.
-  else if command.a then curr_bearing +. 0.5
+  (* else if command.a then curr_bearing +. 0.5
   else if command.d then curr_bearing -. 0.5
   else if command.q then curr_bearing +. 20.
-  else if command.e then curr_bearing -. 20.
+  else if command.e then curr_bearing -. 20. *)
   else curr_bearing
   in (*update this with command helper*)
   let bearing =
@@ -371,13 +376,13 @@ let make_d r = r *. 180. /. 3.1415926
              [ball_moving] is a valid
              [curr_bearing] is a valid *)
 let update_gap st ball_moving curr_gap =
-  let command = player_command in
+  (* let command = player_command in *)
   let new_gap =
     if ball_moving then 45.
-    else if command.w then curr_gap -. 1.
+    (* else if command.w then curr_gap -. 1.
     else if command.s then curr_gap +. 1.
     else if command.two then curr_gap -. 15.
-    else if command.x then curr_gap +. 15.
+    else if command.x then curr_gap +. 15. *)
     else curr_gap
   in
   let gap =
@@ -471,9 +476,11 @@ let release_cue st =
         if st.is_test ||
            ((st.is_playing.name = "player_2") && (st.is_mult = false)) then
           (* use AI *)
-          begin
+          begin let sound =
+            if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
+            else "media/wilhelm_scream.mp3" in
           let audio = Html.createAudio document in
-          audio##src <- js "media/cue.mp3";
+          audio##src <- js sound;
              audio##play ();
             (* st.is_hit <- false; *)
             ai_evaluate_next_move st
@@ -654,6 +661,7 @@ let change_state (st: state) : state =
   restart st;
   do_mult st;
   do_test st;
+  toggle_cue st;
   if not ball_move && (st.ball_moving = true || ball_move) then
     begin
       next_round st;

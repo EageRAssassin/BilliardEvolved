@@ -37,6 +37,8 @@ let initial_state = {
   is_start = true;
   is_mult = false;
   is_test = false;
+  choose_cue = 0;
+  choose_table = 0;
   (* is_hit = false; *)
 
 }
@@ -64,7 +66,16 @@ let keydown event =
     | 74 -> player_command.j <- true; state := new_state
     | 81 -> player_command.q <- true; state := new_state
     | 69 -> player_command.e <- true; state := new_state
-    | 50 -> player_command.two <- true; state := new_state
+    | 48 -> player_command.cue <- 0; state := new_state
+    | 49 -> player_command.cue <- 1; state := new_state
+    | 50 -> player_command.cue <- 2; state := new_state
+    | 51 -> player_command.cue <- 3; state := new_state
+    | 52 -> player_command.cue <- 4; state := new_state
+    | 53 -> player_command.cue <- 5; state := new_state
+    | 54 -> player_command.cue <- 6; state := new_state
+    | 55 -> player_command.cue <- 7; state := new_state
+    | 56 -> player_command.cue <- 8; state := new_state
+    | 57 -> player_command.cue <- 9; state := new_state
     | 88 -> player_command.x <- true; state := new_state
 
     | _ -> player_command.d <- false; state := new_state (* null *)
@@ -80,7 +91,16 @@ let keyup event =
     | 74 -> player_command.j <- false; state := new_state
     | 81 -> player_command.q <- false; state := new_state
     | 69 -> player_command.e <- false; state := new_state
-    | 50 -> player_command.two <- false; state := new_state
+    | 48 -> player_command.cue <- 0; state := new_state
+    | 49 -> player_command.cue <- 1; state := new_state
+    | 50 -> player_command.cue <- 2; state := new_state
+    | 51 -> player_command.cue <- 3; state := new_state
+    | 52 -> player_command.cue <- 4; state := new_state
+    | 53 -> player_command.cue <- 5; state := new_state
+    | 54 -> player_command.cue <- 6; state := new_state
+    | 55 -> player_command.cue <- 7; state := new_state
+    | 56 -> player_command.cue <- 8; state := new_state
+    | 57 -> player_command.cue <- 9; state := new_state
     | 88 -> player_command.x <- false; state := new_state
 
     | _ -> player_command.d <- false; state := new_state (*null*)

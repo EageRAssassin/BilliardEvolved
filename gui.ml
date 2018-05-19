@@ -25,7 +25,8 @@ let document = Html.document
 (* [get_ball_img] selects the ball's png representation based on its
    suit. rotation is simulated by alternating between different orientations
    of the billiard if it is moving every few frames *)
-let get_ball_img suit billiard velocity counter : billiard =
+let get_ball_img suit billiard velocity counter egg : billiard =
+  if egg = false then
   let img = "media/billiards.png" in
   (* ball is stationary or face up *)
   let spd = 50. in
@@ -174,6 +175,10 @@ let get_ball_img suit billiard velocity counter : billiard =
     | 14 -> {billiard with dim = {img; size = (30.,30.); offset = (700.,0.);}}
     | 15 -> {billiard with dim = {img; size = (30.,30.); offset = (750.,0.);}}
     | _ -> failwith ""
+  else
+    let img = "media/easter_egg.png" in
+    match billiard.suit with
+    | _ -> {billiard with dim = {img; size = (30.,30.); offset = (0.,0.);}}
 
 (*https://developer.mozilla.org/en-US/docs/Web/API
   /CanvasRenderingContext2D/drawImage*)
@@ -198,16 +203,16 @@ let draw_help context (b: billiard) (x, y)=
 (* [draw_billiard context b] draws the billiard on the given context.
    according to the picture chosen above based on its suit and state *)
 let draw_billiard (context: Html.canvasRenderingContext2D Js.t)
-    (b: billiard) counter=
+    (b: billiard) counter egg =
   let suit = b.suit in
-  let choose_b = get_ball_img suit b b.velocity counter in
+  let choose_b = get_ball_img suit b b.velocity counter egg in
   let pos = (fst b.position -. 15., snd b.position -. 15.) in
   draw_help context choose_b pos
 
 (* [draw_billiards] maps the draw_billiard function to a list of billiards*)
 let draw_billiards (context: Html.canvasRenderingContext2D Js.t) b_list
-    counter =
-  List.map (fun b -> draw_billiard context b counter) b_list |> ignore
+    counter egg =
+  List.map (fun b -> draw_billiard context b counter egg ) b_list |> ignore
 
 (* [draw_table] draws the pool table *)
 let draw_table (context: Html.canvasRenderingContext2D Js.t)
@@ -218,7 +223,8 @@ let draw_table (context: Html.canvasRenderingContext2D Js.t)
    denote the current billiards on board it can hit and be rewarded with
    another turn*)
 let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
-    (b: billiard) (legal_eight: bool) (player: int) (on_board: billiard list) =
+    (b: billiard) (legal_eight: bool) (player: int) (on_board: billiard list)
+    egg =
   let s = b.suit in
   if (List.mem b on_board) then
     let p = float_of_int (player - 1) in
@@ -228,15 +234,15 @@ let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
     else let legal_s = s mod 8 in
       let x = (231 + ((legal_s - 1) mod 4) * 45 + (int_of_float p) * 613) in
       let y = (((legal_s - 1) / 4) * 37 + 22) in
-      let choose_b = get_ball_img s b (0.,0.) 0 in
+      let choose_b = get_ball_img s b (0.,0.) 0 egg in
       draw_help context choose_b (float_of_int x, float_of_int y)
   else draw_image context (js "media/blank.png") (0., 0.)
 
 (* [draw_stat] calls drwa_legal_billairds and maps it to
    each player's legal billiards list *)
-let draw_stat (context: Html.canvasRenderingContext2D Js.t) player p on_board =
+let draw_stat (context: Html.canvasRenderingContext2D Js.t) player p on_board egg =
   let legal_eight = (List.mem eight_ball player.legal_pot) in
-  List.map (fun b -> draw_legal_billiards context b legal_eight p on_board)
+  List.map (fun b -> draw_legal_billiards context b legal_eight p on_board egg)
     player.legal_pot |> ignore
 
 (* [draws turn] draws a turn indicator either next ot player 1 or player 2 to
@@ -290,7 +296,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   (*draws the current player playing*)
   draw_turn context (state.is_playing = player1);
   (*draws the billiards*)
-  draw_billiards context state.on_board state.counter;
+  draw_billiards context state.on_board state.counter (state.choose_cue = 5) ;
   (* chooses the game mode *)
   if state.is_mult then
     draw_image context (js "media/p2.png") (1051.,0.)
@@ -309,6 +315,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_debug context ("player: " ^ state.is_playing.name) 46.;
   draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 58.;
   draw_debug context ("hit_force: " ^ (string_of_float (fst state.hit_force)) ^ " " ^ (string_of_float (snd state.hit_force))) 70.;
+  draw_debug context ("cue: " ^ (string_of_int state.choose_cue)) 82.;
   (* draws the pool cue with regards to the white ball, the bearing, and
      the gap between the cue and the ball *)
   let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
@@ -328,8 +335,29 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_bearing context
     (string_of_float ((float_of_int (int_of_float
                                        (10. *. state.cue_bearing)))/. 10.));
-  draw_stat context player1 1 state.on_board;
-  draw_stat context player2 2 state.on_board;
+  draw_stat context player1 1 state.on_board (state.choose_cue = 5);
+  draw_stat context player2 2 state.on_board (state.choose_cue = 5);
+  if state.choose_cue = 0 then
+    if state.ball_moving = false then
+      draw_rotated2 context bearing "media/pool_cue.png" a1 a2 gap
+    else
+      draw_image context (js "media/pool_cue_vert.png") (1170., 150.)
+  else if state.choose_cue = 1 then
+    if state.ball_moving = false then
+      draw_rotated2 context bearing "media/pool_cue1.png" a1 a2 gap
+    else
+      draw_image context (js "media/pool_cue1_vert.png") (1170., 150.)
+  else if state.choose_cue = 2 then
+    if state.ball_moving = false then
+      draw_rotated2 context bearing "media/pool_cue2.png" a1 a2 gap
+    else
+      draw_image context (js "media/pool_cue2_vert.png") (1170., 150.)
+  else if state.choose_cue = 3 then
+    if state.ball_moving = false then
+      draw_rotated2 context bearing "media/pool_cue3.png" a1 a2 gap
+    else
+      draw_image context (js "media/pool_cue3_vert.png") (1170., 150.)
+  else
   if state.ball_moving = false then
     draw_rotated2 context bearing "media/pool_cue.png" a1 a2 gap
   else

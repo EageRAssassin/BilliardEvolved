@@ -1,0 +1,1687 @@
+commit cd8d0ce95e4fcf7b240c5f1ec9ce0c2673da0c7d
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 02:36:55 2018 -0400
+
+    re-added Wendy's modifications on readme
+
+ README.md | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 2fa1c64cf76d5bf93f71f8badd3a2f66cebfb948
+Merge: 3f68c4c 173cb57
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 02:35:14 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 3f68c4cf11e3cc0144b935e024cf1c708bc36e9b
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 02:34:34 2018 -0400
+
+    readme updated
+
+ README.md | 31 +++++++++++++++++--------------
+ game.ml   |  5 +----
+ gui.ml    |  2 +-
+ 3 files changed, 19 insertions(+), 19 deletions(-)
+
+commit 173cb575f1c1d2e9122ade985edcc3db7d70d20b
+Merge: 43023c8 71af5d9
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Tue May 15 02:33:17 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 43023c82962df41c29882fd1f40a4badbd9beae9
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Tue May 15 02:33:11 2018 -0400
+
+    readme updated
+
+ README.md | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+commit 71af5d9a79b79042d2adb1c02f3315ab2bdc9d80
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 02:18:13 2018 -0400
+
+    commented GUI and GAME and MAIN
+
+ README.md |  63 +++++++++++------
+ gui.ml    | 228 +++++++++++---------------------------------------------------
+ state.mli |   9 ---
+ 3 files changed, 85 insertions(+), 215 deletions(-)
+
+commit 3009c249b72473176c415a239a7d5814f104f20e
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 01:54:00 2018 -0400
+
+    bugfix
+
+ game.ml                 |   4 ++--
+ gui.ml                  |   7 ++++---
+ media/pool_table_sm.png | Bin 274684 -> 277714 bytes
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 623c2ec10719cc22855b1302d38d26c426d8b93c
+Merge: 606c9d7 06c71ff
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 01:40:23 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 606c9d7005b2f1176d3f98e68cec8f860ac98100
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Tue May 15 01:40:21 2018 -0400
+
+    GUI change
+
+ README.md               |   4 +-
+ gui.ml                  | 246 +++++++++++++++++++++++++++++++++---------------
+ media/billiards.png     | Bin 6880 -> 14582 bytes
+ media/pool_table_sm.png | Bin 263570 -> 274684 bytes
+ 4 files changed, 171 insertions(+), 79 deletions(-)
+
+commit 06c71ffe449178bd651faae54c7684ad3b903a57
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Tue May 15 01:33:08 2018 -0400
+
+    state comment added and cleaned
+
+ state.ml | 177 ++++++++++++++++++++++++++++-----------------------------------
+ 1 file changed, 79 insertions(+), 98 deletions(-)
+
+commit 94f7a5b70d440ecdda9808396b87e8bdb3733af6
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Mon May 14 17:22:21 2018 -0400
+
+    cleanup and commenting for index and gui.ml
+
+ gui.ml     |  3 +++
+ index.html | 10 ----------
+ main.ml    | 19 +++++--------------
+ 3 files changed, 8 insertions(+), 24 deletions(-)
+
+commit ba1a8b965ed00e72d23c77ce47613e31246d92c3
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 15:36:18 2018 -0400
+
+    state test added. AI part code cleaned
+
+ Makefile          |   3 +-
+ README.md         |  28 ++--
+ ai.ml             | 191 ++++++++++++-------------
+ ai.mli            |  40 ++++--
+ state.ml          |  17 +--
+ test_ai.ml        | 106 ++++++++++----
+ test_state 2.byte |   1 +
+ test_state.byte   |   1 +
+ test_state.ml     | 421 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 9 files changed, 630 insertions(+), 178 deletions(-)
+
+commit bcdd3caa26ede55bee6929ade9a5bfb2987979a1
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 02:24:32 2018 -0400
+
+    ai test functional
+
+ Makefile      |  4 ++--
+ test_ai.ml    | 18 +++++++++++++++++-
+ test_state.ml |  6 ++++--
+ 3 files changed, 23 insertions(+), 5 deletions(-)
+
+commit 5907a4e47c4d74bdbe99b15211a03199a1507c81
+Merge: aa47fca 62a8efd
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 02:20:17 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit aa47fcafe2d4db9727694b4dbe90cd98d1586383
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 02:20:14 2018 -0400
+
+    ai added
+
+ Makefile      |   4 +--
+ ai.ml         |  12 +++----
+ test_ai.ml    |  25 +++++++++------
+ test_state.ml | 101 +---------------------------------------------------------
+ 4 files changed, 24 insertions(+), 118 deletions(-)
+
+commit 62a8efdeeead31475ad0ee10d5b2092cff8923f3
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Mon May 14 02:10:01 2018 -0400
+
+    press w or x in the menu
+
+ game.ml         |   2 ++
+ gui.ml          |   6 ++++++
+ media/ai.png    | Bin 0 -> 4106 bytes
+ media/lose.png  | Bin 96860 -> 98500 bytes
+ media/p2.png    | Bin 0 -> 4173 bytes
+ media/start.png | Bin 94783 -> 104488 bytes
+ media/win.png   | Bin 96446 -> 98068 bytes
+ state.ml        |  19 +++++++++++++++++--
+ types.ml        |   2 ++
+ types.mli       |   2 ++
+ 10 files changed, 29 insertions(+), 2 deletions(-)
+
+commit eb1de0f166fccde7acea038aa74c4aeffda666e4
+Merge: 4ee33ba 4b20d05
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 01:45:24 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 4ee33ba0a61dd6f58aedaf8803b417dfa67831eb
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 14 01:45:23 2018 -0400
+
+    ai updated
+    
+    AI is everything
+
+ ai.ml      | 25 ++++++++++++++++++-------
+ ai.mli     |  2 +-
+ test_ai.ml | 14 +++++++-------
+ 3 files changed, 26 insertions(+), 15 deletions(-)
+
+commit 4b20d057454bedff66158a26f55a3d2178d7bd69
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Mon May 14 01:10:27 2018 -0400
+
+    cue ball position
+
+ billiards.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit eb2cb9ee81064ed31ac657c0588e0ed38767a800
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 21:53:35 2018 -0400
+
+    ai is working
+
+ ai.ml      | 22 +++++++++++-----------
+ gui.ml     |  2 +-
+ test_ai.ml | 41 +++++++++++++++++++++--------------------
+ 3 files changed, 33 insertions(+), 32 deletions(-)
+
+commit 31e19adee9af8055ff78b4ffcd2fe4164bb8d86b
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 21:08:56 2018 -0400
+
+    fixed
+
+ ai.ml        |  14 +++--
+ ai.mli       |   2 +-
+ billiards.ml |   2 +-
+ player.ml    |   4 +-
+ state.ml     |   8 ++-
+ test_ai.ml   | 181 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 199 insertions(+), 12 deletions(-)
+
+commit 5513cbd96297eaa1b237590e9e94cafdfd34cdb7
+Merge: 39dc975 9055051
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 19:40:31 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 39dc9757fcb67f84d1030854dcd80b9cb56ca0e4
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 19:40:30 2018 -0400
+
+    ai added
+
+ ai.ml      |  2 +-
+ test_ai.ml | 11 ++++++++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+commit 9055051248b37f69f952b5be93e049b80b04c5b2
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 19:05:53 2018 -0400
+
+    fixed sound for AI
+
+ game.ml   |  5 +++--
+ gui.ml    |  7 ++++---
+ state.ml  | 14 ++++++++++++--
+ types.ml  |  1 +
+ types.mli |  1 +
+ 5 files changed, 21 insertions(+), 7 deletions(-)
+
+commit d65fb8b03287c38472580bc10189fa0d46b02e79
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 18:26:41 2018 -0400
+
+    changed music
+
+ main.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 59fc9ca9ce49eac72e98082acbc0fc1aa6ed2957
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 18:25:23 2018 -0400
+
+    fix
+
+ media/billiards.mp3 | Bin 3215654 -> 4899393 bytes
+ pool_table_sm.png   | Bin 333648 -> 0 bytes
+ types.ml            |   2 +-
+ types.mli           |   1 -
+ 4 files changed, 1 insertion(+), 2 deletions(-)
+
+commit a5714973b113dc30cf2409ca95253e9df5c937d6
+Merge: cfe4c23 35e8a1f
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 15:19:19 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit cfe4c23ba5911e0b3cf91c41823ed43d45a03e3c
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 15:18:36 2018 -0400
+
+    nnn
+
+ game.ml   | 6 +++---
+ types.ml  | 1 +
+ types.mli | 1 +
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+commit 35e8a1f29ea9da337fe3292100e4f3b95424abab
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun May 13 13:30:43 2018 -0400
+
+    changes for state
+
+ game.ml   |  8 ++++----
+ state.ml  | 35 ++++++++++++++++++++++++++++-------
+ types.ml  |  2 ++
+ types.mli |  1 +
+ 4 files changed, 35 insertions(+), 11 deletions(-)
+
+commit ddf4d2287cfe150ffaba31248e7a2f98eaf7e9a2
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun May 13 01:02:02 2018 -0400
+
+    fix bug
+
+ player.ml |  4 ++++
+ state.ml  | 11 ++++++-----
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+commit 2bf1be2e3a19e90f157c1cf04d8c6a86934cde28
+Merge: 23b0b94 ab08ad6
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 00:43:51 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 23b0b943b4b4fd9bd0d750fe4655fa62ca7a7fe9
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 00:43:50 2018 -0400
+
+    ai fixed
+
+ ai.ml      | 15 ++++++++-------
+ gui.ml     |  2 +-
+ test_ai.ml | 35 ++++++++++++-----------------------
+ types.ml   |  2 +-
+ types.mli  |  2 +-
+ 5 files changed, 23 insertions(+), 33 deletions(-)
+
+commit ab08ad6b77927749e9835b408326a8cc53f1c30c
+Merge: b334f70 9558897
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun May 13 00:42:37 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit b334f705d3cd78d89956b8287cfd3ba454f84fbc
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun May 13 00:42:35 2018 -0400
+
+    fix legal pot
+
+ game.ml   |  6 ++++--
+ gui.ml    |  4 ++--
+ player.ml |  2 +-
+ state.ml  | 41 ++++++++++++++++++++++++++---------------
+ 4 files changed, 33 insertions(+), 20 deletions(-)
+
+commit 9558897f38d705e3e17f6d3db6e4e4f522bf4348
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 13 00:40:02 2018 -0400
+
+    445 dont change it thx
+
+ state.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 4d71c146167439a3f869d1534f5357fd2707ed20
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun May 13 00:06:28 2018 -0400
+
+    ai added
+
+ ai.ml      | 20 ++++++++++++--------
+ ai.mli     |  2 +-
+ test_ai.ml | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 57 insertions(+), 11 deletions(-)
+
+commit a2ba20b48e23552b63c630c5eb148661ce541a34
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 23:53:26 2018 -0400
+
+    update foul
+
+ types.ml  | 2 +-
+ types.mli | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit e989a0c119abda7ea2058bffde9c8940279ec360
+Merge: 36a8f5e bc11754
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 23:52:08 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit bc117548c1e4e0d1672dfc185befe645e435253f
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 23:49:02 2018 -0400
+
+    delete extra foul
+
+ types.ml | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
+
+commit 36a8f5e50a66b71a22b80f48fc98dfea6cda3a34
+Merge: 226ac77 813580a
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 23:42:10 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 226ac77886e23fb62c7095452a5f82b13269f51e
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 23:42:05 2018 -0400
+
+    added win/loss/start detection
+
+ game.ml                 |   1 +
+ gui.ml                  |  34 ++++++++++++++++----------
+ media/lose.png          | Bin 0 -> 96860 bytes
+ media/pool_table_sm.png | Bin 333630 -> 263570 bytes
+ media/start.png         | Bin 97059 -> 94783 bytes
+ media/win.png           | Bin 96694 -> 96446 bytes
+ state.ml                |  62 ++++++++++++++++++++++++++++++++++++++----------
+ types.ml                |   2 ++
+ types.mli               |   2 ++
+ 9 files changed, 75 insertions(+), 26 deletions(-)
+
+commit 813580a55e9fe5d620fd85c273ba51daffe7aecc
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 23:41:43 2018 -0400
+
+    state fix things
+
+ player.ml |  2 +-
+ state.ml  | 21 +++++++++++++++++++--
+ types.ml  |  3 ++-
+ 3 files changed, 22 insertions(+), 4 deletions(-)
+
+commit b0c5267e9970677388aeaf29faa3e43a071ff368
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 21:40:51 2018 -0400
+
+    hotfix
+
+ game.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b0769c99f4092074c0912f0b1692a8f4bf3bfb31
+Merge: 14f8478 56fa724
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 21:39:56 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 14f8478a74c1f6ba071b3c1b9644a4f1873dd029
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 21:39:50 2018 -0400
+
+    some GUI improvements
+
+ game.ml                 |   7 +++++--
+ gui.ml                  |  41 +++++++++++++++++++++++++++++++----------
+ index.html              |   4 ++--
+ main.ml                 |   2 +-
+ media/bg.png            | Bin 3153 -> 3153 bytes
+ media/pool_table_sm.png | Bin 332802 -> 333630 bytes
+ media/start.png         | Bin 0 -> 97059 bytes
+ media/win.png           | Bin 0 -> 96694 bytes
+ player.ml               |   2 +-
+ pool_table_sm.png       | Bin 0 -> 333648 bytes
+ state.ml                |  21 +++++++++++++++++++++
+ types.ml                |   2 +-
+ types.mli               |   2 +-
+ 13 files changed, 63 insertions(+), 18 deletions(-)
+
+commit 56fa72433e1d9e517b6ba075cd3f469685f604dd
+Merge: 8df021a f1ef671
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 21:28:24 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 8df021ad3722d51db72b0ad64eaf21f46edd8f97
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 21:28:20 2018 -0400
+
+    state added. Cue ball in pot works
+
+ state.ml | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+commit f1ef671edfaf3f3cb8da468150b507f77a4a5d7d
+Merge: ed21973 5b62752
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 18:31:39 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit ed2197302bbbfb8f239ae2be7abfada37938e915
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 18:31:33 2018 -0400
+
+    reverted values for tempx/y in state
+
+ gui.ml   | 11 ++++++++++-
+ state.ml |  4 ++--
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+commit 5b627523ba105cdde6e34b5db85f5370337400c0
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 14:42:21 2018 -0400
+
+    next round is working. Ai fixed
+
+ ai.ml      | 58 +++++++++++++++++++++++++++++-----------------------------
+ game.ml    |  3 ++-
+ state.ml   | 42 +++++++++++-------------------------------
+ state.mli  |  9 ---------
+ test_ai.ml | 52 +++++++++++++++++++++++++++++++++-------------------
+ types.ml   |  2 +-
+ types.mli  |  2 +-
+ 7 files changed, 77 insertions(+), 91 deletions(-)
+
+commit 99307bbe5f70522bd55e97891bf51cbfcebba556
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 12:57:53 2018 -0400
+
+    ball moving frame changed
+
+ state.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 4aa963930924e537bb1eea0dcac2bbf2001a43e0
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 11:11:32 2018 -0400
+
+    refined GUI, added mouse functionality, added sound, moved pictures to folder
+
+ .DS_Store                                          | Bin 10244 -> 10244 bytes
+ README.md                                          |   8 +-
+ ai.ml                                              |  58 ++++++-------
+ bg.png                                             | Bin 74809 -> 0 bytes
+ billiards.ml                                       |  58 ++++++-------
+ billiards.mli                                      |   2 +-
+ cue.mp3                                            | Bin 6055 -> 0 bytes
+ game.ml                                            |   7 +-
+ gui.ml                                             |  91 ++++++++++++---------
+ index.html                                         |  14 ++--
+ main.ml                                            |   5 +-
+ 8.png => media/8.png                               | Bin
+ media/bg.png                                       | Bin 0 -> 3153 bytes
+ media/billiards.mp3                                | Bin 0 -> 3215654 bytes
+ billiards.png => media/billiards.png               | Bin
+ billiards_old.png => media/billiards_old.png       | Bin
+ computer.png => media/computer.png                 | Bin
+ controls.png => media/controls.png                 | Bin
+ media/cue.mp3                                      | Bin 0 -> 4159 bytes
+ download.png => media/download.png                 | Bin
+ media/empty.png                                    | Bin 0 -> 2789 bytes
+ fokn_laser_sight.png => media/fokn_laser_sight.png | Bin
+ human.png => media/human.png                       | Bin
+ jnf.jpeg => media/jnf.jpeg                         | Bin
+ media/left.png                                     | Bin 0 -> 33882 bytes
+ pool_cue.png => media/pool_cue.png                 | Bin
+ pool_cue_vert.png => media/pool_cue_vert.png       | Bin
+ pool_table.png => media/pool_table.png             | Bin
+ media/pool_table_sm.png                            | Bin 0 -> 332802 bytes
+ .../pool_table_sm_old.png                          | Bin
+ .../pool_table_sm_schematics.png                   | Bin
+ media/poolballhit.mp3                              | Bin 0 -> 3679 bytes
+ media/power_bar.png                                | Bin 0 -> 3094 bytes
+ turn.png => media/turn.png                         | Bin
+ media/turnp1.png                                   | Bin 0 -> 4241 bytes
+ media/turnp2.png                                   | Bin 0 -> 4253 bytes
+ billiard.mli => old_files/billiard.mli             |   0
+ state_zx.ml => old_files/state_zx.ml               |   4 +-
+ tables.ml => old_files/tables.ml                   |   0
+ tables.mli => old_files/tables.mli                 |   0
+ pool_table_sm.png                                  | Bin 10541 -> 0 bytes
+ poolballhit.mp3                                    | Bin 3679 -> 0 bytes
+ state.ml                                           |  33 +++++---
+ test_ai.ml                                         |  16 ++--
+ test_state.ml                                      |  12 +--
+ types.ml                                           |   2 +-
+ types.mli                                          |   2 +-
+ 47 files changed, 170 insertions(+), 142 deletions(-)
+
+commit 6623a22170598e0acf6245adc027eab8c9d8bca5
+Merge: 4bc5fa6 a58fa01
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 03:20:35 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+    
+    conflicts resolved
+    added mouse functionality
+
+commit 4bc5fa604610b3f31c178e9b474569f8d00359e7
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 12 03:12:02 2018 -0400
+
+    mouse
+    
+    added mouse functionality
+
+ command.ml |  4 ++++
+ game.ml    | 56 ++++++++++++++++++++++++++------------------
+ game.mli   | 10 ++++++++
+ gui.ml     |  2 +-
+ main.ml    | 17 ++++++++++----
+ state.ml   | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++------------
+ types.ml   |  9 +++++--
+ types.mli  |  9 +++++--
+ 8 files changed, 139 insertions(+), 47 deletions(-)
+
+commit a58fa01875232cdb9e0782802964d3276484b396
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 02:29:39 2018 -0400
+
+    change_player now works
+
+ state.ml | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
+
+commit b43bd70331e0a913dd406754e4b7981fd18d93d2
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 02:13:31 2018 -0400
+
+    next_player starts testing
+
+ game.ml   |  1 +
+ gui.ml    |  2 ++
+ state.ml  | 11 ++++++-----
+ types.ml  |  1 +
+ types.mli |  1 +
+ 5 files changed, 11 insertions(+), 5 deletions(-)
+
+commit 99a9335699ab6b836cbe5714bff048f52aa20fba
+Merge: 21aa1de a98c068
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 01:06:15 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 21aa1de267ca445be3ec0ee6239e80e95e99b7ff
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 01:06:14 2018 -0400
+
+    use change round
+
+ state.ml | 132 ++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 67 insertions(+), 65 deletions(-)
+
+commit a98c0685d32949f55ab2d08f0bf92fd7f29be4fa
+Merge: 0f9a576 da4e3c1
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 00:58:04 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 0f9a5765a62efdf08fc9b6044c03092885b56e32
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 12 00:58:01 2018 -0400
+
+    ai added
+
+ ai.ml      | 14 +++++++++++---
+ test_ai.ml | 17 +++++++++++++++--
+ 2 files changed, 26 insertions(+), 5 deletions(-)
+
+commit da4e3c1b848e44d5d10282a3b041dd198aa40d4e
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 00:48:08 2018 -0400
+
+    debug next round
+
+ state.ml  | 46 ++++++++++++++++++++++------------------------
+ state.mli |  2 +-
+ types.ml  | 10 +++++-----
+ types.mli | 10 +++++-----
+ 4 files changed, 33 insertions(+), 35 deletions(-)
+
+commit 3f9e98edfaf937afc7d65b8e08c22009d33bcc84
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 00:20:45 2018 -0400
+
+    minor change in turns
+
+ state.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit c9edf9359641071899bc972a986732fe32774cca
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 00:17:51 2018 -0400
+
+    debug next_round
+
+ state.ml  | 20 +++++++++-----------
+ types.mli |  1 +
+ 2 files changed, 10 insertions(+), 11 deletions(-)
+
+commit 9fd91d96ee162a16b589d577b664048ada079930
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat May 12 00:11:38 2018 -0400
+
+    updare round function
+
+ player.ml |  4 ++--
+ state.ml  | 38 ++++++++++++++++++++++++++++----------
+ types.ml  |  4 ++--
+ types.mli |  5 ++---
+ 4 files changed, 34 insertions(+), 17 deletions(-)
+
+commit 39a9308cafb24a872dc629295e65532c676aead9
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Fri May 11 23:28:41 2018 -0400
+
+    add round change
+
+ README.md | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ game.ml   |  1 +
+ player.ml |  9 ++++++--
+ state.ml  | 46 +++++++++++++++++++++++++++++--------
+ types.ml  | 34 +++++++++++++++------------
+ types.mli | 27 ++++++++++++----------
+ 6 files changed, 157 insertions(+), 39 deletions(-)
+
+commit 45806c844d9ea8d285f9307798f38288d701bfa9
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri May 11 20:30:06 2018 -0400
+
+    ai not finished
+
+ ai.ml      | 69 ++++++++++++++++++++++++++------------------------------------
+ ai.mli     |  2 ++
+ test_ai.ml | 29 +++++++++++++++++++++++++-
+ 3 files changed, 59 insertions(+), 41 deletions(-)
+
+commit 862d13151227402e28c7c178a1930c57f8fa6a19
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Fri May 11 19:43:03 2018 -0400
+
+    comments for state.ml added
+
+ state.ml | 267 ++++++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 151 insertions(+), 116 deletions(-)
+
+commit 6066ee6e846aecad44e67572403f923bdf960a10
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Fri May 11 18:39:35 2018 -0400
+
+    foul change
+
+ game.ml   |  1 +
+ state.ml  | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ state.mli |  4 ++--
+ types.ml  |  1 +
+ types.mli |  1 +
+ 5 files changed, 71 insertions(+), 16 deletions(-)
+
+commit b2a137461293879eef7658de3c1fe4aa18045ee6
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri May 11 16:17:00 2018 -0400
+
+    ai content added
+
+ ai.ml | 42 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 36 insertions(+), 6 deletions(-)
+
+commit f48a4263e6c5f73a5a5b6cc12092ce6aacfde049
+Merge: 3305ce9 4657826
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri May 11 14:42:07 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 3305ce94f430a177d31201b46fbcece16e41517f
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri May 11 14:42:06 2018 -0400
+
+    ai updated
+
+ ai.ml      | 81 +++++++++++++++++++++++++++++++++++++++-----------------------
+ ai.mli     |  1 +
+ test_ai.ml | 62 ++++++++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 108 insertions(+), 36 deletions(-)
+
+commit 46578268376797be7012e80e2da4998f3ca45074
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Fri May 11 11:53:32 2018 -0400
+
+    bug fix
+    
+    fixed a bug where launching from each quadrant is inverted
+
+ state.ml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 3ec0615b2f4a3b4b49b4987f6e353c3d6e7abe1d
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Fri May 11 11:37:41 2018 -0400
+
+    a shit fuck ton of changes
+    
+    mapped controls qead2wsxj to control the cue
+    added cue kinetic transfer to billiard ball
+    TODO: add sound
+    improve UI aesthetics
+    tweak parameters
+    let the ball roll more smoothly
+    have a way of replacing the white ball after it gets pocketed
+
+ .DS_Store            | Bin 10244 -> 10244 bytes
+ billiards.ml         |  35 ++++----
+ command.ml           |   4 +
+ cue.mp3              | Bin 0 -> 6055 bytes
+ fokn_laser_sight.png | Bin 0 -> 2800 bytes
+ game.ml              |  44 +++++++++-
+ game.mli             |   6 ++
+ gui.ml               | 198 ++++++++++++++++++++++++++++++++++++---------
+ main.ml              |   8 +-
+ pool_cue_vert.png    | Bin 0 -> 2311 bytes
+ poolballhit.mp3      | Bin 0 -> 3679 bytes
+ state.ml             | 221 +++++++++++++++++++++++++++++++++++++++++----------
+ types.ml             |   9 ++-
+ types.mli            |   9 ++-
+ 14 files changed, 435 insertions(+), 99 deletions(-)
+
+commit e26819550e2cb2afaf840c707e7777460fe9d343
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed May 9 16:54:40 2018 -0400
+
+    state cleaned
+
+ state.ml  | 42 +++++++++++++++++++++++++-----------------
+ state.mli |  3 ---
+ 2 files changed, 25 insertions(+), 20 deletions(-)
+
+commit e4c11daef376fe74c961ade01678d27c4da30f7d
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed May 9 03:54:25 2018 -0400
+
+    collision system works great
+
+ billiards.ml |   4 +--
+ game.ml      |   5 ++-
+ state.ml     | 101 +++++++++++++++++++++++++++++++++--------------------------
+ 3 files changed, 60 insertions(+), 50 deletions(-)
+
+commit b33b76b5ea2300d9812a1d10457a853350f766f7
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed May 9 03:00:34 2018 -0400
+
+    billiard boundary fixed
+    
+    still fixing the collision
+
+ billiards.ml | 32 ++++++++++++++++----------------
+ game.ml      |  5 +++--
+ state.ml     | 51 +++++++++++++++++++++++++--------------------------
+ 3 files changed, 44 insertions(+), 44 deletions(-)
+
+commit 6300bdf53f9fa83fc280bf6d4d9a771adf2ab2ea
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Mon May 7 21:09:32 2018 -0400
+
+    sate cahnge
+
+ state.ml | 56 ++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
+
+commit ffd8e30fb5d83c2803b80b82e0837b6f230ac501
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 7 20:54:34 2018 -0400
+
+    state fixed
+
+ state.ml      | 39 ++++++++++++++++++++++++++++++---------
+ test_state.ml | 58 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 87 insertions(+), 10 deletions(-)
+
+commit 551399650f68dc725a416dd6fa48762896ef4644
+Merge: b72ec90 131f312
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 7 17:26:19 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit b72ec908fcffcbd8609812804004bda34d42263d
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 7 17:26:15 2018 -0400
+
+    test state changed
+
+ test_state.ml | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+commit 131f3124a68f7ab90097f9989df4b8b3279b1b84
+Author: Zi Heng Xu <zihengxu@dhcp-rhodes-1479.redrover.cornell.edu>
+Date:   Mon May 7 17:26:08 2018 -0400
+
+    push
+    
+    push
+
+ billiards.ml | 64 ++++++++++++++++++++++++++++++------------------------------
+ game.ml      |  6 +++---
+ gui.ml       | 30 +++++++++++++++++-----------
+ state.ml     | 16 +++++++--------
+ 4 files changed, 61 insertions(+), 55 deletions(-)
+
+commit 8217474d999d67fcf9d70e782a306fd2ab9a9720
+Author: Zi Heng Xu <zihengxu@dhcp-rhodes-1479.redrover.cornell.edu>
+Date:   Mon May 7 14:45:31 2018 -0400
+
+    some gui changes
+    
+    ball still does not move on GUI
+
+ .DS_Store    | Bin 10244 -> 10244 bytes
+ billiards.ml |  64 +++++++++++++++++++++++++++++------------------------------
+ game.ml      |  14 +++++++++++--
+ gui.ml       |  54 +++++++++++++++++++++++++++++++++++++++++++------
+ jnf.jpeg     | Bin 0 -> 4924 bytes
+ main.ml      |  13 ++++++------
+ types.ml     |   9 ++++++---
+ 7 files changed, 105 insertions(+), 49 deletions(-)
+
+commit eb2c957225ef3cc72bea8689449d1963c67b1aa8
+Merge: c798376 401a35d
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 7 12:32:28 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit c798376752a2b95c7e4b5e5766e84020ba59eb63
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Mon May 7 12:32:25 2018 -0400
+
+    billiard starts to move
+
+ state.ml      | 37 ++++++++++++++++++++++++++----------
+ test_state.ml | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 88 insertions(+), 10 deletions(-)
+
+commit 401a35dbad079c6505b93d81ac0ff1bdcd1459c1
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun May 6 01:40:19 2018 -0400
+
+    added more UI
+    
+    added more UI
+    1. the legal billiards each player is
+    able to hit is based on on_board, meaning that they will be removed if a billiard is pocketed. after we implement change state we will base it on each player's legal billiards
+    2. score: will based on the total sum of legally pocketed billiards' scores
+    3. still yet to implement controls and moving the cue.
+    4. cue.ml is useless
+    5. the cue (bearing - direction) and its position (relative to the tip) are stored in state.
+
+ .DS_Store         | Bin 6148 -> 10244 bytes
+ Makefile          |   4 +-
+ bg.png            | Bin 0 -> 74809 bytes
+ billiards.ml      | 119 +++++++++++++++++++++++++++---------------------------
+ billiards.mli     |   1 +
+ billiards.png     | Bin 5488 -> 6880 bytes
+ billiards_old.png | Bin 0 -> 5488 bytes
+ computer.png      | Bin 0 -> 2343 bytes
+ controls.png      | Bin 82619 -> 17184 bytes
+ cue.ml            |  12 ++++++
+ cue.mli           |   3 ++
+ download.png      | Bin 0 -> 34330 bytes
+ game.ml           |   6 ++-
+ gui.ml            | 107 +++++++++++++++++++++++++++++++++++-------------
+ human.png         | Bin 0 -> 2145 bytes
+ index.html        |   5 ++-
+ main.ml           |   4 +-
+ player.ml         |   2 +
+ pool_cue.png      | Bin 0 -> 1767 bytes
+ pool_table_sm.png | Bin 7554 -> 10541 bytes
+ turn.png          | Bin 0 -> 1416 bytes
+ types.ml          |  12 +++++-
+ types.mli         |   5 ++-
+ 23 files changed, 185 insertions(+), 95 deletions(-)
+
+commit 0a286cc9868f200d048db7e8f4a14c280efcde51
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat May 5 17:14:51 2018 -0400
+
+    made GUI's billiard rendering state dependent now
+    
+    1. rendering of billiards, whether they are on board or not, and their position, is now dependent on the parameters in state. if those are updated the rendering of billiards should also update
+    2. for game and main.ml I have added specifications which cite the original creator of js_of_ocaml, especially pertaining to the usage of the module Dom.html which converts our ocaml into an browser-based html representation
+
+ billiards.ml | 20 +++++++++++---------
+ game.ml      | 13 ++++++++++++-
+ gui.ml       | 18 ++++++++++++++++--
+ main.ml      | 11 +++++++++++
+ 4 files changed, 50 insertions(+), 12 deletions(-)
+
+commit 307c17711f773ecfeefd8fabe40d1efeb8b5a492
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat May 5 01:28:42 2018 -0400
+
+    ai updated
+
+ ai.ml      | 31 ++++++++++++++++++++++++++++++-
+ test_ai.ml | 23 ++++++++++++++++++-----
+ 2 files changed, 48 insertions(+), 6 deletions(-)
+
+commit aba309551ba600bb2b16710c3a1c62ebab3091d5
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri May 4 23:49:45 2018 -0400
+
+    ai billiard between fixed
+
+ ai.ml        | 40 ++++++++++++++++++++++++++++------------
+ test_ai.byte |  1 +
+ test_ai.ml   |  4 ++++
+ 3 files changed, 33 insertions(+), 12 deletions(-)
+
+commit b19a82b723d3620ab26418338aef877db41b4a5d
+Merge: d2a9302 69838ed
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed May 2 00:14:47 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit d2a9302b05f829eccf70f6e5ff7497aa88bf5b3a
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed May 2 00:14:45 2018 -0400
+
+    ai modified and test added
+
+ .DS_Store                    | Bin 10244 -> 6148 bytes
+ ai.mli                       |   4 ++
+ pool_table.psd               | Bin 782150 -> 0 bytes
+ pool_table_sm.psd            | Bin 799886 -> 0 bytes
+ pool_table_sm_schematics.psd | Bin 951309 -> 0 bytes
+ test_ai.ml                   |  87 +++++++++++++++++++++++++++++++++++++++----
+ 6 files changed, 84 insertions(+), 7 deletions(-)
+
+commit 69838edd708e3cea4b410c86988c0bde2c751872
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Mon Apr 30 17:43:16 2018 -0400
+
+    command and todo
+
+ state.ml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit a9c6f0961feae5cbd67c3dc63323eae3a0819453
+Author: Zi Heng Xu <zihengxu@dhcp-rhodes-488.redrover.cornell.edu>
+Date:   Mon Apr 30 14:19:27 2018 -0400
+
+    deleted some broken code
+    
+    this should be good for prototype
+
+ game.ml    | 39 ++++++---------------------------------
+ game.mli   |  7 +------
+ gui.ml     | 11 ++---------
+ index.html | 13 ++-----------
+ main.ml    | 25 ++++++++-----------------
+ 5 files changed, 19 insertions(+), 76 deletions(-)
+
+commit aaa0c32b1e13c2cbb8f18399ad9d979563a3fe4e
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 16:54:40 2018 -0400
+
+    minor upgrade
+
+ command.ml     |  2 +-
+ game.ml        | 22 +++++++++++++++++----
+ state.ml       | 27 +++++++++++++++++++++++--
+ state.mli      | 16 +++++++++++++--
+ test_ai 5.byte |  1 -
+ test_ai.byte   |  1 -
+ types.ml       | 43 ++++++++++++++++++++++------------------
+ types.mli      | 62 ++++++++++++++++++++++++++++++++--------------------------
+ 8 files changed, 116 insertions(+), 58 deletions(-)
+
+commit 286150e38dc11bf3b085da7314ee14dd4f40d120
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 16:12:51 2018 -0400
+
+    ai test makefile added
+
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit ec0d992369d07c0e14becf44d526316eb8463d39
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun Apr 29 07:46:12 2018 -0400
+
+    added a schematic
+    
+    see table_sm_schematic for
+    dimensions
+
+ .DS_Store                    | Bin 10244 -> 10244 bytes
+ pool_table_sm.psd            | Bin 799386 -> 799886 bytes
+ pool_table_sm_schematics.png | Bin 0 -> 84747 bytes
+ pool_table_sm_schematics.psd | Bin 0 -> 951309 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2d129e8d0dfb11463699da4962c324056fd170fe
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun Apr 29 06:43:28 2018 -0400
+
+    made it look prettier
+    
+    to play:
+    
+    Prerequisites:
+    $ opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml-lwt
+    
+    Run:
+    $ make
+    $ open "index.html"
+
+ .DS_Store             | Bin 10244 -> 10244 bytes
+ billiards.ml          |  34 ++++++++++++------------
+ gui.ml                |  70 +++++++++++++++++++++++++++++++-------------------
+ main.ml               |   1 +
+ pool_table_sm.png     | Bin 36460 -> 7554 bytes
+ pool_table_sm.psd     | Bin 0 -> 799386 bytes
+ pool_table_sm_old.png | Bin 0 -> 36460 bytes
+ types.ml              |   2 +-
+ types.mli             |   2 +-
+ 9 files changed, 63 insertions(+), 46 deletions(-)
+
+commit 40093252903f90bf1decb9005117754ea3fd2a77
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun Apr 29 04:20:44 2018 -0400
+
+    can now be opened (see readme)
+    
+    Prerequisites:
+    $ opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml-lwt
+    
+    Run:
+    $ make
+    $ open "index.html"
+
+ README.md    | 10 ++++++++++
+ billiards.ml |  2 +-
+ test_ai.ml   |  3 ++-
+ 3 files changed, 13 insertions(+), 2 deletions(-)
+
+commit 23b5a5a98163373cffecb2285c2d815628491132
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sun Apr 29 04:15:12 2018 -0400
+
+    transplanted a lot of stuff
+
+ .DS_Store         | Bin 8196 -> 10244 bytes
+ 8.png             | Bin 0 -> 868 bytes
+ Makefile          |  11 ++-
+ _tags             |   3 +
+ ai.ml             |   0
+ ai.mli            |   0
+ billiards.ml      | 196 ++++++++++++++++++++++++++----------------------------
+ billiards.mli     |   2 +-
+ command.ml        |   9 +++
+ command.mli       |   5 ++
+ game.ml           |  45 ++++++-------
+ gui.ml            | 124 ++++++++++++----------------------
+ gui.mli           |   8 +--
+ index.html        |  14 ++--
+ main.ml           |  17 +++--
+ myocamlbuild.ml   |   1 +
+ player.ml         |   0
+ player.mli        |   0
+ pool_table_sm.png | Bin 0 -> 36460 bytes
+ state.ml          |  19 +-----
+ state.mli         |  64 +++++++-----------
+ tables.ml         |  12 ++++
+ tables.mli        |   4 ++
+ test_ai.ml        |  22 +++---
+ types.ml          |  46 ++++++++++---
+ types.mli         |  68 ++++++++++---------
+ 26 files changed, 328 insertions(+), 342 deletions(-)
+
+commit eb41204da5dcb753ef281536a69ef80c3a86263f
+Merge: 7ba547b 88426cd
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 02:04:29 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 7ba547beff52196400d6c62d60c4b39baa34ea2c
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 02:04:28 2018 -0400
+
+    types added and ai test added
+
+ Makefile       |  2 +-
+ ai.ml          |  9 +++++---
+ test_ai 5.byte |  1 +
+ test_ai.byte   |  1 +
+ test_ai.ml     | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ types.ml       |  2 +-
+ types.mli      |  2 +-
+ 7 files changed, 76 insertions(+), 9 deletions(-)
+
+commit 88426cdd10d1a4661687791921961268f3a0bd96
+Merge: e24cb3c 5e16fd9
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun Apr 29 01:14:34 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit e24cb3c8e0ac3640cc3e993e748884802e125b5a
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun Apr 29 01:14:33 2018 -0400
+
+    update bug in change state
+
+ billiard.mli | 14 ++++++++++++++
+ state.ml     | 12 +++++++-----
+ 2 files changed, 21 insertions(+), 5 deletions(-)
+
+commit 5e16fd938d09bf662250e6a4666ab8c1435b1f49
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 00:48:29 2018 -0400
+
+    type purged
+
+ types.ml  | 2 --
+ types.mli | 2 --
+ 2 files changed, 4 deletions(-)
+
+commit 602d8ad1c2d0d6a3108ba297e039e1a88a82850d
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 00:47:48 2018 -0400
+
+    file purged
+
+ foul.mli  |  9 ---------
+ player.ml |  8 --------
+ types.mli | 16 ++++++++++++++++
+ 3 files changed, 16 insertions(+), 17 deletions(-)
+
+commit bbcaf5175de09b2126ebf99af210a4a725daa597
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 00:46:02 2018 -0400
+
+    player updated
+
+ Makefile   |  2 +-
+ player.ml  |  6 +++---
+ player.mli | 12 ++++--------
+ 3 files changed, 8 insertions(+), 12 deletions(-)
+
+commit 8e651f4e562fd1aadd1fb9510dfd75aa3881ba98
+Merge: 102e6cf 9fea4ed
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 00:39:55 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 102e6cfbc948476ed12979ebcd0f8cb468374fa7
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sun Apr 29 00:39:54 2018 -0400
+
+    billiard ml deleted
+
+ billiard.ml             | 75 -------------------------------------------------
+ billiard.mli            | 14 ---------
+ billiard_deletethis.mli | 14 ---------
+ 3 files changed, 103 deletions(-)
+
+commit 9fea4edbb61e84e2773f1497695ce7dc9b1aae0d
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sun Apr 29 00:39:43 2018 -0400
+
+    syntact debug done
+
+ Makefile        |   6 +-
+ billiards.ml    |  16 ++++
+ myocamlbuild.ml |   1 -
+ state.ml        | 233 ++++++++++++++++++++++++++++----------------------------
+ state.mli       |  18 -----
+ types.ml        |   1 +
+ types.mli       |   1 +
+ 7 files changed, 136 insertions(+), 140 deletions(-)
+
+commit 0896d68248e4153fe379ad03ff9dd096f0326125
+Merge: 021a580 4f8d1b3
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 23:35:08 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 021a580664cfce5e65df603f08dd9168f2bb72e8
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 23:34:58 2018 -0400
+
+    added some compilation stuff
+
+ .DS_Store       | Bin 8196 -> 8196 bytes
+ .gitignore      |   1 +
+ .merlin         |   5 +++++
+ Makefile        |   9 ++++++---
+ gui.mli         |   3 +--
+ main.ml         |   8 ++++----
+ myocamlbuild.ml |   1 +
+ 7 files changed, 18 insertions(+), 9 deletions(-)
+
+commit 4f8d1b3c11d11146df6d3bafb3da0acd7803859c
+Merge: 9022373 cb35e63
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat Apr 28 23:34:45 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 902237390fb34453452b86dd78016b7c8a4351f6
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat Apr 28 23:34:43 2018 -0400
+
+    state and ai changed
+
+ ai.ml     | 12 ++++++------
+ state.mli | 15 ---------------
+ 2 files changed, 6 insertions(+), 21 deletions(-)
+
+commit cb35e6315643ac2dfd1285ac34448aa69142669f
+Merge: 2cb87fe 329f5a5
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat Apr 28 23:34:05 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 2cb87feeff23335663b083573af1c6403903152f
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat Apr 28 23:34:00 2018 -0400
+
+    change state added
+
+ state.ml | 150 ++++++++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 106 insertions(+), 44 deletions(-)
+
+commit 329f5a514fa13b709d55221b715b35a2f92b5c51
+Merge: da5c046 40cf03a
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 23:08:53 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit da5c046146d38565226552903fdc1507df3c08d3
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 23:08:48 2018 -0400
+
+    added prototype table
+
+ .DS_Store      | Bin 8196 -> 8196 bytes
+ pool_table.png | Bin 0 -> 9449 bytes
+ pool_table.psd | Bin 0 -> 782150 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 40cf03a8d7782ff488c917db847ccd6ce20f0a3f
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat Apr 28 21:53:05 2018 -0400
+
+    done with collide
+
+ billiard.mli | 14 ++++++++++++++
+ state.ml     | 20 +++++++++++---------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
+
+commit 08959b9b020009a31ee2d99266456a5583493d4c
+Merge: d19f92b bc990c0
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat Apr 28 21:43:34 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit d19f92bf7f7d260ac09fd4857f82868498ae9c98
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Sat Apr 28 21:43:30 2018 -0400
+
+    add
+
+ state.ml | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+commit bc990c0669a3ad12346171017a85166fe578e026
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 21:37:37 2018 -0400
+
+    you can get dimensions in gui.ml
+
+ gui.ml | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+commit cf70c6843f9a58395a766b81257219e1ff573aa7
+Merge: 78be45b 608e8c8
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 21:24:48 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 78be45b85c485196e31e5c81299e54f140136936
+Author: Zi Heng Xu <zihengxu@dhcp-hol-3719.redrover.cornell.edu>
+Date:   Sat Apr 28 21:23:54 2018 -0400
+
+    made some changes and added some placeholders
+
+ .DS_Store    | Bin 8196 -> 8196 bytes
+ controls.png | Bin 0 -> 82619 bytes
+ gui.ml       |  37 ++++++++++++++++++++++++++++---------
+ index.html   |  10 +++++-----
+ 4 files changed, 33 insertions(+), 14 deletions(-)
+
+commit 608e8c809f5cb35f0bd420ce0f80e4d9ba27f7d5
+Merge: 63a19cd a7d818e
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Sat Apr 28 21:19:19 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit a7d818e0a3470c7e8d830c42b4f60f8c33314fdd
+Author: Zi Heng Xu <zihengxu@Zis-MacBook-Pro.local>
+Date:   Sat Apr 28 19:16:29 2018 -0400
+
+    added some folders as placeholders
+
+ .DS_Store                               | Bin 6148 -> 8196 bytes
+ Makefile                                |  12 +++++++-----
+ billiard.ml => billiard_deletethis.ml   |   0
+ billiard.mli => billiard_deletethis.mli |   0
+ gui.ml                                  |   5 +++++
+ index.html                              |  32 ++++++++++++++++++++++++++++++++
+ myocamlbuild.ml                         |   1 +
+ sprites/door.png                        | Bin 0 -> 1488 bytes
+ sprites/end.png                         | Bin 0 -> 1382 bytes
+ sprites/enemysprites.png                | Bin 0 -> 11945 bytes
+ sprites/legendofzeldasheet.png          | Bin 0 -> 9090 bytes
+ sprites/obstacle.png                    | Bin 0 -> 1381 bytes
+ sprites/spritesheet.png                 | Bin 0 -> 13784 bytes
+ sprites/texture.png                     | Bin 0 -> 1019 bytes
+ state.mli                               |   9 +++++----
+ styles/Triforce.ttf                     | Bin 0 -> 44200 bytes
+ styles/screenshot.png                   | Bin 0 -> 220153 bytes
+ styles/screenshot2.png                  | Bin 0 -> 137526 bytes
+ 18 files changed, 50 insertions(+), 9 deletions(-)
+
+commit 63a19cd19d0cc558df99239db58f4dfde78c033f
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri Apr 27 23:21:49 2018 -0400
+
+    typo changed. Project now compiles
+
+ Makefile     |   2 +-
+ README.md    |   1 +
+ ai.ml        |  12 ++----
+ billiards.ml | 128 +++++++++++++++++++++++++++++------------------------------
+ state.ml     |   6 +--
+ state.mli    |   6 +--
+ types.ml     |   4 +-
+ types.mli    |  12 +++++-
+ 8 files changed, 85 insertions(+), 86 deletions(-)
+
+commit 106ba7715ffe840a4a4e002b3459641240955b22
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Fri Apr 27 16:28:02 2018 -0400
+
+    AI still implementing
+
+ ai.ml | 61 ++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 15 deletions(-)
+
+commit 77c9c5f8dd54f4b4a09c90a894eefd06b1246387
+Author: Zi Heng Xu <zihengxu@dhcp-hol-6260.redrover.cornell.edu>
+Date:   Thu Apr 26 10:08:09 2018 -0400
+
+    added billiards and types
+    
+    some clashes will resolve later
+
+ .DS_Store     | Bin 0 -> 6148 bytes
+ billiards.ml  | 293 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ billiards.mli |  29 ++++++
+ state_zx.ml   |  98 ++++++++++++++++++++
+ types.ml      |  15 ++-
+ types.mli     |  46 +++++++++
+ 6 files changed, 479 insertions(+), 2 deletions(-)
+
+commit 2e59e868b2d5d681a14a680c34bf81b6c566ccef
+Merge: 77acba7 ac5e706
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:19:53 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit 77acba73d01d7b018bd5af4f5c404ff448eb5aaa
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:19:48 2018 -0400
+
+    changed
+
+ state.ml | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit ac5e7066aebb3b91a8c7b577a4189206135c152a
+Merge: d342aab b5c4e0c
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Thu Apr 26 01:19:23 2018 -0400
+
+    Merge branch 'master' of https://github.com/EageRAssassin/BilliardEvolved
+
+commit d342aab5ce81c51dfe9efe580a366dbd9ee8534b
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Thu Apr 26 01:19:22 2018 -0400
+
+    aI initialized
+
+ Makefile |  4 ---
+ ai.ml    | 95 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 93 insertions(+), 6 deletions(-)
+
+commit b5c4e0c4ddbfe4c4d32d4c62b7a295b0c13b0b39
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:18:34 2018 -0400
+
+    changed
+
+ state.ml | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+commit 600d41b775e152d802bb0551598a62aa43ef7d13
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:18:11 2018 -0400
+
+    helperfunction collide
+
+ state.ml | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+commit a652c3bed3fa7397f8598381bc11b2cefd6f5ad6
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:07:53 2018 -0400
+
+    update
+
+ state.ml | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+commit 17c3c7000529dc2e11f683cdbbd6ec39142e3b5d
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Thu Apr 26 01:00:26 2018 -0400
+
+    update
+
+ billiard.mli |  4 ++--
+ state.ml     | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 58 insertions(+), 12 deletions(-)
+
+commit c10c43c7e6542910be5d196bbbaaf721bccfc80f
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Apr 25 23:28:58 2018 -0400
+
+    ai and gitignore added
+
+ .gitignore |  2 ++
+ Makefile   |  2 +-
+ ai.ml      | 11 +++++++++++
+ ai.mli     | 16 ++++++++++++++++
+ game.ml    | 14 ++++++--------
+ 5 files changed, 36 insertions(+), 9 deletions(-)
+
+commit 059251c87b67521f55a7c590b92d0395a4942128
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Apr 25 23:12:31 2018 -0400
+
+    billiard type chagne and test ai initialized
+
+ billiard.mli |  5 +++--
+ test_ai.ml   | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+commit 15f49c44c73526d4499056b3ba0acd5b31aa5740
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Apr 25 23:04:46 2018 -0400
+
+    player ml added
+
+ player.ml  | 25 +++++++++++++++++++++++++
+ player.mli |  2 +-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+
+commit 2291a1ac9da7271686173d52d1f82b0f081e02a4
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Apr 25 21:50:19 2018 -0400
+
+    make file added
+
+ Makefile | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+commit 3ed92e564118422e7108bdd4f076f2974e8e3fa9
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Apr 25 21:44:41 2018 -0400
+
+    game.ml added
+
+ game.ml  | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ game.mli | 11 +++++++++++
+ 2 files changed, 70 insertions(+)
+
+commit b2cdaf2a99201fe4dc5ae8b9ee1ac73094061bdd
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Tue Apr 24 22:34:03 2018 -0400
+
+    main loaded
+
+ main.ml | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+commit ab24b35a3c3798066eba905c60cf5991b824f36b
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Tue Apr 24 21:32:46 2018 -0400
+
+    billiard evolved redo
+
+ README.md     |   0
+ billiard.ml   |  75 +++++++++++++++++++++++++++++++++++++++++++++
+ billiard.mli  |  13 ++++----
+ billiards.png | Bin 0 -> 5488 bytes
+ foul.mli      |  14 ++++-----
+ gui.ml        |  83 +++++++++++++++++++++++++++++++++++++++++++++++++
+ gui.mli       |  11 +++++++
+ player.mli    |   3 +-
+ state.ml      |  97 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ state.mli     |  69 +++++++++++++++++++++++++++++++----------
+ types.ml      |  35 +++++++++++++++++++++
+ 11 files changed, 369 insertions(+), 31 deletions(-)
+
+commit 68ce6479f9e3fea7cba2e9041c323d8ab15726f5
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Mar 21 21:46:05 2018 -0400
+
+    state function added
+
+ state.mli | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+commit 1b50425337260e1edd97ef9e82d4bc00022d1b32
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Wed Mar 21 21:35:15 2018 -0400
+
+    push changed
+
+ billiard.mli |  8 ++++----
+ foul.mli     |  2 +-
+ player.mli   | 10 +++++-----
+ state.mli    | 12 ++++++------
+ 4 files changed, 16 insertions(+), 16 deletions(-)
+
+commit 3d849251922ebcf766203fc3454c04aea41d505f
+Author: WendyHuang <bh486@cornell.edu>
+Date:   Wed Mar 21 21:26:09 2018 -0400
+
+    mli files
+
+ billiard.mli | 15 ++++++++++++++-
+ foul.mli     | 10 +++++++++-
+ player.mli   | 16 +++++++++++++++-
+ state.mli    | 20 +++++++++++++++++++-
+ 4 files changed, 57 insertions(+), 4 deletions(-)
+
+commit f3b28d781e721115f57d67cd816d41d5b772001c
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Mar 21 20:54:30 2018 -0400
+
+    mli added
+
+ billiard.mli | 1 +
+ foul.mli     | 1 +
+ player.mli   | 1 +
+ state.mli    | 1 +
+ 4 files changed, 4 insertions(+)
+
+commit c030b99773d9236b2fca6ca423656d4f95011b27
+Author: EageRAssassin <rt389@cornell.edu>
+Date:   Wed Mar 21 19:18:51 2018 -0400
+
+    Initial commit
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)

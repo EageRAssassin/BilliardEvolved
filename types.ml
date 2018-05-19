@@ -82,6 +82,8 @@ type state =
     mutable is_start: bool;
     mutable is_mult: bool;
     mutable is_test: bool;
+    mutable choose_cue: int;
+    mutable choose_table: int;
     (* mutable is_hit: bool; *)
     (* mutable is_win: bool; *)
   }
@@ -94,7 +96,7 @@ type command = {
   mutable j : bool;
   mutable q : bool;
   mutable e : bool;
-  mutable two : bool;
+  mutable cue : int;
   mutable x : bool;
   mutable cue_coord: (float*float);
   mutable cue_bearing: float;
