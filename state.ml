@@ -340,6 +340,11 @@ let toggle_cue st =
   let choose_cue = command.cue in
   st.choose_cue <- choose_cue
 
+let toggle_egg st =
+  let command = player_command in
+  if command.egg_counter = 42 then st.is_egg <- true
+  else st.is_egg <- st.is_egg
+
 (* let control_cue command st =
   if command.a then st.cue_bearing +. 1.
   else if command.d then st.cue_bearing -. 1.
@@ -482,7 +487,7 @@ let release_cue st =
            ((st.is_playing.name = "player_2") && (st.is_mult = false)) then
           (* use AI *)
           begin let sound =
-            if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
+            if st.is_egg then "media/wilhelm_scream.mp3"
             else "media/cue.mp3" in
           let audio = Html.createAudio document in
           audio##src <- js sound;
@@ -493,7 +498,7 @@ let release_cue st =
           end
         else if command.cue_release then
         begin let sound =
-          if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
+          if st.is_egg then "media/wilhelm_scream.mp3"
           else "media/cue.mp3" in
         let audio = Html.createAudio document in
         audio##src <- js sound;
@@ -670,6 +675,7 @@ let change_state (st: state) : state =
   do_mult st;
   do_test st;
   toggle_cue st;
+  toggle_egg st;
   if not ball_move && (st.ball_moving = true || ball_move) then
     begin
       next_round st;

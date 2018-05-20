@@ -14,4 +14,5 @@ let player_command = {
   cue_bearing = 0.;
   cue_gap = 0.;
   cue_release = false;
+  egg_counter = 0;
 }

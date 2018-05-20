@@ -84,6 +84,7 @@ type state =
     mutable is_test: bool;
     mutable choose_cue: int;
     mutable choose_table: int;
+    mutable is_egg : bool;
     (* mutable is_hit: bool; *)
     (* mutable is_win: bool; *)
   }
@@ -96,10 +97,15 @@ type command = {
   mutable j : bool;
   mutable q : bool;
   mutable e : bool;
+  (* mutable c : bool;
+  mutable o : bool;
+  mutable m : bool;
+  mutable l : bool; *)
   mutable cue : int;
   mutable x : bool;
   mutable cue_coord: (float*float);
   mutable cue_bearing: float;
   mutable cue_gap: float;
   mutable cue_release: bool;
+  mutable egg_counter: int;
 }

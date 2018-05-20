@@ -176,9 +176,12 @@ let get_ball_img suit billiard velocity counter egg : billiard =
     | 15 -> {billiard with dim = {img; size = (30.,30.); offset = (750.,0.);}}
     | _ -> failwith ""
   else
-    let img = "media/easter_egg.png" in
     match billiard.suit with
-    | _ -> {billiard with dim = {img; size = (30.,30.); offset = (0.,0.);}}
+    | 8 -> let img = "media/gries.png" in
+      {billiard with dim = {img; size = (30.,30.); offset = (0.,0.);}}
+    | _ -> let img = "media/easter_egg.png" in
+      {billiard with dim = {img; size = (30.,30.); offset = (0.,0.);}}
+
 
 (*https://developer.mozilla.org/en-US/docs/Web/API
   /CanvasRenderingContext2D/drawImage*)
@@ -229,7 +232,11 @@ let draw_legal_billiards (context: Html.canvasRenderingContext2D Js.t)
   if (List.mem b on_board) then
     let p = float_of_int (player - 1) in
     if (s = 0 || s < 0 || s > 15) then draw_help context b (20000.,20000.)
-    else if s = 8 && legal_eight then draw_help context Billiards.eight_ball
+    else if s = 8 && legal_eight then if egg then
+        draw_image context (js "media/gries.png")
+        ((231. +. 3. *. 45. +. p *. 613. ), (37. +. 22.))
+    else
+        draw_help context Billiards.eight_ball
         ((231. +. 3. *. 45. +. p *. 613. ), (37. +. 22.))
     else let legal_s = s mod 8 in
       let x = (231 + ((legal_s - 1) mod 4) * 45 + (int_of_float p) * 613) in
@@ -293,10 +300,12 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   (* draws the table. since everything is on top of the table
   this is the lowest layer*)
   draw_table context;
+  if state.is_egg then draw_image context (js "media/cheats.png") (300.,350.)
+  else draw_image context (js "media/blank.png") (0.,0.);
   (*draws the current player playing*)
   draw_turn context (state.is_playing = player1);
   (*draws the billiards*)
-  draw_billiards context state.on_board state.counter (state.choose_cue = 5) ;
+  draw_billiards context state.on_board state.counter (state.is_egg) ;
   (* chooses the game mode *)
   if state.is_mult then
     draw_image context (js "media/p2.png") (1051.,0.)
@@ -316,6 +325,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_debug context ("ball_moving: " ^ string_of_bool state.ball_moving) 58.;
   draw_debug context ("hit_force: " ^ (string_of_float (fst state.hit_force)) ^ " " ^ (string_of_float (snd state.hit_force))) 70.;
   draw_debug context ("cue: " ^ (string_of_int state.choose_cue)) 82.;
+  draw_debug context ("cue: " ^ (string_of_bool state.is_egg)) 94.;
   (* draws the pool cue with regards to the white ball, the bearing, and
      the gap between the cue and the ball *)
   let a1 = fst cue_ball.position in let a2 = snd cue_ball.position in
@@ -335,8 +345,8 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_bearing context
     (string_of_float ((float_of_int (int_of_float
                                        (10. *. state.cue_bearing)))/. 10.));
-  draw_stat context player1 1 state.on_board (state.choose_cue = 5);
-  draw_stat context player2 2 state.on_board (state.choose_cue = 5);
+  draw_stat context player1 1 state.on_board (state.is_egg);
+  draw_stat context player2 2 state.on_board (state.is_egg);
   if state.choose_cue = 0 then
     if state.ball_moving = false then
       draw_rotated2 context bearing "media/pool_cue.png" a1 a2 gap
