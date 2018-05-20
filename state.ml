@@ -492,13 +492,13 @@ let release_cue st =
 
           end
         else if command.cue_release then
-          begin
-          begin let sound =
-            if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
-            else "media/cue.mp3" in
-          let audio = Html.createAudio document in
-          audio##src <- js sound;
-             audio##play ();
+        begin let sound =
+          if st.choose_cue = 5 then "media/wilhelm_scream.mp3"
+          else "media/cue.mp3" in
+        let audio = Html.createAudio document in
+        audio##src <- js sound;
+           audio##play ();
+
             (* st.is_hit <- true; *)
             st.hit_force <- (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic));
             (30. *. (fst xy_kinetic), 30. *. (snd xy_kinetic))
