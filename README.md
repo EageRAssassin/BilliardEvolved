@@ -16,6 +16,9 @@ OCaml and Opam must be installed.
 Prerequisites: (type these in your terminal/command prompt)
 $ opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml-lwt
 
+In case there are errors: Failure: ocamlfind not found on path, but -no-ocamlfind not used. Please use following commands
+$ eval $(opam config env)
+
 Navigate to the folder containing this game, and to Run:
 $ make
 $ open "index.html"
